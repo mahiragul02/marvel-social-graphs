@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 
 <html lang="en">
@@ -6,90 +7,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<title>Week 1 — Marvel Social Graphs</title>
+    <title>Week 1 — Marvel Social Graphs</title>
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        background: #f5f5f5;
-        color: #222;
-    }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f5f5f5;
+            color: #222;
+        }
 
-    header {
-        background: #111;
-        color: white;
-        padding: 45px 20px;
-        text-align: center;
-    }
+        header {
+            background: #111;
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+        }
 
-    header h1 {
-        font-size: 38px;
-        margin-bottom: 10px;
-    }
+        header h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
 
-    header p {
-        font-size: 18px;
-    }
+        header p {
+            font-size: 18px;
+        }
 
-    main {
-        max-width: 900px;
-        margin: 40px auto;
-        padding: 0 20px;
-    }
+        main {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
 
-    .card {
-        background: white;
-        padding: 30px;
-        margin-bottom: 25px;
-        border-radius: 12px;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    }
+        .card {
+            background: white;
+            padding: 30px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
 
-    .card h2 {
-        margin-top: 0;
-    }
+        .card h2 {
+            margin-top: 0;
+        }
 
-    .stat {
-        font-size: 18px;
-        margin: 12px 0;
-    }
+        .stat {
+            font-size: 18px;
+            margin: 12px 0;
+        }
 
-    img {
-        max-width: 100%;
-        display: block;
-        margin: 20px auto;
-        border-radius: 8px;
-    }
+        img {
+            max-width: 100%;
+            display: block;
+            margin: 20px auto;
+            border-radius: 8px;
+        }
 
-    a {
-        color: #c62828;
-        text-decoration: none;
-        font-weight: bold;
-    }
+        a {
+            color: #c62828;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-    footer {
-        text-align: center;
-        padding: 30px;
-        background: #111;
-        color: white;
-        margin-top: 50px;
-    }
-</style>
-```
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #111;
+            color: white;
+            margin-top: 50px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #f0f0f0;
+        }
+    </style>
 
 </head>
 
 <body>
 
-```
 <header>
     <h1>Week 1 — Exploring the Marvel Network</h1>
     <p>Social Graphs 2026</p>
 </header>
 
 <main>
+
+    <!-- SECTION 1 -->
 
     <div class="card">
         <h2>1. Introduction</h2>
@@ -109,6 +125,8 @@
     </div>
 
 
+    <!-- SECTION 2 -->
+
     <div class="card">
         <h2>2. Dataset</h2>
 
@@ -121,38 +139,53 @@
             The analysis was performed using Python,
             Pandas, NumPy, Matplotlib and NetworkX.
         </p>
+
+        <p>
+            The final network contains 303 characters and
+            1,784 directed connections.
+        </p>
     </div>
 
+
+    <!-- SECTION 3 -->
 
     <div class="card">
         <h2>3. Basic Network Statistics</h2>
 
         <p class="stat">
             <strong>Number of nodes:</strong>
-            ADD RESULT
+            303
         </p>
 
         <p class="stat">
             <strong>Number of edges:</strong>
-            ADD RESULT
+            1,784
         </p>
 
         <p class="stat">
             <strong>Network density:</strong>
-            ADD RESULT
+            0.0195
         </p>
 
         <p class="stat">
             <strong>Average degree:</strong>
-            ADD RESULT
+            11.78
         </p>
 
         <p class="stat">
             <strong>Isolated characters:</strong>
-            ADD RESULT
+            17
+        </p>
+
+        <p>
+            The network is relatively sparse, with a density of
+            approximately 1.95%. On average, each character has
+            around 12 connections.
         </p>
     </div>
 
+
+    <!-- SECTION 4 -->
 
     <div class="card">
         <h2>4. Most Connected Characters</h2>
@@ -163,19 +196,109 @@
         </p>
 
         <p>
-            The characters with the highest total degree
-            are:
+            The ten characters with the highest total degree
+            are shown below:
         </p>
 
-        <ol>
-            <li>ADD CHARACTER</li>
-            <li>ADD CHARACTER</li>
-            <li>ADD CHARACTER</li>
-            <li>ADD CHARACTER</li>
-            <li>ADD CHARACTER</li>
-        </ol>
+        <table>
+            <tr>
+                <th>Rank</th>
+                <th>Character</th>
+                <th>In-degree</th>
+                <th>Out-degree</th>
+                <th>Total degree</th>
+            </tr>
+
+            <tr>
+                <td>1</td>
+                <td>Spider-Man</td>
+                <td>106</td>
+                <td>9</td>
+                <td>115</td>
+            </tr>
+
+            <tr>
+                <td>2</td>
+                <td>Wolverine</td>
+                <td>60</td>
+                <td>17</td>
+                <td>77</td>
+            </tr>
+
+            <tr>
+                <td>3</td>
+                <td>Hulk</td>
+                <td>64</td>
+                <td>10</td>
+                <td>74</td>
+            </tr>
+
+            <tr>
+                <td>4</td>
+                <td>Doctor Strange</td>
+                <td>50</td>
+                <td>17</td>
+                <td>67</td>
+            </tr>
+
+            <tr>
+                <td>5</td>
+                <td>Deadpool</td>
+                <td>33</td>
+                <td>19</td>
+                <td>52</td>
+            </tr>
+
+            <tr>
+                <td>6</td>
+                <td>She-Hulk</td>
+                <td>29</td>
+                <td>20</td>
+                <td>49</td>
+            </tr>
+
+            <tr>
+                <td>7</td>
+                <td>Scarlet Witch</td>
+                <td>28</td>
+                <td>14</td>
+                <td>42</td>
+            </tr>
+
+            <tr>
+                <td>8</td>
+                <td>Phoenix</td>
+                <td>24</td>
+                <td>17</td>
+                <td>41</td>
+            </tr>
+
+            <tr>
+                <td>9</td>
+                <td>Emma Frost</td>
+                <td>21</td>
+                <td>17</td>
+                <td>38</td>
+            </tr>
+
+            <tr>
+                <td>10</td>
+                <td>Black Panther</td>
+                <td>27</td>
+                <td>11</td>
+                <td>38</td>
+            </tr>
+        </table>
+
+        <p>
+            Spider-Man has the highest total degree in the
+            network, with 115 connections. This makes him
+            the most connected character in our dataset.
+        </p>
     </div>
 
+
+    <!-- SECTION 5 -->
 
     <div class="card">
         <h2>5. Degree Distribution</h2>
@@ -187,8 +310,16 @@
 
         <img src="figures/degree_distribution.png"
              alt="Marvel Network Degree Distribution">
+
+        <p>
+            The distribution shows that most characters have
+            relatively few connections, while a small number
+            of characters have very high degree.
+        </p>
     </div>
 
+
+    <!-- SECTION 6 -->
 
     <div class="card">
         <h2>6. Network Structure</h2>
@@ -200,20 +331,36 @@
 
         <p>
             <strong>Number of connected components:</strong>
-            ADD RESULT
+            19
         </p>
 
         <p>
             <strong>Giant component size:</strong>
-            ADD RESULT
+            277 characters
         </p>
 
         <p>
             <strong>Percentage of characters in giant component:</strong>
-            ADD RESULT
+            91.42%
+        </p>
+
+        <p>
+            Most of the characters belong to one large
+            connected component. This means that the majority
+            of characters are connected to each other through
+            the network, while a small number belong to
+            smaller components or are isolated.
+        </p>
+
+        <p>
+            The giant component contains more than 91% of all
+            characters in the dataset, showing that the Marvel
+            network is highly interconnected.
         </p>
     </div>
 
+
+    <!-- SECTION 7 -->
 
     <div class="card">
         <h2>7. Spider-Man Analysis</h2>
@@ -225,20 +372,29 @@
 
         <p>
             <strong>In-degree:</strong>
-            ADD RESULT
+            106
         </p>
 
         <p>
             <strong>Out-degree:</strong>
-            ADD RESULT
+            9
         </p>
 
         <p>
             <strong>Total degree:</strong>
-            ADD RESULT
+            115
+        </p>
+
+        <p>
+            Spider-Man has the highest total degree of all
+            characters in the network. His high in-degree
+            indicates that many other character pages contain
+            links pointing toward Spider-Man's page.
         </p>
     </div>
 
+
+    <!-- SECTION 8 -->
 
     <div class="card">
         <h2>8. Network Robustness</h2>
@@ -251,20 +407,35 @@
 
         <p>
             <strong>Original giant component:</strong>
-            ADD RESULT
+            277 characters
         </p>
 
         <p>
             <strong>Giant component without Spider-Man:</strong>
-            ADD RESULT
+            271 characters
         </p>
 
         <p>
             <strong>Change:</strong>
-            ADD RESULT
+            -6 characters
+        </p>
+
+        <p>
+            Although Spider-Man is the most connected character,
+            removing him only reduces the giant component from
+            277 to 271 characters.
+        </p>
+
+        <p>
+            This suggests that the network is relatively robust
+            to the removal of Spider-Man. Other connections
+            between characters allow most of the network to
+            remain connected.
         </p>
     </div>
 
+
+    <!-- SECTION 9 -->
 
     <div class="card">
         <h2>9. Log-Log Degree Distribution</h2>
@@ -277,8 +448,17 @@
 
         <img src="figures/degree_distribution_loglog.png"
              alt="Marvel Network Degree Distribution Log-Log">
+
+        <p>
+            The log-log representation provides another way
+            to examine the distribution of degree values and
+            helps highlight characters with unusually high
+            numbers of connections.
+        </p>
     </div>
 
+
+    <!-- SECTION 10 -->
 
     <div class="card">
         <h2>10. Reflection</h2>
@@ -290,13 +470,34 @@
         </p>
 
         <p>
-            By examining degree, connected components and
-            network robustness, we can identify important
-            characters and understand how strongly connected
-            the Marvel network is.
+            The network contains 303 characters and 1,784
+            connections. Spider-Man is the most connected
+            character, with a total degree of 115.
+        </p>
+
+        <p>
+            The network is also highly connected at the
+            component level, with 91.42% of all characters
+            belonging to the giant component.
+        </p>
+
+        <p>
+            The robustness experiment showed that removing
+            Spider-Man reduces the giant component by only
+            six characters. Therefore, Spider-Man is highly
+            connected but is not essential for keeping the
+            majority of the network connected.
+        </p>
+
+        <p>
+            Overall, this analysis shows how graph statistics
+            can reveal important structural properties of
+            the Marvel character network.
         </p>
     </div>
 
+
+    <!-- BACK TO MAIN PAGE -->
 
     <p>
         <a href="index.html">← Back to main page</a>
@@ -308,8 +509,8 @@
 <footer>
     Social Graphs 2026 · Marvel Network Project
 </footer>
-```
 
 </body>
 
 </html>
+```

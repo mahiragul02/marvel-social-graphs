@@ -20,13 +20,17 @@
     header {
         background: #111;
         color: white;
-        padding: 40px 20px;
+        padding: 45px 20px;
         text-align: center;
     }
 
     header h1 {
-        font-size: 36px;
+        font-size: 38px;
         margin-bottom: 10px;
+    }
+
+    header p {
+        font-size: 18px;
     }
 
     main {
@@ -45,6 +49,11 @@
 
     .card h2 {
         margin-top: 0;
+    }
+
+    .stat {
+        font-size: 18px;
+        margin: 12px 0;
     }
 
     img {
@@ -83,82 +92,218 @@
 <main>
 
     <div class="card">
-        <h2>Introduction</h2>
+        <h2>1. Introduction</h2>
 
         <p>
-            In Week 1, we explore the Marvel Comics network
-            using social network analysis and graph theory.
+            In Week 1, we explore the network structure of
+            Marvel Comics characters using social network
+            analysis and graph theory.
         </p>
 
         <p>
-            The network represents Marvel superheroes and
-            the connections between them based on links
-            between their Wikipedia pages.
-        </p>
-    </div>
-
-    <div class="card">
-        <h2>Dataset</h2>
-
-        <p>
-            Our dataset contains 303 Marvel superheroes
-            and the connections between them.
-        </p>
-
-        <p>
+            The network is constructed from connections
+            between Marvel character Wikipedia pages.
             We use Python and NetworkX to investigate
-            the structure of this network.
+            the structure of the network.
         </p>
     </div>
 
-    <div class="card">
-        <h2>Network Statistics</h2>
 
-        <p><strong>Number of nodes:</strong> 303</p>
+    <div class="card">
+        <h2>2. Dataset</h2>
 
         <p>
+            Our dataset contains Marvel Comics characters
+            and links between their Wikipedia pages.
+        </p>
+
+        <p>
+            The analysis was performed using Python,
+            Pandas, NumPy, Matplotlib and NetworkX.
+        </p>
+    </div>
+
+
+    <div class="card">
+        <h2>3. Basic Network Statistics</h2>
+
+        <p class="stat">
+            <strong>Number of nodes:</strong>
+            ADD RESULT
+        </p>
+
+        <p class="stat">
             <strong>Number of edges:</strong>
-            Add your result here
+            ADD RESULT
         </p>
 
-        <p>
-            <strong>Most connected superhero:</strong>
-            Add your result here
+        <p class="stat">
+            <strong>Network density:</strong>
+            ADD RESULT
+        </p>
+
+        <p class="stat">
+            <strong>Average degree:</strong>
+            ADD RESULT
+        </p>
+
+        <p class="stat">
+            <strong>Isolated characters:</strong>
+            ADD RESULT
         </p>
     </div>
+
 
     <div class="card">
-        <h2>Network Visualization</h2>
+        <h2>4. Most Connected Characters</h2>
 
         <p>
-            The graph below shows the connections between
-            Marvel superheroes.
+            We calculated the in-degree, out-degree and
+            total degree of every character in the network.
         </p>
 
         <p>
-            We will add our NetworkX visualization here.
+            The characters with the highest total degree
+            are:
         </p>
 
-        <!-- Add your graph image here later -->
-
+        <ol>
+            <li>ADD CHARACTER</li>
+            <li>ADD CHARACTER</li>
+            <li>ADD CHARACTER</li>
+            <li>ADD CHARACTER</li>
+            <li>ADD CHARACTER</li>
+        </ol>
     </div>
+
 
     <div class="card">
-        <h2>What We Learned</h2>
+        <h2>5. Degree Distribution</h2>
 
         <p>
-            The Marvel network shows how characters are
-            connected through shared relationships and
-            interactions. Network analysis helps us identify
-            important and highly connected characters.
+            The degree distribution shows how many
+            characters have different numbers of connections.
+        </p>
+
+        <img src="figures/degree_distribution.png"
+             alt="Marvel Network Degree Distribution">
+    </div>
+
+
+    <div class="card">
+        <h2>6. Network Structure</h2>
+
+        <p>
+            We examined the weakly connected components
+            of the directed Marvel network.
+        </p>
+
+        <p>
+            <strong>Number of connected components:</strong>
+            ADD RESULT
+        </p>
+
+        <p>
+            <strong>Giant component size:</strong>
+            ADD RESULT
+        </p>
+
+        <p>
+            <strong>Percentage of characters in giant component:</strong>
+            ADD RESULT
         </p>
     </div>
+
+
+    <div class="card">
+        <h2>7. Spider-Man Analysis</h2>
+
+        <p>
+            We investigated Spider-Man as an example of
+            a highly connected character.
+        </p>
+
+        <p>
+            <strong>In-degree:</strong>
+            ADD RESULT
+        </p>
+
+        <p>
+            <strong>Out-degree:</strong>
+            ADD RESULT
+        </p>
+
+        <p>
+            <strong>Total degree:</strong>
+            ADD RESULT
+        </p>
+    </div>
+
+
+    <div class="card">
+        <h2>8. Network Robustness</h2>
+
+        <p>
+            To investigate the importance of Spider-Man,
+            we removed the Spider-Man node and compared
+            the giant component before and after removal.
+        </p>
+
+        <p>
+            <strong>Original giant component:</strong>
+            ADD RESULT
+        </p>
+
+        <p>
+            <strong>Giant component without Spider-Man:</strong>
+            ADD RESULT
+        </p>
+
+        <p>
+            <strong>Change:</strong>
+            ADD RESULT
+        </p>
+    </div>
+
+
+    <div class="card">
+        <h2>9. Log-Log Degree Distribution</h2>
+
+        <p>
+            A log-log visualization was also created to
+            investigate the distribution of connections
+            across the network.
+        </p>
+
+        <img src="figures/degree_distribution_loglog.png"
+             alt="Marvel Network Degree Distribution Log-Log">
+    </div>
+
+
+    <div class="card">
+        <h2>10. Reflection</h2>
+
+        <p>
+            The Week 1 analysis demonstrates how network
+            science can be used to investigate the structure
+            of a fictional social network.
+        </p>
+
+        <p>
+            By examining degree, connected components and
+            network robustness, we can identify important
+            characters and understand how strongly connected
+            the Marvel network is.
+        </p>
+    </div>
+
 
     <p>
         <a href="index.html">← Back to main page</a>
     </p>
 
 </main>
+
 
 <footer>
     Social Graphs 2026 · Marvel Network Project

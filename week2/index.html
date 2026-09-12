@@ -36,7 +36,7 @@
         }
 
         nav {
-            background-color: #ffffff;
+            background-color: white;
             padding: 15px;
             text-align: center;
             border-bottom: 1px solid #ddd;
@@ -211,6 +211,7 @@
         }
 
     </style>
+
 </head>
 
 
@@ -225,9 +226,7 @@
 
     <h1>Week 2 — Marvel Network and Preferential Attachment</h1>
 
-    <p>
-        Social Graphs and Interactions
-    </p>
+    <p>Social Graphs and Interactions</p>
 
 </header>
 
@@ -238,11 +237,13 @@
 
 <nav>
 
-    <a href="index.html">Home</a>
+    <!-- ../ means go one folder UP -->
 
-    <a href="week1.html">← Week 1</a>
+    <a href="../index.html">Home</a>
 
-    <a href="week2.html">Week 2</a>
+    <a href="../week1.html">← Week 1</a>
+
+    <a href="index.html">Week 2</a>
 
 </nav>
 
@@ -251,7 +252,7 @@
 
 
 <!-- ========================================= -->
-<!-- INTRODUCTION -->
+<!-- WEEK 2 OVERVIEW -->
 <!-- ========================================= -->
 
 <section>
@@ -260,8 +261,8 @@
 
     <p>
         In Week 1, we constructed and explored a social network
-        of Marvel characters based on relationships extracted from
-        Wikipedia.
+        of Marvel characters based on relationships extracted
+        from Wikipedia.
     </p>
 
     <p>
@@ -274,8 +275,8 @@
     <div class="highlight">
 
         <p class="question">
-            Can preferential attachment explain the structure of
-            the Marvel character network?
+            Can preferential attachment explain the structure
+            of the Marvel character network?
         </p>
 
     </div>
@@ -326,21 +327,13 @@
     <ul>
 
         <li>Number of nodes</li>
-
         <li>Number of edges</li>
-
         <li>Average degree</li>
-
         <li>Network density</li>
-
         <li>Number of connected components</li>
-
         <li>Average clustering coefficient</li>
-
         <li>Degree distribution</li>
-
         <li>Degree CCDF</li>
-
         <li>Largest hubs</li>
 
     </ul>
@@ -359,47 +352,28 @@
     <div class="metric-boxes">
 
         <div class="metric">
-
             <strong>310</strong>
-
             <span>Nodes in both networks</span>
-
         </div>
 
-
         <div class="metric">
-
             <strong>1,439</strong>
-
             <span>Real Marvel edges</span>
-
         </div>
 
-
         <div class="metric">
-
             <strong>1,525</strong>
-
             <span>BA model edges</span>
-
         </div>
 
-
         <div class="metric">
-
             <strong>9.28</strong>
-
             <span>Marvel average degree</span>
-
         </div>
 
-
         <div class="metric">
-
             <strong>9.84</strong>
-
             <span>BA average degree</span>
-
         </div>
 
     </div>
@@ -408,73 +382,45 @@
     <table>
 
         <tr>
-
             <th>Measure</th>
-
             <th>Real Marvel</th>
-
             <th>BA Model</th>
-
         </tr>
 
         <tr>
-
             <td>Nodes</td>
-
             <td>310</td>
-
             <td>310</td>
-
         </tr>
 
         <tr>
-
             <td>Edges</td>
-
             <td>1,439</td>
-
             <td>1,525</td>
-
         </tr>
 
         <tr>
-
             <td>Average degree</td>
-
             <td>9.284</td>
-
             <td>9.839</td>
-
         </tr>
 
         <tr>
-
             <td>Density</td>
-
             <td>0.0300</td>
-
             <td>0.0318</td>
-
         </tr>
 
         <tr>
-
             <td>Connected components</td>
-
             <td>21</td>
-
             <td>1</td>
-
         </tr>
 
         <tr>
-
             <td>Average clustering</td>
-
             <td>0.301</td>
-
             <td>0.105</td>
-
         </tr>
 
     </table>
@@ -483,7 +429,7 @@
 
 
 <!-- ========================================= -->
-<!-- DEGREE DISTRIBUTION -->
+<!-- DEGREE DISTRIBUTION GRAPH -->
 <!-- ========================================= -->
 
 <section>
@@ -499,7 +445,7 @@
 
         <img
             src="week2_real_vs_ba_degree.png"
-            alt="Degree distribution comparison between the real Marvel network and BA model"
+            alt="Real Marvel network versus BA model degree distribution"
         >
 
         <p class="caption">
@@ -519,7 +465,7 @@
 
 
 <!-- ========================================= -->
-<!-- CCDF -->
+<!-- CCDF GRAPH -->
 <!-- ========================================= -->
 
 <section>
@@ -536,7 +482,7 @@
 
         <img
             src="week2_ccdf_real_vs_ba.png"
-            alt="Degree CCDF comparison between the real Marvel network and BA model"
+            alt="Real Marvel network versus BA model degree CCDF"
         >
 
         <p class="caption">
@@ -558,7 +504,7 @@
 
 
 <!-- ========================================= -->
-<!-- CONNECTED COMPONENTS -->
+<!-- CONNECTED COMPONENTS AND CLUSTERING -->
 <!-- ========================================= -->
 
 <section>
@@ -573,7 +519,7 @@
 
     <div class="important">
 
-        <h3>Connected components</h3>
+        <h3>Connected Components</h3>
 
         <p>
             The real Marvel network contains
@@ -613,15 +559,15 @@
 
 
 <!-- ========================================= -->
-<!-- HUBS -->
+<!-- REAL MARVEL HUBS -->
 <!-- ========================================= -->
 
 <section>
 
-    <h2>6. The Largest Hubs</h2>
+    <h2>6. Largest Hubs</h2>
 
     <p>
-        We also compared the nodes with the highest degree in both
+        We compared the nodes with the highest degree in both
         networks.
     </p>
 
@@ -631,13 +577,9 @@
     <table>
 
         <tr>
-
             <th>Rank</th>
-
             <th>Character</th>
-
             <th>Degree</th>
-
         </tr>
 
         <tr>
@@ -708,13 +650,9 @@
     <table>
 
         <tr>
-
             <th>Rank</th>
-
             <th>BA Node</th>
-
             <th>Degree</th>
-
         </tr>
 
         <tr>
@@ -791,7 +729,7 @@
 
 
 <!-- ========================================= -->
-<!-- WHAT DOES BA GET RIGHT? -->
+<!-- WHAT BA GETS RIGHT -->
 <!-- ========================================= -->
 
 <section>
@@ -830,7 +768,7 @@
 
 
 <!-- ========================================= -->
-<!-- WHAT DOES BA GET WRONG? -->
+<!-- WHAT BA GETS WRONG -->
 <!-- ========================================= -->
 
 <section>
@@ -918,7 +856,7 @@
 
 
 <!-- ========================================= -->
-<!-- NAVIGATION AT BOTTOM -->
+<!-- BOTTOM NAVIGATION -->
 <!-- ========================================= -->
 
 <section style="text-align: center;">
@@ -927,13 +865,13 @@
 
     <p>
 
-        <a href="week1.html">
+        <a href="../week1.html">
             ← Go back to Week 1
         </a>
 
         &nbsp;&nbsp; | &nbsp;&nbsp;
 
-        <a href="index.html">
+        <a href="../index.html">
             Return to Home
         </a>
 

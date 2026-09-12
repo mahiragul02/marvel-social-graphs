@@ -1,480 +1,963 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Week 2 — Marvel Social Graphs</title>
+    <title>Week 2 — Marvel Network and Preferential Attachment</title>
 
     <style>
 
-        /* =========================
-           GENERAL
-        ========================= */
-
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.7;
             margin: 0;
-            background: #f5f5f5;
+            background-color: #f5f7fa;
             color: #222;
-            line-height: 1.6;
         }
-
-
-        /* =========================
-           NAVIGATION
-        ========================= */
-
-        .navbar {
-            background: #111;
-            color: white;
-
-            padding: 15px 30px;
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
-
-        .nav-title {
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-
-        .nav-links {
-            display: flex;
-            gap: 8px;
-        }
-
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-
-            font-weight: bold;
-
-            padding: 9px 14px;
-
-            border-radius: 6px;
-        }
-
-
-        .nav-links a:hover {
-            background: #c62828;
-        }
-
-
-        .nav-links a.active {
-            background: #c62828;
-        }
-
-
-        /* =========================
-           HEADER
-        ========================= */
 
         header {
-            background: #111;
+            background-color: #111827;
             color: white;
-
-            padding: 50px 20px;
-
+            padding: 35px 20px;
             text-align: center;
         }
 
-
         header h1 {
-            font-size: 38px;
-            margin-bottom: 10px;
+            margin: 0;
+            font-size: 36px;
         }
-
 
         header p {
             font-size: 18px;
+            margin-top: 10px;
         }
 
-
-        /* =========================
-           MAIN
-        ========================= */
-
-        main {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
+        nav {
+            background-color: #ffffff;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-
-        /* =========================
-           CARDS
-        ========================= */
-
-        .card {
-            background: white;
-
-            padding: 30px;
-
-            margin-bottom: 25px;
-
-            border-radius: 12px;
-
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-
-
-        .card h2 {
-            margin-top: 0;
-        }
-
-
-        /* =========================
-           TABLE OF CONTENTS
-        ========================= */
-
-        .toc {
-            border-left: 5px solid #c62828;
-        }
-
-
-        .toc ol {
-            padding-left: 25px;
-        }
-
-
-        .toc li {
-            margin: 12px 0;
-        }
-
-
-        .toc a {
-            color: #c62828;
-
+        nav a {
             text-decoration: none;
-
+            color: #2563eb;
             font-weight: bold;
+            margin: 0 15px;
         }
 
-
-        .toc a:hover {
+        nav a:hover {
             text-decoration: underline;
         }
 
-
-        /* =========================
-           NAVIGATION BUTTONS
-        ========================= */
-
-        .week-navigation {
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            margin-top: 40px;
-
-            gap: 15px;
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
         }
 
+        section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
 
-        .nav-button {
-            background: #111;
+        h2 {
+            color: #111827;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
 
-            color: white;
+        h3 {
+            color: #374151;
+        }
 
-            padding: 14px 22px;
+        .highlight {
+            background-color: #eff6ff;
+            border-left: 5px solid #2563eb;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
 
-            border-radius: 8px;
+        .important {
+            background-color: #fef3c7;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
 
-            text-decoration: none;
+        .success {
+            background-color: #ecfdf5;
+            border-left: 5px solid #10b981;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
 
+        .question {
+            font-size: 20px;
             font-weight: bold;
+            color: #1d4ed8;
         }
 
-
-        .nav-button:hover {
-            background: #c62828;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
 
+        th,
+        td {
+            border: 1px solid #d1d5db;
+            padding: 12px;
+            text-align: center;
+        }
 
-        /* =========================
-           FOOTER
-        ========================= */
+        th {
+            background-color: #111827;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .caption {
+            font-size: 14px;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        ul {
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .metric-boxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .metric {
+            background-color: #f9fafb;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .metric strong {
+            display: block;
+            font-size: 28px;
+            color: #2563eb;
+        }
+
+        .metric span {
+            color: #555;
+            font-size: 14px;
+        }
 
         footer {
             text-align: center;
-
-            padding: 30px;
-
-            background: #111;
-
+            background-color: #111827;
             color: white;
-
-            margin-top: 50px;
+            padding: 25px;
+            margin-top: 40px;
         }
 
-
-        /* =========================
-           MOBILE
-        ========================= */
-
         @media (max-width: 700px) {
-
-            .navbar {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .nav-links a {
-                font-size: 14px;
-                padding: 8px 10px;
-            }
 
             header h1 {
                 font-size: 28px;
             }
 
-            .card {
+            section {
                 padding: 20px;
             }
 
-            .week-navigation {
-                flex-direction: column;
-            }
-
-            .nav-button {
-                width: 100%;
-                text-align: center;
-                box-sizing: border-box;
+            nav a {
+                display: inline-block;
+                margin: 5px 8px;
             }
 
         }
 
     </style>
-
 </head>
 
 
 <body>
 
 
-<!-- =========================
-     TOP NAVIGATION
-========================= -->
-
-<nav class="navbar">
-
-    <div class="nav-title">
-        Social Graphs 2026
-    </div>
-
-
-    <div class="nav-links">
-
-        <a href="../index.html">
-            Home
-        </a>
-
-
-        <a href="../week1.html">
-            Week 1
-        </a>
-
-
-        <a href="index.html" class="active">
-            Week 2
-        </a>
-
-    </div>
-
-</nav>
-
-
-<!-- =========================
-     HEADER
-========================= -->
+<!-- ========================================= -->
+<!-- HEADER -->
+<!-- ========================================= -->
 
 <header>
 
-    <h1>
-        Week 2 — Marvel Social Graphs
-    </h1>
+    <h1>Week 2 — Marvel Network and Preferential Attachment</h1>
 
     <p>
-        Social Graphs 2026
+        Social Graphs and Interactions
     </p>
 
 </header>
 
 
-<main>
+<!-- ========================================= -->
+<!-- NAVIGATION -->
+<!-- ========================================= -->
+
+<nav>
+
+    <a href="index.html">Home</a>
+
+    <a href="week1.html">← Week 1</a>
+
+    <a href="week2.html">Week 2</a>
+
+</nav>
 
 
-<!-- =========================
-     TABLE OF CONTENTS
-========================= -->
+<div class="container">
 
-<div class="card toc">
 
-    <h2>
-        Week 2 Contents
-    </h2>
+<!-- ========================================= -->
+<!-- INTRODUCTION -->
+<!-- ========================================= -->
 
-    <ol>
+<section>
+
+    <h2>Week 2 Overview</h2>
+
+    <p>
+        In Week 1, we constructed and explored a social network
+        of Marvel characters based on relationships extracted from
+        Wikipedia.
+    </p>
+
+    <p>
+        In Week 2, we investigate whether a simple network growth
+        mechanism called <strong>preferential attachment</strong>
+        can explain some of the structure observed in the real
+        Marvel network.
+    </p>
+
+    <div class="highlight">
+
+        <p class="question">
+            Can preferential attachment explain the structure of
+            the Marvel character network?
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================= -->
+<!-- METHOD -->
+<!-- ========================================= -->
+
+<section>
+
+    <h2>1. Method</h2>
+
+    <p>
+        The original Marvel network is directed because the edges
+        represent links between characters. For comparison with
+        the Barabási–Albert model, we converted the network into
+        an undirected network.
+    </p>
+
+    <p>
+        The resulting real Marvel network contains:
+    </p>
+
+    <ul>
+
+        <li><strong>310 nodes</strong></li>
+
+        <li><strong>1,439 edges</strong></li>
+
+        <li><strong>21 connected components</strong></li>
+
+    </ul>
+
+    <p>
+        We then generated a Barabási–Albert (BA) preferential
+        attachment network with the same number of nodes.
+        We selected <strong>m = 5</strong>, which produced a
+        network with a similar number of edges.
+    </p>
+
+    <p>
+        The two networks were compared using:
+    </p>
+
+    <ul>
+
+        <li>Number of nodes</li>
+
+        <li>Number of edges</li>
+
+        <li>Average degree</li>
+
+        <li>Network density</li>
+
+        <li>Number of connected components</li>
+
+        <li>Average clustering coefficient</li>
+
+        <li>Degree distribution</li>
+
+        <li>Degree CCDF</li>
+
+        <li>Largest hubs</li>
+
+    </ul>
+
+</section>
+
+
+<!-- ========================================= -->
+<!-- BASIC STATISTICS -->
+<!-- ========================================= -->
+
+<section>
+
+    <h2>2. Basic Network Statistics</h2>
+
+    <div class="metric-boxes">
+
+        <div class="metric">
+
+            <strong>310</strong>
+
+            <span>Nodes in both networks</span>
+
+        </div>
+
+
+        <div class="metric">
+
+            <strong>1,439</strong>
+
+            <span>Real Marvel edges</span>
+
+        </div>
+
+
+        <div class="metric">
+
+            <strong>1,525</strong>
+
+            <span>BA model edges</span>
+
+        </div>
+
+
+        <div class="metric">
+
+            <strong>9.28</strong>
+
+            <span>Marvel average degree</span>
+
+        </div>
+
+
+        <div class="metric">
+
+            <strong>9.84</strong>
+
+            <span>BA average degree</span>
+
+        </div>
+
+    </div>
+
+
+    <table>
+
+        <tr>
+
+            <th>Measure</th>
+
+            <th>Real Marvel</th>
+
+            <th>BA Model</th>
+
+        </tr>
+
+        <tr>
+
+            <td>Nodes</td>
+
+            <td>310</td>
+
+            <td>310</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Edges</td>
+
+            <td>1,439</td>
+
+            <td>1,525</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Average degree</td>
+
+            <td>9.284</td>
+
+            <td>9.839</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Density</td>
+
+            <td>0.0300</td>
+
+            <td>0.0318</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Connected components</td>
+
+            <td>21</td>
+
+            <td>1</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Average clustering</td>
+
+            <td>0.301</td>
+
+            <td>0.105</td>
+
+        </tr>
+
+    </table>
+
+</section>
+
+
+<!-- ========================================= -->
+<!-- DEGREE DISTRIBUTION -->
+<!-- ========================================= -->
+
+<section>
+
+    <h2>3. Degree Distribution</h2>
+
+    <p>
+        The first comparison examines the degree distribution of
+        the real Marvel network and the BA model.
+    </p>
+
+    <div class="image-container">
+
+        <img
+            src="week2_real_vs_ba_degree.png"
+            alt="Degree distribution comparison between the real Marvel network and BA model"
+        >
+
+        <p class="caption">
+            Figure 1. Degree distribution of the real Marvel network
+            compared with the Barabási–Albert model.
+        </p>
+
+    </div>
+
+    <p>
+        Both networks contain highly connected nodes, showing that
+        preferential attachment can reproduce the general tendency
+        for some nodes to become much more connected than others.
+    </p>
+
+</section>
+
+
+<!-- ========================================= -->
+<!-- CCDF -->
+<!-- ========================================= -->
+
+<section>
+
+    <h2>4. Degree CCDF</h2>
+
+    <p>
+        The complementary cumulative distribution function (CCDF)
+        provides another way of comparing the degree distributions,
+        particularly in the high-degree region.
+    </p>
+
+    <div class="image-container">
+
+        <img
+            src="week2_ccdf_real_vs_ba.png"
+            alt="Degree CCDF comparison between the real Marvel network and BA model"
+        >
+
+        <p class="caption">
+            Figure 2. Degree CCDF for the real Marvel network and
+            the Barabási–Albert model.
+        </p>
+
+    </div>
+
+    <p>
+        The comparison shows that the real Marvel network contains
+        a particularly strong high-degree hub structure. The
+        preferential attachment model captures the presence of hubs,
+        but does not reproduce the exact distribution of degrees
+        observed in the Marvel network.
+    </p>
+
+</section>
+
+
+<!-- ========================================= -->
+<!-- CONNECTED COMPONENTS -->
+<!-- ========================================= -->
+
+<section>
+
+    <h2>5. Connected Components and Clustering</h2>
+
+    <p>
+        One of the clearest differences between the two networks
+        appears in their global and local structure.
+    </p>
+
+
+    <div class="important">
+
+        <h3>Connected components</h3>
+
+        <p>
+            The real Marvel network contains
+            <strong>21 connected components</strong>, whereas the
+            BA model contains only <strong>1 connected component</strong>.
+        </p>
+
+        <p>
+            This means that preferential attachment produces a
+            single connected network, while the Marvel network
+            contains several separate groups of characters.
+        </p>
+
+    </div>
+
+
+    <div class="success">
+
+        <h3>Clustering</h3>
+
+        <p>
+            The average clustering coefficient of the Marvel network
+            is approximately <strong>0.301</strong>, compared with
+            only <strong>0.105</strong> for the BA model.
+        </p>
+
+        <p>
+            Therefore, characters in the real Marvel network are much
+            more likely to form tightly connected local groups than
+            would be expected from a simple preferential attachment
+            mechanism.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================= -->
+<!-- HUBS -->
+<!-- ========================================= -->
+
+<section>
+
+    <h2>6. The Largest Hubs</h2>
+
+    <p>
+        We also compared the nodes with the highest degree in both
+        networks.
+    </p>
+
+
+    <h3>Top 10 Real Marvel Hubs</h3>
+
+    <table>
+
+        <tr>
+
+            <th>Rank</th>
+
+            <th>Character</th>
+
+            <th>Degree</th>
+
+        </tr>
+
+        <tr>
+            <td>1</td>
+            <td>Spider-Man</td>
+            <td>106</td>
+        </tr>
+
+        <tr>
+            <td>2</td>
+            <td>Hulk</td>
+            <td>65</td>
+        </tr>
+
+        <tr>
+            <td>3</td>
+            <td>Wolverine (character)</td>
+            <td>63</td>
+        </tr>
+
+        <tr>
+            <td>4</td>
+            <td>Doctor Strange</td>
+            <td>57</td>
+        </tr>
+
+        <tr>
+            <td>5</td>
+            <td>Deadpool</td>
+            <td>41</td>
+        </tr>
+
+        <tr>
+            <td>6</td>
+            <td>She-Hulk</td>
+            <td>37</td>
+        </tr>
+
+        <tr>
+            <td>7</td>
+            <td>Phoenix (Guardians of the Galaxy)</td>
+            <td>32</td>
+        </tr>
+
+        <tr>
+            <td>8</td>
+            <td>Scarlet Witch</td>
+            <td>32</td>
+        </tr>
+
+        <tr>
+            <td>9</td>
+            <td>Black Panther (character)</td>
+            <td>31</td>
+        </tr>
+
+        <tr>
+            <td>10</td>
+            <td>Venom (character)</td>
+            <td>29</td>
+        </tr>
+
+    </table>
+
+
+    <h3>Top 10 BA Model Hubs</h3>
+
+    <table>
+
+        <tr>
+
+            <th>Rank</th>
+
+            <th>BA Node</th>
+
+            <th>Degree</th>
+
+        </tr>
+
+        <tr>
+            <td>1</td>
+            <td>Node 7</td>
+            <td>78</td>
+        </tr>
+
+        <tr>
+            <td>2</td>
+            <td>Node 9</td>
+            <td>78</td>
+        </tr>
+
+        <tr>
+            <td>3</td>
+            <td>Node 8</td>
+            <td>73</td>
+        </tr>
+
+        <tr>
+            <td>4</td>
+            <td>Node 0</td>
+            <td>67</td>
+        </tr>
+
+        <tr>
+            <td>5</td>
+            <td>Node 10</td>
+            <td>46</td>
+        </tr>
+
+        <tr>
+            <td>6</td>
+            <td>Node 19</td>
+            <td>39</td>
+        </tr>
+
+        <tr>
+            <td>7</td>
+            <td>Node 6</td>
+            <td>37</td>
+        </tr>
+
+        <tr>
+            <td>8</td>
+            <td>Node 15</td>
+            <td>36</td>
+        </tr>
+
+        <tr>
+            <td>9</td>
+            <td>Node 26</td>
+            <td>35</td>
+        </tr>
+
+        <tr>
+            <td>10</td>
+            <td>Node 16</td>
+            <td>34</td>
+        </tr>
+
+    </table>
+
+
+    <p>
+        Unlike the real network, the BA model nodes do not represent
+        specific Marvel characters. They are simply numbered nodes.
+        Therefore, the hub identities themselves are not meaningful;
+        the important comparison is their degree.
+    </p>
+
+</section>
+
+
+<!-- ========================================= -->
+<!-- WHAT DOES BA GET RIGHT? -->
+<!-- ========================================= -->
+
+<section>
+
+    <h2>7. What Does Preferential Attachment Get Right?</h2>
+
+    <p>
+        The BA model successfully reproduces several broad features
+        of the Marvel network.
+    </p>
+
+    <ul>
 
         <li>
-            <a href="#introduction">
-                Introduction
-            </a>
+            It produces a network with highly connected hubs.
         </li>
 
         <li>
-            <a href="#analysis">
-                Week 2 Analysis
-            </a>
+            Its average degree is reasonably close to the Marvel
+            network.
         </li>
 
         <li>
-            <a href="#results">
-                Results
-            </a>
+            Its density is also close to the density of the real
+            network.
         </li>
 
         <li>
-            <a href="#reflection">
-                Reflection
-            </a>
+            The degree distribution shows that a small number of
+            nodes can become much more connected than most nodes.
         </li>
 
-    </ol>
+    </ul>
+
+</section>
+
+
+<!-- ========================================= -->
+<!-- WHAT DOES BA GET WRONG? -->
+<!-- ========================================= -->
+
+<section>
+
+    <h2>8. What Does Preferential Attachment Get Wrong?</h2>
+
+    <p>
+        Despite reproducing the presence of hubs, the BA model
+        misses important structural properties of the Marvel network.
+    </p>
+
+    <ul>
+
+        <li>
+            The Marvel network has <strong>21 connected components</strong>,
+            while the BA model has only <strong>1</strong>.
+        </li>
+
+        <li>
+            The Marvel network has much higher clustering:
+            <strong>0.301</strong> compared with <strong>0.105</strong>.
+        </li>
+
+        <li>
+            Spider-Man has degree <strong>106</strong>, which is
+            substantially higher than the largest BA hub with degree
+            <strong>78</strong>.
+        </li>
+
+        <li>
+            The BA model does not reproduce the community and local
+            relationship structure found in the real Marvel network.
+        </li>
+
+    </ul>
+
+</section>
+
+
+<!-- ========================================= -->
+<!-- CONCLUSION -->
+<!-- ========================================= -->
+
+<section>
+
+    <h2>9. Conclusion</h2>
+
+    <div class="highlight">
+
+        <p>
+            <strong>
+                Preferential attachment explains part, but not all,
+                of the Marvel network structure.
+            </strong>
+        </p>
+
+    </div>
+
+    <p>
+        The Barabási–Albert model successfully produces highly
+        connected hubs and has a similar average degree and density
+        to the real Marvel network. This suggests that preferential
+        attachment can help explain why some Marvel characters become
+        much more connected than others.
+    </p>
+
+    <p>
+        However, the model fails to reproduce important structural
+        properties of the real network. The Marvel network contains
+        21 connected components and has substantially higher clustering
+        than the BA network. These differences suggest that mechanisms
+        other than preferential attachment are important for explaining
+        the Marvel character network.
+    </p>
+
+    <p>
+        In particular, community structure and local connections
+        between related characters appear to play an important role.
+        Therefore, preferential attachment is useful for explaining
+        the formation of hubs, but it is not sufficient to reproduce
+        the complete structure of the Marvel network.
+    </p>
+
+</section>
+
+
+<!-- ========================================= -->
+<!-- NAVIGATION AT BOTTOM -->
+<!-- ========================================= -->
+
+<section style="text-align: center;">
+
+    <h2>Continue Exploring</h2>
+
+    <p>
+
+        <a href="week1.html">
+            ← Go back to Week 1
+        </a>
+
+        &nbsp;&nbsp; | &nbsp;&nbsp;
+
+        <a href="index.html">
+            Return to Home
+        </a>
+
+    </p>
+
+</section>
+
 
 </div>
 
 
-<!-- =========================
-     SECTION 1
-========================= -->
-
-<div class="card" id="introduction">
-
-    <h2>
-        1. Introduction
-    </h2>
-
-    <p>
-        Welcome to Week 2 of our Social Graphs project.
-    </p>
-
-    <p>
-        This page contains our Week 2 network analysis,
-        experiments and results.
-    </p>
-
-</div>
-
-
-<!-- =========================
-     SECTION 2
-========================= -->
-
-<div class="card" id="analysis">
-
-    <h2>
-        2. Week 2 Analysis
-    </h2>
-
-    <p>
-        The Week 2 analysis will be presented here.
-    </p>
-
-    <p>
-        We will add the Python analysis, network models,
-        visualizations and experiments from Week 2.
-    </p>
-
-</div>
-
-
-<!-- =========================
-     SECTION 3
-========================= -->
-
-<div class="card" id="results">
-
-    <h2>
-        3. Results
-    </h2>
-
-    <p>
-        The results of the Week 2 experiments will be
-        displayed here.
-    </p>
-
-</div>
-
-
-<!-- =========================
-     SECTION 4
-========================= -->
-
-<div class="card" id="reflection">
-
-    <h2>
-        4. Reflection
-    </h2>
-
-    <p>
-        This section will contain our reflection on the
-        Week 2 analysis and what we learned about networks.
-    </p>
-
-</div>
-
-
-<!-- =========================
-     BOTTOM NAVIGATION
-========================= -->
-
-<div class="week-navigation">
-
-    <a href="../week1.html" class="nav-button">
-        ← Week 1
-    </a>
-
-
-    <a href="../index.html" class="nav-button">
-        Home
-    </a>
-
-</div>
-
-
-</main>
-
-
-<!-- =========================
-     FOOTER
-========================= -->
+<!-- ========================================= -->
+<!-- FOOTER -->
+<!-- ========================================= -->
 
 <footer>
 
-    Social Graphs 2026 · Marvel Network Project
+    <p>
+        Social Graphs and Interactions — Week 2
+    </p>
+
+    <p>
+        Marvel Character Network Analysis
+    </p>
 
 </footer>
 
@@ -482,3 +965,4 @@
 </body>
 
 </html>
+```

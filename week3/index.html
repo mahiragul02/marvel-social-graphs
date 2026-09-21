@@ -81,6 +81,27 @@
         color: white;
         margin-top: 50px;
     }
+
+    .quadrant-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 25px 0;
+    }
+
+    .quadrant-table th,
+    .quadrant-table td {
+        border: 1px solid #ddd;
+        padding: 14px;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .quadrant-table th {
+        background: #f5f5f5;
+        font-weight: bold;
+    }
+
+    
 </style>
 </head>
 <body>
@@ -134,19 +155,160 @@
     <div class="card" id="surprise-writeup">
         <h2>So Who Is It, and What Do They Bridge?</h2>
         <p id="surprise-text" class="status">Waiting on data...</p>
+     
         <p>
-            Ahura appears to function as a connector between two distinct communities in the Marvel character network: 
-            the Inhuman community and the broader superhero community. His connections to Black Bolt, Medusa, and other members of the Inhuman royal family place 
-            him firmly within the Inhuman cluster, while his relationships with characters outside this group create links to a more diverse set of Marvel characters. 
-            This makes Ahura relevant from a network perspective because he can act as a bridge between otherwise densely connected communities. 
-            His position is particularly notable given his relatively small number of direct connections compared with more central characters. 
-            Rather than being important because of high degree centrality, his significance may come from his position between communities, 
-            potentially giving him higher betweenness centrality and making him a useful intermediary between the two clusters. 
-            He is essentially bridging these two clusters together.
-            
+            Ahura appears to function as a connector between two distinct communities
+            in the Marvel character network: the <strong>Inhuman community</strong>
+            and the <strong>broader superhero community</strong>. His connections to
+            Black Bolt, Medusa, and other members of the Inhuman royal family place him
+            within the Inhuman cluster, while relationships outside this group connect
+            him to a wider part of the Marvel network.
+        </p>
+        
+        <p>
+            From a network perspective, Ahura is interesting not because of the number
+            of connections he has, but because of <strong>where those connections are
+            located within the network</strong>. With a degree of only
+            <strong>4</strong>, he has very few direct connections compared with the
+            most popular characters. However, his betweenness centrality places him
+            around the <strong>top 11 characters in the network</strong>. This suggests
+            that his four connections occupy structurally important positions and
+            provide paths between otherwise more separated parts of the graph.
+        </p>
+        
+        <p>
+            Ahura therefore illustrates the difference between being a
+            <strong>hub</strong> and being a <strong>bridge</strong>. A hub is important
+            because it has many connections; a bridge can be important because its
+            relatively small number of connections link different communities. Ahura's
+            position is an example of the latter.
         </p>
     </div>
+        
 
+    <div class="card">
+
+    <h2>Four Types of Network Position</h2>
+
+    <p>
+        The degree–betweenness plot can also be divided into four broad
+        structural categories. This helps distinguish characters who are
+        important because they are highly connected from characters whose
+        importance comes from connecting otherwise separate parts of the
+        network.
+    </p>
+
+    <table class="quadrant-table">
+        <thead>
+            <tr>
+                <th>Degree</th>
+                <th>Betweenness</th>
+                <th>Network role</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <tr class="bridge">
+                <td>Low</td>
+                <td>High</td>
+                <td>
+                    <span class="type">Bridge / Broker</span>
+                    Few direct connections, but those connections link
+                    different parts of the network.
+                    <div class="example">
+                        Example: <strong>Ahura</strong>
+                    </div>
+                </td>
+            </tr>
+
+            <tr class="hub">
+                <td>High</td>
+                <td>High</td>
+                <td>
+                    <span class="type">Global Hub</span>
+                    Highly connected and also positioned on many shortest
+                    paths. These characters connect broadly across the network.
+                    <div class="example">
+                        Example: <strong>Wolverine</strong>
+                    </div>
+                </td>
+            </tr>
+
+            <tr class="local">
+                <td>High</td>
+                <td>Low</td>
+                <td>
+                    <span class="type">Local Hub</span>
+                    Many direct connections, but relatively little role in
+                    connecting otherwise separate communities.
+                    <div class="example">
+                        Example: <strong>War Machine</strong>
+                    </div>
+                </td>
+            </tr>
+
+            <tr class="peripheral">
+                <td>Low</td>
+                <td>Low</td>
+                <td>
+                    <span class="type">Peripheral Character</span>
+                    Few connections and little involvement in the shortest
+                    paths connecting the wider network.
+                    <div class="example">
+                        Example: <strong>Wither</strong>
+                    </div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <p class="axis-note">
+        Low → High: moving from fewer to more connections or greater
+        involvement in connecting the network.
+    </p>
+
+    <p>
+        <strong>Wolverine</strong> sits in the upper-right region of the plot,
+        with both high degree and high betweenness. He therefore represents a
+        <strong>global hub</strong>: his large number of connections is matched
+        by a strong position between different parts of the network. His
+        importance is both local, through the number of characters directly
+        connected to him, and structural, through the paths that pass through him.
+    </p>
+
+    <p>
+        <strong>War Machine</strong> provides an interesting contrast. Although
+        he has a relatively high degree of around <strong>140</strong>, his
+        betweenness is only around <strong>0.0015</strong>. This means that a
+        large number of direct connections does not necessarily translate into
+        a strong brokerage position. In network terms, War Machine behaves more
+        like a <strong>local hub</strong>: he has many direct relationships, but
+        those relationships do not place him on many of the shortest paths
+        connecting other communities.
+    </p>
+
+    <p>
+        At the opposite end, <strong>Wither</strong> illustrates the peripheral
+        position. With relatively low degree and low betweenness, he has few
+        connections and plays little role in connecting the rest of the network.
+        This is useful as a comparison because it shows that low degree alone
+        does not make a character surprising. What makes Ahura unusual is the
+        combination of <strong>low degree and unusually high betweenness</strong>.
+    </p>
+
+    <p>
+        Together, these four positions show why looking at degree alone can be
+        misleading. Two characters can have a similar number of connections but
+        occupy very different structural positions, while a character such as
+        Ahura can have very few connections yet still be important for the
+        connectivity between communities.
+    </p>
+
+</div>
+
+    
 </main>
 
 <footer>

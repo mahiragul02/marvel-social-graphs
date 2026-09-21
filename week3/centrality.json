@@ -1,0 +1,2552 @@
+{
+  "nodes": [
+    {
+      "name": "Abomination (character)",
+      "degree": 102,
+      "betweenness": 0.001355,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Agent X (Marvel Comics)",
+      "degree": 24,
+      "betweenness": 4.6e-05,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Ahura (comics)",
+      "degree": 4,
+      "betweenness": 0.008635,
+      "community": 1,
+      "is_surprise": true
+    },
+    {
+      "name": "Ajak",
+      "degree": 81,
+      "betweenness": 0.000581,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Alaris (comics)",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Anarchist (comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 4,
+      "is_surprise": false
+    },
+    {
+      "name": "Anole (character)",
+      "degree": 52,
+      "betweenness": 4.4e-05,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Ape-X",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 5,
+      "is_surprise": false
+    },
+    {
+      "name": "Arabian Knight (character)",
+      "degree": 11,
+      "betweenness": 2.6e-05,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Anya Corazon",
+      "degree": 83,
+      "betweenness": 0.002922,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Ares (Marvel Comics)",
+      "degree": 162,
+      "betweenness": 0.001812,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Armageddon (Marvel Comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 6,
+      "is_surprise": false
+    },
+    {
+      "name": "Vance Astrovik",
+      "degree": 137,
+      "betweenness": 0.0052,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Auric (comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 7,
+      "is_surprise": false
+    },
+    {
+      "name": "Balder the Brave",
+      "degree": 106,
+      "betweenness": 0.000587,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Rikki Barnes",
+      "degree": 48,
+      "betweenness": 0.00038,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Battlestar (character)",
+      "degree": 28,
+      "betweenness": 1.8e-05,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Baymax",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Yelena Belova",
+      "degree": 71,
+      "betweenness": 0.000358,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Beta Ray Bill",
+      "degree": 158,
+      "betweenness": 0.003892,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Betsy Braddock",
+      "degree": 103,
+      "betweenness": 0.001846,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Bird-Brain (Marvel Comics)",
+      "degree": 8,
+      "betweenness": 1.2e-05,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Black Bolt",
+      "degree": 113,
+      "betweenness": 0.004802,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Black Cat (Marvel Comics)",
+      "degree": 192,
+      "betweenness": 0.005271,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Black Fox (Robert Paine)",
+      "degree": 18,
+      "betweenness": 1.7e-05,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Black Jack Tarr",
+      "degree": 4,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Black Knight (Marvel Comics)",
+      "degree": 82,
+      "betweenness": 0.002067,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Black Marvel",
+      "degree": 105,
+      "betweenness": 0.000615,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Black Panther (character)",
+      "degree": 184,
+      "betweenness": 0.005615,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Black Rider (character)",
+      "degree": 8,
+      "betweenness": 9e-06,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Black Widow (Natasha Romanova)",
+      "degree": 246,
+      "betweenness": 0.016693,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Blackwulf",
+      "degree": 11,
+      "betweenness": 3e-06,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Blade (character)",
+      "degree": 147,
+      "betweenness": 0.005697,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Blazing Skull",
+      "degree": 135,
+      "betweenness": 0.00362,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Bloke (comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 8,
+      "is_surprise": false
+    },
+    {
+      "name": "Elsa Bloodstone",
+      "degree": 86,
+      "betweenness": 0.005097,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Ulysses Bloodstone",
+      "degree": 4,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Blue Bullet",
+      "degree": 2,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Blue Diamond (character)",
+      "degree": 109,
+      "betweenness": 0.00075,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Blue Eagle (character)",
+      "degree": 40,
+      "betweenness": 0.000223,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Blue Marvel",
+      "degree": 82,
+      "betweenness": 0.00021,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Bob Diamond (comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 9,
+      "is_surprise": false
+    },
+    {
+      "name": "Bob, Agent of Hydra",
+      "degree": 30,
+      "betweenness": 0.000326,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Box (comics)",
+      "degree": 25,
+      "betweenness": 0.000179,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Isaiah Bradley",
+      "degree": 42,
+      "betweenness": 0.000179,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Brain Drain (character)",
+      "degree": 63,
+      "betweenness": 0.000876,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Breeze Barton",
+      "degree": 104,
+      "betweenness": 0.00014,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "G. W. Bridge",
+      "degree": 24,
+      "betweenness": 0.000235,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Eddie Brock",
+      "degree": 157,
+      "betweenness": 0.003068,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Bucky (Marvel Comics)",
+      "degree": 150,
+      "betweenness": 0.003068,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Bug (Marvel Comics)",
+      "degree": 36,
+      "betweenness": 0.000156,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "William Burnside (character)",
+      "degree": 35,
+      "betweenness": 0.000244,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "List of Marvel Comics characters: B",
+      "degree": 83,
+      "betweenness": 0.010188,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Cable (character)",
+      "degree": 148,
+      "betweenness": 0.010772,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Luke Cage",
+      "degree": 227,
+      "betweenness": 0.011477,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Cammi (character)",
+      "degree": 3,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Captain (comics)",
+      "degree": 4,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Brian Braddock",
+      "degree": 162,
+      "betweenness": 0.006475,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Captain Marvel (Marvel Comics)",
+      "degree": 183,
+      "betweenness": 0.005073,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Captain Marvel (Khn'nr)",
+      "degree": 44,
+      "betweenness": 0.00013,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Captain Midlands",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 10,
+      "is_surprise": false
+    },
+    {
+      "name": "Captain Ultra",
+      "degree": 37,
+      "betweenness": 2e-06,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Captain Universe",
+      "degree": 26,
+      "betweenness": 0.001276,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Cardinal (comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 11,
+      "is_surprise": false
+    },
+    {
+      "name": "Caretaker (comics)",
+      "degree": 8,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Peggy Carter",
+      "degree": 107,
+      "betweenness": 0.001968,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Ch'od",
+      "degree": 75,
+      "betweenness": 0.000741,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Challenger (character)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 12,
+      "is_surprise": false
+    },
+    {
+      "name": "Charcoal (comics)",
+      "degree": 27,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Citizen V",
+      "degree": 143,
+      "betweenness": 0.002783,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Cloak and Dagger (characters)",
+      "degree": 158,
+      "betweenness": 0.009275,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Izzy Cohen",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Coldblood",
+      "degree": 2,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "White Tiger (Kasper Cole)",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Rusty Collins",
+      "degree": 10,
+      "betweenness": 4.9e-05,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Tom Corsi",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 13,
+      "is_surprise": false
+    },
+    {
+      "name": "Crippler (character)",
+      "degree": 4,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Crusaders (Marvel Comics)",
+      "degree": 102,
+      "betweenness": 0.002118,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Cyclops (Marvel Comics)",
+      "degree": 158,
+      "betweenness": 0.006441,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Dark Claw",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 14,
+      "is_surprise": false
+    },
+    {
+      "name": "Darkdevil",
+      "degree": 61,
+      "betweenness": 0.000108,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Darkhawk",
+      "degree": 99,
+      "betweenness": 0.007925,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Dead Girl (comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 15,
+      "is_surprise": false
+    },
+    {
+      "name": "Deadpool",
+      "degree": 91,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Emrys Killebrew",
+      "degree": 13,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Deathlok",
+      "degree": 39,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Debrii",
+      "degree": 5,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Detroit Steel",
+      "degree": 7,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Devil Dinosaur",
+      "degree": 27,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Digitek (character)",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Doctor Druid",
+      "degree": 59,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Doctor Nemesis",
+      "degree": 42,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Doctor Strangefate",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 16,
+      "is_surprise": false
+    },
+    {
+      "name": "Dogpool",
+      "degree": 6,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Doom 2099",
+      "degree": 8,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Dragon Lord (character)",
+      "degree": 2,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Dusk (comics)",
+      "degree": 2,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Ethan Edwards",
+      "degree": 23,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Fabio Medina",
+      "degree": 19,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Empath (character)",
+      "degree": 25,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Enigma (Marvel Comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 17,
+      "is_surprise": false
+    },
+    {
+      "name": "Fandral",
+      "degree": 51,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Father Time (Marvel Comics)",
+      "degree": 12,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Fin Fang Foom",
+      "degree": 46,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Firebird (Marvel Comics)",
+      "degree": 37,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Firelord (character)",
+      "degree": 20,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Flatman (character)",
+      "degree": 7,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Flex (character)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 18,
+      "is_surprise": false
+    },
+    {
+      "name": "Force (comics)",
+      "degree": 11,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Bill Foster (character)",
+      "degree": 29,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Frankenstein's Monster (Marvel Comics)",
+      "degree": 25,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Free Spirit (comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 19,
+      "is_surprise": false
+    },
+    {
+      "name": "Freedom's Five",
+      "degree": 2,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Frog-Man",
+      "degree": 19,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Emma Frost",
+      "degree": 42,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Futurist (character)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 20,
+      "is_surprise": false
+    },
+    {
+      "name": "G-Type",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 21,
+      "is_surprise": false
+    },
+    {
+      "name": "Ganymede (comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 22,
+      "is_surprise": false
+    },
+    {
+      "name": "Gargoyle (comics)",
+      "degree": 47,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Delroy Garrett",
+      "degree": 35,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Gauntlet (Joseph Green)",
+      "degree": 5,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Genis-Vell",
+      "degree": 14,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Ghost Rider",
+      "degree": 25,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Ghost Rider (Danny Ketch)",
+      "degree": 41,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Ghost Rider (Johnny Blaze)",
+      "degree": 63,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Gladiator (Kallark)",
+      "degree": 34,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Golem (Marvel Comics)",
+      "degree": 11,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Gorgon (Inhuman)",
+      "degree": 53,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Grace (Marvel Comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 23,
+      "is_surprise": false
+    },
+    {
+      "name": "Phil Grayfield",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 24,
+      "is_surprise": false
+    },
+    {
+      "name": "Gremlin (comics)",
+      "degree": 8,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Jean Grey",
+      "degree": 72,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Jean Grey (X-Men film series)",
+      "degree": 19,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Guardian (Marvel Comics)",
+      "degree": 16,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Guardsman (character)",
+      "degree": 39,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Gwenpool",
+      "degree": 37,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Hauptmann Deutschland",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Hawkeye (comics)",
+      "degree": 3,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Haywire (character)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 25,
+      "is_surprise": false
+    },
+    {
+      "name": "Helix (Marvel Comics)",
+      "degree": 27,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Hellfire (J. T. Slade)",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Hellion (character)",
+      "degree": 60,
+      "betweenness": 0.001467,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Hercules (Marvel Comics)",
+      "degree": 170,
+      "betweenness": 0.003419,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Hit-Monkey",
+      "degree": 30,
+      "betweenness": 0.000183,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Hornet (comics)",
+      "degree": 17,
+      "betweenness": 0.001125,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Hrimhari",
+      "degree": 20,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Hulk",
+      "degree": 277,
+      "betweenness": 0.027836,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Hulk 2099",
+      "degree": 27,
+      "betweenness": 0.003325,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Devil Hulk",
+      "degree": 35,
+      "betweenness": 0.000196,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Hulkling",
+      "degree": 60,
+      "betweenness": 0.001006,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Human Fly (character)",
+      "degree": 68,
+      "betweenness": 0.000958,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Human Torch",
+      "degree": 211,
+      "betweenness": 0.009321,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Human Torch (android)",
+      "degree": 75,
+      "betweenness": 0.001116,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Amber Hunt (comics)",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Hybrid (Scott Washington)",
+      "degree": 97,
+      "betweenness": 0.003249,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Hyperion (character)",
+      "degree": 177,
+      "betweenness": 0.008067,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Ikaris",
+      "degree": 82,
+      "betweenness": 0.000586,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Illuminator (Marvel Comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 26,
+      "is_surprise": false
+    },
+    {
+      "name": "Illusion (comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 27,
+      "is_surprise": false
+    },
+    {
+      "name": "Inferno (Dante Pertuz)",
+      "degree": 13,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Inhumans",
+      "degree": 201,
+      "betweenness": 0.018396,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Crane Mother",
+      "degree": 14,
+      "betweenness": 8e-06,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Iron Fist (character)",
+      "degree": 216,
+      "betweenness": 0.017029,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Iron Lad",
+      "degree": 49,
+      "betweenness": 0.001069,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Iron Man (Ultimate Marvel character)",
+      "degree": 61,
+      "betweenness": 0.001714,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Iron Man 2020",
+      "degree": 23,
+      "betweenness": 2.5e-05,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Jack Frost (Marvel Comics)",
+      "degree": 103,
+      "betweenness": 8.5e-05,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "John Jameson (character)",
+      "degree": 171,
+      "betweenness": 0.006687,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Jericho Drumm",
+      "degree": 144,
+      "betweenness": 0.000617,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Jessica Jones",
+      "degree": 108,
+      "betweenness": 0.002318,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Jubilee (character)",
+      "degree": 119,
+      "betweenness": 0.004837,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Junior Juniper",
+      "degree": 83,
+      "betweenness": 0.00156,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Justice (New Universe)",
+      "degree": 6,
+      "betweenness": 0.000133,
+      "community": 3,
+      "is_surprise": false
+    },
+    {
+      "name": "Juston Seyfert",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 28,
+      "is_surprise": false
+    },
+    {
+      "name": "Garrison Kane",
+      "degree": 34,
+      "betweenness": 0.000625,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Solomon Kane (comics)",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Karnak (character)",
+      "degree": 107,
+      "betweenness": 0.001015,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Kid Colt",
+      "degree": 20,
+      "betweenness": 0.000254,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Killpower",
+      "degree": 3,
+      "betweenness": 0.001102,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Killraven",
+      "degree": 43,
+      "betweenness": 6.1e-05,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Kismet (Marvel Comics)",
+      "degree": 28,
+      "betweenness": 0.000123,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Misty Knight",
+      "degree": 59,
+      "betweenness": 0.000788,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Korvus",
+      "degree": 70,
+      "betweenness": 0.000523,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Krugarr",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 29,
+      "is_surprise": false
+    },
+    {
+      "name": "Leech (character)",
+      "degree": 46,
+      "betweenness": 0.000294,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Lei Kung (character)",
+      "degree": 23,
+      "betweenness": 0.0001,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Janice Lincoln",
+      "degree": 74,
+      "betweenness": 0.000447,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Living Lightning",
+      "degree": 16,
+      "betweenness": 0.00021,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Raza Longknife",
+      "degree": 75,
+      "betweenness": 0.000667,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Jeffrey Mace",
+      "degree": 124,
+      "betweenness": 0.001662,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Machine Man",
+      "degree": 75,
+      "betweenness": 0.001329,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Magician (Marvel Comics)",
+      "degree": 45,
+      "betweenness": 0.000231,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Mahr Vehl",
+      "degree": 20,
+      "betweenness": 0.000128,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Makkari (character)",
+      "degree": 100,
+      "betweenness": 0.00192,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Man-Thing",
+      "degree": 164,
+      "betweenness": 0.004636,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Mania (character)",
+      "degree": 67,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Mark Hazzard: Merc",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 30,
+      "is_surprise": false
+    },
+    {
+      "name": "Marvel Boy (Robert Grayson)",
+      "degree": 24,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Mayhem (comics)",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Miracleman (character)",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Miss America (Marvel Comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 31,
+      "is_surprise": false
+    },
+    {
+      "name": "Mockingbird (Marvel Comics)",
+      "degree": 45,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Jack Monroe (character)",
+      "degree": 32,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Moon Knight",
+      "degree": 63,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Moondragon",
+      "degree": 50,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Moonglow (comics)",
+      "degree": 2,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Morbius",
+      "degree": 56,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Motormouth (comics)",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Ms. Marvel",
+      "degree": 10,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Nightmask",
+      "degree": 2,
+      "betweenness": 0.0,
+      "community": 3,
+      "is_surprise": false
+    },
+    {
+      "name": "Nightwatch (character)",
+      "degree": 19,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Noh-Varr",
+      "degree": 48,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Nomad (Marvel Comics)",
+      "degree": 15,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Northstar (character)",
+      "degree": 39,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Nova (Richard Rider)",
+      "degree": 66,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Alice Nugent",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 32,
+      "is_surprise": false
+    },
+    {
+      "name": "Ogre (Marvel Comics)",
+      "degree": 17,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Outlaw (Marvel Comics)",
+      "degree": 9,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Oya (comics)",
+      "degree": 21,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Paladin (comics)",
+      "degree": 27,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Paydirt (Marvel Comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 33,
+      "is_surprise": false
+    },
+    {
+      "name": "Phoenix Force",
+      "degree": 26,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Phoenix (Guardians of the Galaxy)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 34,
+      "is_surprise": false
+    },
+    {
+      "name": "Phyla-Vell",
+      "degree": 14,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Power Man (Victor Alvarez)",
+      "degree": 23,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Powerhouse (Marvel Comics)",
+      "degree": 9,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "List of Marvel Comics characters: P",
+      "degree": 2,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Prodigy (Ritchie Gilmore)",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Puck (Marvel Comics)",
+      "degree": 12,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Pulse (Augustus)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 35,
+      "is_surprise": false
+    },
+    {
+      "name": "Hank Pym",
+      "degree": 78,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Quasar (character)",
+      "degree": 52,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Quicksilver (Marvel Comics)",
+      "degree": 69,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Radioactive Man (comics)",
+      "degree": 58,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Ravage 2099",
+      "degree": 24,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Red Guardian",
+      "degree": 22,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Red Hulk",
+      "degree": 39,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Red Raven (Dania)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 36,
+      "is_surprise": false
+    },
+    {
+      "name": "Red Raven (Marvel Comics)",
+      "degree": 43,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Red Wolf (comics)",
+      "degree": 14,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Redneck (comics)",
+      "degree": 6,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Franklin Richards (character)",
+      "degree": 35,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Ricochet (comics)",
+      "degree": 2,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Rintrah (comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 37,
+      "is_surprise": false
+    },
+    {
+      "name": "Dallas Riordan",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Robbie Baldwin",
+      "degree": 18,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Rocket Raccoon",
+      "degree": 46,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Rockman (character)",
+      "degree": 12,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Rockslide (character)",
+      "degree": 20,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Yo-Yo Rodriguez",
+      "degree": 2,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Rom the Space Knight",
+      "degree": 6,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Ronin (Marvel Comics)",
+      "degree": 36,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Ruby Summers",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 38,
+      "is_surprise": false
+    },
+    {
+      "name": "Sabra (character)",
+      "degree": 32,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Saint Elmo (comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 39,
+      "is_surprise": false
+    },
+    {
+      "name": "Saint Sinner (comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 40,
+      "is_surprise": false
+    },
+    {
+      "name": "San (comics)",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Satana (Marvel Comics)",
+      "degree": 19,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Happy Sam Sawyer",
+      "degree": 30,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Scarlet Scarab",
+      "degree": 12,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Scarlet Spider",
+      "degree": 20,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Scarlet Witch",
+      "degree": 75,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Scorpio (Marvel Comics)",
+      "degree": 2,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Sean and Chris",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 41,
+      "is_surprise": false
+    },
+    {
+      "name": "Sentry (Robert Reynolds)",
+      "degree": 43,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Shamrock (comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 42,
+      "is_surprise": false
+    },
+    {
+      "name": "Shang-Chi",
+      "degree": 47,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Shatterstar",
+      "degree": 15,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "She-Hulk",
+      "degree": 74,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "She-Hulk (Lyra)",
+      "degree": 25,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "She-Venom (Patricia Robertson)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 43,
+      "is_surprise": false
+    },
+    {
+      "name": "Shuri (character)",
+      "degree": 36,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Siege (character)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 44,
+      "is_surprise": false
+    },
+    {
+      "name": "Silhouette (comics)",
+      "degree": 10,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Silk (character)",
+      "degree": 25,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Skull the Slayer",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Skyhawk (comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 45,
+      "is_surprise": false
+    },
+    {
+      "name": "Solarman",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 46,
+      "is_surprise": false
+    },
+    {
+      "name": "Solo (Marvel Comics)",
+      "degree": 21,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Speed (character)",
+      "degree": 2,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Spellbinder (Marvel Comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 47,
+      "is_surprise": false
+    },
+    {
+      "name": "Spider-Bitch (Ashley Barton)",
+      "degree": 21,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Spider-Girl",
+      "degree": 21,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Mayday Parker",
+      "degree": 25,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "List of incarnations of Spider-Man",
+      "degree": 45,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Spider-Man",
+      "degree": 106,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Spider-Man (Marvel Mangaverse)",
+      "degree": 19,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Spider-Man (Gerry Drew)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 48,
+      "is_surprise": false
+    },
+    {
+      "name": "Spider-Man 2211",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 49,
+      "is_surprise": false
+    },
+    {
+      "name": "Spider-Man Noir",
+      "degree": 20,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Spider-UK",
+      "degree": 22,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Spider-Woman",
+      "degree": 48,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Spider-Woman (Gwen Stacy)",
+      "degree": 21,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Spider-Woman (Jessica Drew)",
+      "degree": 62,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Spike (Marvel Comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 50,
+      "is_surprise": false
+    },
+    {
+      "name": "Spinner (Marvel Comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 51,
+      "is_surprise": false
+    },
+    {
+      "name": "Spitfire (character)",
+      "degree": 18,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Spitfire (New Universe)",
+      "degree": 3,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Star Brand",
+      "degree": 3,
+      "betweenness": 0.0,
+      "community": 3,
+      "is_surprise": false
+    },
+    {
+      "name": "Star-Lord",
+      "degree": 47,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Starhawk (character)",
+      "degree": 16,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Starr the Slayer",
+      "degree": 11,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Steel Spider",
+      "degree": 19,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Chase Stein",
+      "degree": 4,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Stingray (Marvel Comics)",
+      "degree": 51,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Storm (Marvel Comics)",
+      "degree": 61,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Doctor Strange",
+      "degree": 86,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Straw Man (comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 52,
+      "is_surprise": false
+    },
+    {
+      "name": "Rachel Summers",
+      "degree": 26,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Lin Sun",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 53,
+      "is_surprise": false
+    },
+    {
+      "name": "Super Rabbit",
+      "degree": 12,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Super-Soldier",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 54,
+      "is_surprise": false
+    },
+    {
+      "name": "Supernova (Marvel Comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 55,
+      "is_surprise": false
+    },
+    {
+      "name": "Surge (Marvel Comics)",
+      "degree": 21,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Svarog (comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 56,
+      "is_surprise": false
+    },
+    {
+      "name": "Synapse (character)",
+      "degree": 15,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Tarantula (Marvel Comics)",
+      "degree": 23,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Telemetry (comics)",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 57,
+      "is_surprise": false
+    },
+    {
+      "name": "Thena",
+      "degree": 47,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Thin Man (character)",
+      "degree": 17,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Thor Girl",
+      "degree": 8,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Throg",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 58,
+      "is_surprise": false
+    },
+    {
+      "name": "Thunderbolt (Marvel Comics)",
+      "degree": 10,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Thunderclap (comics)",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Thunderstrike (character)",
+      "degree": 37,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Timeslip (comics)",
+      "degree": 5,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Tonaja",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Toro (character)",
+      "degree": 24,
+      "betweenness": 0.0,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "List of Marvel Comics characters: T",
+      "degree": 2,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Turbo (comics)",
+      "degree": 9,
+      "betweenness": 5.9e-05,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Two-Gun Kid",
+      "degree": 133,
+      "betweenness": 0.004808,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Typeface (character)",
+      "degree": 3,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "U.S. Agent",
+      "degree": 173,
+      "betweenness": 0.004812,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Ultra Girl",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "The Union (Marvel)",
+      "degree": 2,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Union Jack (Marvel Comics)",
+      "degree": 32,
+      "betweenness": 0.001029,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Union Jack (Joseph Chapman)",
+      "degree": 45,
+      "betweenness": 0.002505,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Phil Urich",
+      "degree": 71,
+      "betweenness": 0.00244,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Ursa Major (character)",
+      "degree": 18,
+      "betweenness": 2.1e-05,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Vagabond (comics)",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Venom (character)",
+      "degree": 130,
+      "betweenness": 0.003963,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Kristoff Vernard",
+      "degree": 52,
+      "betweenness": 0.001259,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "List of Marvel Comics characters: V",
+      "degree": 29,
+      "betweenness": 0.002272,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Vindicator (comics)",
+      "degree": 47,
+      "betweenness": 0.001101,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Vulcan (Marvel Comics)",
+      "degree": 83,
+      "betweenness": 0.001687,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Patsy Walker",
+      "degree": 133,
+      "betweenness": 0.00063,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "War Machine",
+      "degree": 144,
+      "betweenness": 0.001536,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Adam Warlock",
+      "degree": 124,
+      "betweenness": 0.002334,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Werewolf by Night",
+      "degree": 60,
+      "betweenness": 0.000193,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "White Tiger (comics)",
+      "degree": 25,
+      "betweenness": 0.002299,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "White Tiger (Heroes for Hire)",
+      "degree": 4,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Kofi Whitemane",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 59,
+      "is_surprise": false
+    },
+    {
+      "name": "Whizzer (Robert Frank)",
+      "degree": 137,
+      "betweenness": 0.001815,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Wild Child (character)",
+      "degree": 63,
+      "betweenness": 0.001498,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Alex Wilder",
+      "degree": 3,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Will o' the Wisp (comics)",
+      "degree": 67,
+      "betweenness": 0.0,
+      "community": 2,
+      "is_surprise": false
+    },
+    {
+      "name": "Wind Warrior",
+      "degree": 0,
+      "betweenness": 0.0,
+      "community": 60,
+      "is_surprise": false
+    },
+    {
+      "name": "Wither (comics)",
+      "degree": 1,
+      "betweenness": 0.0,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "The Witness (character)",
+      "degree": 154,
+      "betweenness": 0.001883,
+      "community": 1,
+      "is_surprise": false
+    },
+    {
+      "name": "Wolverine (character)",
+      "degree": 290,
+      "betweenness": 0.031979,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Wolverine (Ultimate Marvel character)",
+      "degree": 69,
+      "betweenness": 0.000924,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Xorn",
+      "degree": 56,
+      "betweenness": 0.000173,
+      "community": 0,
+      "is_surprise": false
+    },
+    {
+      "name": "Zombie (comics)",
+      "degree": 73,
+      "betweenness": 0.000283,
+      "community": 1,
+      "is_surprise": false
+    }
+  ],
+  "surprise_character": "Ahura (comics)",
+  "surprise_neighbor_communities": {
+    "0": 1,
+    "1": 3
+  },
+  "n_nodes": 363,
+  "n_edges": 7669
+}

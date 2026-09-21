@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 3 — Surprising Centrality</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: #f5f5f5;
+        color: #222;
+        line-height: 1.6;
+    }
+    .navbar {
+        background: #111;
+        color: white;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .nav-title { font-size: 20px; font-weight: bold; }
+    .nav-links { display: flex; gap: 8px; }
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 9px 14px;
+        border-radius: 6px;
+    }
+    .nav-links a:hover, .nav-links a.active { background: #c62828; }
+    header {
+        background: #111;
+        color: white;
+        padding: 50px 20px;
+        text-align: center;
+    }
+    header h1 { font-size: 36px; margin-bottom: 10px; }
+    header p { font-size: 18px; }
+    main {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+    .card {
+        background: white;
+        padding: 30px;
+        margin-bottom: 25px;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    .card h2 { margin-top: 0; }
+    #chart-container {
+        width: 100%;
+        overflow-x: auto;
+    }
+    .tooltip {
+        position: absolute;
+        background: #111;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 13px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.1s;
+    }
+    .dot { cursor: pointer; }
+    .dot.surprise { fill: #c62828 !important; stroke: #111; stroke-width: 2px; }
+    .status { color: #888; font-style: italic; }
+    footer {
+        text-align: center;
+        padding: 30px;
+        background: #111;
+        color: white;
+        margin-top: 50px;
+    }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-title">Social Graphs 2026</div>
+    <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../week1.html">Week 1</a>
+        <a href="../week2/index.html">Week 2</a>
+        <a href="index.html" class="active">Week 3</a>
+    </div>
+</nav>
+
+<header>
+    <h1>Week 3 — The Surprising Bridge</h1>
+    <p>Who has more influence than their popularity suggests?</p>
+</header>
+
+<main>
+
+    <div class="card">
+        <h2>The Question</h2>
+        <p>
+            A character's <strong>degree</strong> (how many others link to/from them)
+            measures popularity. Their <strong>betweenness centrality</strong>
+            measures how often they sit on the shortest path between other
+            characters — i.e. how much of a "bridge" they are.
+        </p>
+        <p>
+            Highly popular characters are <em>expected</em> to have high betweenness too —
+            they're hubs. The surprising cases are characters with modest degree but
+            disproportionately high betweenness: minor characters who quietly connect
+            two otherwise-separate corners of the Marvel universe.
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>Degree vs. Betweenness</h2>
+        <p class="status" id="status">Loading data...</p>
+        <div id="chart-container"></div>
+        <p>
+            Each dot is a character. Most follow the diagonal trend — more
+            connections, more betweenness. The character in
+            <strong style="color:#c62828;">red</strong> is the outlier: far more
+            of a bridge than their popularity alone would predict. Hover any dot
+            to see who it is.
+        </p>
+    </div>
+
+    <div class="card" id="surprise-writeup">
+        <h2>So Who Is It, and What Do They Bridge?</h2>
+        <p id="surprise-text" class="status">Waiting on data...</p>
+        <p>
+            <em>
+                [Edit this paragraph after running the analysis — describe which
+                two clusters/communities this character connects, and why that's
+                an interesting or unexpected role for them to play.]
+            </em>
+        </p>
+    </div>
+
+</main>
+
+<footer>
+    Social Graphs 2026 · Marvel Network Project
+</footer>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const width = Math.min(800, window.innerWidth - 80);
+const height = 500;
+const margin = { top: 20, right: 30, bottom: 50, left: 60 };
+
+const svg = d3.select("#chart-container")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+const tooltip = d3.select("#tooltip");
+
+d3.json("centrality.json").then(data => {
+    document.getElementById("status").textContent =
+        `${data.n_nodes} characters, ${data.n_edges} connections.`;
+
+    const nodes = data.nodes;
+
+    const x = d3.scaleLinear()
+        .domain([0, d3.max(nodes, d => d.degree) * 1.05])
+        .range([margin.left, width - margin.right]);
+
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(nodes, d => d.betweenness) * 1.05])
+        .range([height - margin.bottom, margin.top]);
+
+    svg.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(x));
+
+    svg.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y).tickFormat(d3.format(".3f")));
+
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", height - 10)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "13px")
+        .text("Degree (popularity)");
+
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", 15)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "13px")
+        .text("Betweenness centrality (bridging)");
+
+    svg.selectAll(".dot")
+        .data(nodes)
+        .enter()
+        .append("circle")
+        .attr("class", d => "dot" + (d.is_surprise ? " surprise" : ""))
+        .attr("cx", d => x(d.degree))
+        .attr("cy", d => y(d.betweenness))
+        .attr("r", d => d.is_surprise ? 8 : 4)
+        .attr("fill", d => d.is_surprise ? "#c62828" : "#2563eb")
+        .attr("opacity", 0.7)
+        .on("mouseover", (event, d) => {
+            tooltip.style("opacity", 1)
+                .html(`<strong>${d.name}</strong><br>Degree: ${d.degree}<br>Betweenness: ${d.betweenness.toFixed(4)}`);
+        })
+        .on("mousemove", (event) => {
+            tooltip.style("left", (event.pageX + 12) + "px")
+                   .style("top", (event.pageY - 20) + "px");
+        })
+        .on("mouseout", () => tooltip.style("opacity", 0));
+
+    const surprise = nodes.find(d => d.is_surprise);
+    if (surprise) {
+        const communities = data.surprise_neighbor_communities || {};
+        const commList = Object.entries(communities)
+            .map(([c, n]) => `community ${c} (${n} neighbors)`)
+            .join(", ");
+        document.getElementById("surprise-text").textContent =
+            `${surprise.name} has degree ${surprise.degree} but ranks far higher ` +
+            `on betweenness than that popularity would suggest. Their neighbors span: ${commList}.`;
+    }
+}).catch(err => {
+    document.getElementById("status").textContent =
+        "Could not load centrality.json — make sure it's in the same folder as this file.";
+    console.error(err);
+});
+</script>
+
+</body>
+</html>

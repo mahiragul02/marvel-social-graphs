@@ -1,587 +1,228 @@
 // ============================================================
 // MARVEL TEXT DETECTIVE — WEEK 5 FIGURE
-// Textual Similarity vs Network Connection
+// Robust version
 // ============================================================
 
-const FIGURE_WIDTH = 850;
-const FIGURE_HEIGHT = 500;
-
-
-// ------------------------------------------------------------
-// Load a TSV file
-// ------------------------------------------------------------
-
-async function loadTSV(path) {
-
-    const response = await fetch(path);
-
-    if (!response.ok) {
-        throw new Error(
-            `Could not load ${path} (${response.status})`
-        );
-    }
-
-    const text = await response.text();
-
-    return text
-        .trim()
-        .split(/\r?\n/)
-        .map(line => line.split("\t"));
-}
-
-
-// ------------------------------------------------------------
-// Convert TSV rows to objects
-// ------------------------------------------------------------
-
-function parseTSV(rows) {
-
-    if (!rows.length) {
-        return [];
-    }
-
-    const header = rows[0];
-
-    return rows.slice(1).map(row => {
-
-        const obj = {};
-
-        header.forEach((key, index) => {
-            obj[key.trim()] =
-                row[index] ? row[index].trim() : "";
-        });
-
-        return obj;
-    });
-}
-
-
-// ------------------------------------------------------------
-// Find column automatically
-// ------------------------------------------------------------
-
-function findColumn(object, possibleNames) {
-
-    const keys = Object.keys(object);
-
-    for (const key of keys) {
-
-        const lower = key.toLowerCase();
-
-        for (const name of possibleNames) {
-
-            if (lower === name.toLowerCase()) {
-                return key;
-            }
-
-        }
-
-    }
-
-    return null;
-}
-
-
-// ------------------------------------------------------------
-// Clean character/page names
-// ------------------------------------------------------------
-
-function normalizeName(name) {
-
-    return name
-        .toLowerCase()
-        .replace(/\.html?$/i, "")
-        .replace(/\.txt$/i, "")
-        .replace(/\.wiki$/i, "")
-        .replace(/_/g, " ")
-        .replace(/-/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-}
-
-
-// ------------------------------------------------------------
-// Stopwords
-// ------------------------------------------------------------
-
-const STOPWORDS = new Set([
-
-    "the",
-    "and",
-    "of",
-    "to",
-    "in",
-    "a",
-    "is",
-    "for",
-    "on",
-    "with",
-    "as",
-    "by",
-    "an",
-    "at",
-    "from",
-    "that",
-    "this",
-    "was",
-    "were",
-    "it",
-    "his",
-    "her",
-    "he",
-    "she",
-    "they",
-    "their",
-    "be",
-    "has",
-    "had",
-    "have",
-    "or",
-    "which",
-    "who",
-    "also",
-    "but",
-    "not",
-    "into",
-    "its",
-    "are",
-    "been",
-    "being",
-    "can",
-    "may",
-    "one",
-    "two",
-    "three",
-    "than",
-    "then",
-    "these",
-    "those",
-    "more",
-    "most",
-    "other",
-    "some",
-    "such",
-    "their",
-    "there",
-    "about",
-    "after",
-    "before",
-    "during",
-    "over",
-    "under",
-    "between",
-    "through",
-    "while",
-    "where",
-    "when",
-    "what",
-    "how",
-    "all",
-    "any",
-    "both",
-    "each",
-    "only",
-    "very",
-    "first",
-    "second",
-    "last",
-    "new",
-    "used",
-    "use",
-    "often",
-    "known"
-
-]);
-
-
-// ------------------------------------------------------------
-// Convert text to Bag-of-Words vector
-// ------------------------------------------------------------
-
-function textToVector(text) {
-
-    const cleanText = text
-        .toLowerCase()
-        .replace(/<script[\s\S]*?<\/script>/gi, " ")
-        .replace(/<style[\s\S]*?<\/style>/gi, " ")
-        .replace(/<[^>]*>/g, " ")
-        .replace(/[^a-z0-9\s]/g, " ");
-
-    const words = cleanText
-        .split(/\s+/)
-        .filter(word =>
-            word.length >= 3 &&
-            !STOPWORDS.has(word)
-        );
-
-    const vector = {};
-
-    for (const word of words) {
-
-        vector[word] =
-            (vector[word] || 0) + 1;
-
-    }
-
-    return vector;
-}
-
-
-// ------------------------------------------------------------
-// Cosine similarity
-// ------------------------------------------------------------
-
-function cosineSimilarity(a, b) {
-
-    let dot = 0;
-    let normA = 0;
-    let normB = 0;
-
-    const smaller =
-        Object.keys(a).length <
-        Object.keys(b).length
-            ? a
-            : b;
-
-    const larger =
-        smaller === a
-            ? b
-            : a;
-
-    for (const word in smaller) {
-
-        if (larger[word]) {
-
-            dot +=
-                smaller[word] *
-                larger[word];
-
-        }
-
-    }
-
-    for (const word in a) {
-        normA += a[word] * a[word];
-    }
-
-    for (const word in b) {
-        normB += b[word] * b[word];
-    }
-
-    if (normA === 0 || normB === 0) {
-        return 0;
-    }
-
-    return dot /
-        (Math.sqrt(normA) * Math.sqrt(normB));
-}
-
-
-// ------------------------------------------------------------
-// Deterministic random number generator
-// ------------------------------------------------------------
-
-function seededRandom(seed) {
-
-    let value = seed;
-
-    return function () {
-
-        value =
-            (value * 9301 + 49297) % 233280;
-
-        return value / 233280;
-
-    };
-}
-
-
-// ------------------------------------------------------------
-// Shuffle
-// ------------------------------------------------------------
-
-function shuffle(array, seed = 42) {
-
-    const result = [...array];
-
-    const random = seededRandom(seed);
-
-    for (
-        let i = result.length - 1;
-        i > 0;
-        i--
-    ) {
-
-        const j =
-            Math.floor(random() * (i + 1));
-
-        [
-            result[i],
-            result[j]
-        ] =
-        [
-            result[j],
-            result[i]
-        ];
-
-    }
-
-    return result;
-}
-
-
-// ============================================================
-// MAIN
-// ============================================================
-
-async function buildFigure() {
-
-    const status =
-        document.getElementById(
-            "figure-status"
-        );
+document.addEventListener("DOMContentLoaded", async function () {
+
+    const status = document.getElementById("figure-status");
+    const canvas = document.getElementById("similarity-figure");
+    const list = document.getElementById("strongest-matches");
 
     try {
 
-        status.textContent =
-            "Loading Marvel network…";
+        status.textContent = "Loading Marvel data...";
+
+        // ----------------------------------------------------
+        // LOAD TSV
+        // ----------------------------------------------------
+
+        async function getText(path) {
+
+            const response = await fetch(path);
+
+            if (!response.ok) {
+                throw new Error(
+                    "Could not load " + path +
+                    " (HTTP " + response.status + ")"
+                );
+            }
+
+            return await response.text();
+        }
+
+
+        const nodesText =
+            await getText("../week1_nodes.tsv");
+
+        const edgesText =
+            await getText("../week1_edges.tsv");
+
+
+        console.log("Nodes file loaded");
+        console.log("Edges file loaded");
 
 
         // ----------------------------------------------------
-        // Load network
+        // PARSE TSV
         // ----------------------------------------------------
+
+        function parseTSV(text) {
+
+            const lines =
+                text.trim().split(/\r?\n/);
+
+            if (lines.length === 0) {
+                return [];
+            }
+
+            return lines.map(line =>
+                line.split("\t")
+            );
+
+        }
+
 
         const nodeRows =
-            await loadTSV(
-                "../week1_nodes.tsv"
-            );
+            parseTSV(nodesText);
 
         const edgeRows =
-            await loadTSV(
-                "../week1_edges.tsv"
-            );
-
-        const nodes =
-            parseTSV(nodeRows);
-
-        const edges =
-            parseTSV(edgeRows);
+            parseTSV(edgesText);
 
 
-        console.log(
-            "Marvel nodes:",
-            nodes.length
-        );
-
-        console.log(
-            "Marvel edges:",
-            edges.length
-        );
-
-
-        if (!nodes.length) {
-            throw new Error(
-                "No nodes were found."
-            );
-        }
+        console.log("First node row:", nodeRows[0]);
+        console.log("First edge row:", edgeRows[0]);
 
 
         // ----------------------------------------------------
-        // Detect columns
+        // DETERMINE WHETHER THERE IS A HEADER
         // ----------------------------------------------------
 
-        const nodeNameColumn =
-            findColumn(
-                nodes[0],
-                [
-                    "name",
-                    "label",
-                    "title",
-                    "id",
-                    "node"
-                ]
-            );
+        function isHeader(row) {
 
+            if (!row) return false;
 
-        const sourceColumn =
-            findColumn(
-                edges[0],
-                [
-                    "source",
-                    "from",
-                    "source_id"
-                ]
-            );
+            const text =
+                row.join(" ").toLowerCase();
 
-
-        const targetColumn =
-            findColumn(
-                edges[0],
-                [
-                    "target",
-                    "to",
-                    "target_id"
-                ]
-            );
-
-
-        if (!nodeNameColumn) {
-
-            throw new Error(
-                "Could not find the character name column."
+            return (
+                text.includes("source") ||
+                text.includes("target") ||
+                text.includes("name") ||
+                text.includes("label") ||
+                text.includes("id")
             );
 
         }
 
 
-        if (!sourceColumn || !targetColumn) {
+        const nodeStart =
+            isHeader(nodeRows[0]) ? 1 : 0;
 
-            throw new Error(
-                "Could not find source/target columns."
-            );
-
-        }
-
-
-        console.log(
-            "Node name column:",
-            nodeNameColumn
-        );
-
-        console.log(
-            "Source column:",
-            sourceColumn
-        );
-
-        console.log(
-            "Target column:",
-            targetColumn
-        );
+        const edgeStart =
+            isHeader(edgeRows[0]) ? 1 : 0;
 
 
         // ----------------------------------------------------
-        // Character names
+        // NODE NAMES
         // ----------------------------------------------------
 
-        const characterNames =
-            nodes
-                .map(
-                    node =>
-                        node[nodeNameColumn]
-                )
-                .filter(Boolean);
+        const characters = [];
 
 
-        const nameLookup =
-            new Map();
+        for (
+            let i = nodeStart;
+            i < nodeRows.length;
+            i++
+        ) {
+
+            const row =
+                nodeRows[i];
+
+            if (!row.length) continue;
 
 
-        characterNames.forEach(name => {
-
-            nameLookup.set(
-                normalizeName(name),
-                name
-            );
-
-        });
+            // The node name is normally the last
+            // or first useful text column.
+            let name = null;
 
 
-        // ----------------------------------------------------
-        // Network connections
-        // ----------------------------------------------------
+            for (const value of row) {
 
-        const connectedPairs =
-            new Set();
+                const v =
+                    value.trim();
 
+                if (
+                    v &&
+                    isNaN(v) &&
+                    v.length > 1
+                ) {
 
-        edges.forEach(edge => {
+                    name = v;
+                    break;
 
-            const source =
-                edge[sourceColumn];
+                }
 
-            const target =
-                edge[targetColumn];
-
-
-            if (!source || !target) {
-                return;
             }
 
 
-            const sourceName =
-                nameLookup.get(
-                    normalizeName(source)
-                ) || source;
+            if (name) {
+                characters.push(name);
+            }
 
-
-            const targetName =
-                nameLookup.get(
-                    normalizeName(target)
-                ) || target;
-
-
-            connectedPairs.add(
-                `${normalizeName(sourceName)}|||${normalizeName(targetName)}`
-            );
-
-            connectedPairs.add(
-                `${normalizeName(targetName)}|||${normalizeName(sourceName)}`
-            );
-
-        });
+        }
 
 
         console.log(
-            "Network connections:",
-            connectedPairs.size
+            "Characters found:",
+            characters.length
         );
 
 
+        if (characters.length === 0) {
+
+            throw new Error(
+                "No Marvel characters were found in week1_nodes.tsv."
+            );
+
+        }
+
+
         // ----------------------------------------------------
-        // Load ZIP
+        // NORMALIZE NAMES
+        // ----------------------------------------------------
+
+        function normalize(name) {
+
+            return name
+                .toLowerCase()
+                .replace(/[_-]/g, " ")
+                .replace(/\.(html?|txt)$/i, "")
+                .replace(/\s+/g, " ")
+                .trim();
+
+        }
+
+
+        // ----------------------------------------------------
+        // LOAD ZIP
         // ----------------------------------------------------
 
         status.textContent =
-            "Loading Marvel Wikipedia pages…";
+            "Loading Marvel Wikipedia pages...";
 
 
-        if (
-            typeof JSZip === "undefined"
-        ) {
+        if (typeof JSZip === "undefined") {
 
             throw new Error(
-                "JSZip is not available."
+                "JSZip was not loaded."
             );
 
         }
 
 
         const zipResponse =
-            await fetch(
-                "../marvel_pages.zip"
-            );
+            await fetch("../marvel_pages.zip");
 
 
         if (!zipResponse.ok) {
 
             throw new Error(
-                `Could not load marvel_pages.zip (${zipResponse.status})`
+                "Could not load marvel_pages.zip"
             );
 
         }
 
 
-        const zipData =
+        const zipBuffer =
             await zipResponse.arrayBuffer();
 
 
         const zip =
-            await JSZip.loadAsync(
-                zipData
-            );
+            await JSZip.loadAsync(zipBuffer);
 
 
-        const pageFiles =
+        const files =
             Object.keys(zip.files)
                 .filter(
                     filename =>
@@ -590,114 +231,85 @@ async function buildFigure() {
 
 
         console.log(
-            "Files inside ZIP:",
-            pageFiles.length
+            "ZIP files:",
+            files.length
         );
 
 
         // ----------------------------------------------------
-        // Read pages
+        // CREATE PAGE LOOKUP
         // ----------------------------------------------------
 
         const pages = {};
 
 
-        for (
-            const filename of pageFiles
-        ) {
+        for (const filename of files) {
 
             const file =
                 zip.files[filename];
 
 
-            const content =
+            const text =
                 await file.async("text");
 
 
-            const filenameOnly =
+            const shortName =
                 filename
                     .split("/")
-                    .pop();
-
-
-            const pageName =
-                filenameOnly
+                    .pop()
                     .replace(/\.(html?|txt)$/i, "")
                     .replace(/_/g, " ")
                     .trim();
 
 
-            if (pageName) {
-
-                pages[
-                    normalizeName(pageName)
-                ] = {
-                    name: pageName,
-                    text: content
-                };
-
-            }
+            pages[normalize(shortName)] =
+                text;
 
         }
 
 
         console.log(
-            "Pages available:",
+            "Pages indexed:",
             Object.keys(pages).length
         );
 
 
         // ----------------------------------------------------
-        // Match pages to characters
+        // FIND TEXT FOR CHARACTER
         // ----------------------------------------------------
 
-        const vectors = {};
-
-        let matchedPages = 0;
+        const characterText = {};
 
 
-        for (
-            const character of characterNames
-        ) {
+        for (const character of characters) {
 
-            const normalized =
-                normalizeName(character);
+            const key =
+                normalize(character);
 
 
-            let page =
-                pages[normalized];
+            if (pages[key]) {
 
+                characterText[character] =
+                    pages[key];
 
-            // Try partial matching
-            if (!page) {
-
-                const possibleKey =
-                    Object.keys(pages)
-                        .find(key => {
-
-                            return (
-                                key.includes(normalized) ||
-                                normalized.includes(key)
-                            );
-
-                        });
-
-
-                if (possibleKey) {
-                    page = pages[possibleKey];
-                }
+                continue;
 
             }
 
 
-            if (page) {
+            // Try partial matching
+            const possible =
+                Object.keys(pages).find(
+                    pageName =>
+                        pageName.includes(key) ||
+                        key.includes(pageName)
+                );
 
-                vectors[character] =
-                    textToVector(
-                        page.text
-                    );
 
-                matchedPages++;
+            if (possible) {
+
+                characterText[character] =
+                    pages[possible];
 
             }
 
@@ -705,126 +317,156 @@ async function buildFigure() {
 
 
         console.log(
-            "Characters matched with text:",
-            matchedPages
+            "Characters with Wikipedia text:",
+            Object.keys(characterText).length
         );
 
 
-        if (matchedPages < 10) {
+        if (
+            Object.keys(characterText).length < 10
+        ) {
 
             throw new Error(
-                `Only ${matchedPages} character pages matched. ` +
-                `The ZIP filenames do not match the node names closely enough.`
+                "Too few Marvel Wikipedia pages could be matched."
             );
 
         }
 
 
         // ----------------------------------------------------
-        // Characters available for analysis
+        // BAG OF WORDS
         // ----------------------------------------------------
 
-        const names =
-            Object.keys(vectors);
+        const stopwords = new Set([
+
+            "the", "and", "for", "that", "with",
+            "this", "from", "were", "was", "are",
+            "his", "her", "their", "have", "has",
+            "had", "not", "but", "which", "who",
+            "into", "also", "been", "being", "they",
+            "them", "than", "then", "when", "where",
+            "about", "after", "before", "during",
+            "while", "there", "these", "those",
+            "more", "most", "other", "some",
+            "such", "only", "very", "known"
+
+        ]);
 
 
-        // ----------------------------------------------------
-        // Calculate connected pairs
-        // ----------------------------------------------------
+        function vectorize(text) {
 
-        const connected = [];
-
-
-        const seenConnected =
-            new Set();
-
-
-        for (
-            const edge of edges
-        ) {
-
-            const source =
-                edge[sourceColumn];
-
-            const target =
-                edge[targetColumn];
+            const words =
+                text
+                    .toLowerCase()
+                    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+                    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+                    .replace(/<[^>]+>/g, " ")
+                    .replace(/[^a-z0-9\s]/g, " ")
+                    .split(/\s+/)
+                    .filter(
+                        word =>
+                            word.length >= 3 &&
+                            !stopwords.has(word)
+                    );
 
 
-            const sourceName =
-                nameLookup.get(
-                    normalizeName(source)
-                );
-
-            const targetName =
-                nameLookup.get(
-                    normalizeName(target)
-                );
+            const vector = {};
 
 
-            if (
-                !sourceName ||
-                !targetName
-            ) {
-                continue;
+            for (const word of words) {
+
+                vector[word] =
+                    (vector[word] || 0) + 1;
+
             }
 
 
-            if (
-                !vectors[sourceName] ||
-                !vectors[targetName]
-            ) {
-                continue;
-            }
+            return vector;
+
+        }
 
 
-            const pairKey =
-                [
-                    normalizeName(sourceName),
-                    normalizeName(targetName)
-                ]
-                .sort()
-                .join("|||");
+        const vectors = {};
 
 
-            if (
-                seenConnected.has(pairKey)
-            ) {
-                continue;
-            }
+        for (const character in characterText) {
 
-
-            seenConnected.add(pairKey);
-
-
-            const similarity =
-                cosineSimilarity(
-                    vectors[sourceName],
-                    vectors[targetName]
+            vectors[character] =
+                vectorize(
+                    characterText[character]
                 );
-
-
-            connected.push({
-
-                a: sourceName,
-
-                b: targetName,
-
-                similarity
-
-            });
 
         }
 
 
         // ----------------------------------------------------
-        // Generate non-connected candidate pairs
+        // COSINE SIMILARITY
+        // ----------------------------------------------------
+
+        function cosine(a, b) {
+
+            let dot = 0;
+            let normA = 0;
+            let normB = 0;
+
+
+            for (const word in a) {
+
+                if (b[word]) {
+
+                    dot +=
+                        a[word] * b[word];
+
+                }
+
+                normA +=
+                    a[word] * a[word];
+
+            }
+
+
+            for (const word in b) {
+
+                normB +=
+                    b[word] * b[word];
+
+            }
+
+
+            if (
+                normA === 0 ||
+                normB === 0
+            ) {
+
+                return 0;
+
+            }
+
+
+            return (
+                dot /
+                (
+                    Math.sqrt(normA) *
+                    Math.sqrt(normB)
+                )
+            );
+
+        }
+
+
+        // ----------------------------------------------------
+        // CALCULATE ALL TEXTUAL SIMILARITIES
         // ----------------------------------------------------
 
         status.textContent =
-            "Comparing character pages…";
+            "Calculating textual similarity...";
 
 
-        const nonConnectedCandidates = [];
+        const names =
+            Object.keys(vectors);
+
+
+        const similarities = [];
 
 
         for (
@@ -846,25 +488,18 @@ async function buildFigure() {
                     names[j];
 
 
-                const pairKey =
-                    [
-                        normalizeName(a),
-                        normalizeName(b)
-                    ]
-                    .sort()
-                    .join("|||");
+                similarities.push({
 
+                    a: a,
 
-                if (
-                    seenConnected.has(pairKey)
-                ) {
-                    continue;
-                }
+                    b: b,
 
+                    similarity:
+                        cosine(
+                            vectors[a],
+                            vectors[b]
+                        )
 
-                nonConnectedCandidates.push({
-                    a,
-                    b
                 });
 
             }
@@ -872,144 +507,90 @@ async function buildFigure() {
         }
 
 
-        // ----------------------------------------------------
-        // Sample same number of non-connected pairs
-        // ----------------------------------------------------
-
-        const shuffled =
-            shuffle(
-                nonConnectedCandidates,
-                2026
-            );
-
-
-        const sampleSize =
-            Math.min(
-                connected.length,
-                shuffled.length
-            );
-
-
-        const nonConnected =
-            shuffled
-                .slice(0, sampleSize)
-                .map(pair => ({
-
-                    a: pair.a,
-
-                    b: pair.b,
-
-                    similarity:
-                        cosineSimilarity(
-                            vectors[pair.a],
-                            vectors[pair.b]
-                        )
-
-                }));
-
-
         console.log(
-            "Connected pairs:",
-            connected.length
-        );
-
-        console.log(
-            "Sampled non-connected pairs:",
-            nonConnected.length
+            "Similarity pairs:",
+            similarities.length
         );
 
 
-        // ====================================================
+        // ----------------------------------------------------
+        // SORT STRONGEST MATCHES
+        // ----------------------------------------------------
+
+        similarities.sort(
+            (a, b) =>
+                b.similarity -
+                a.similarity
+        );
+
+
+        const strongest =
+            similarities.slice(0, 5);
+
+
+        // ----------------------------------------------------
+        // DISPLAY STRONGEST MATCHES
+        // ----------------------------------------------------
+
+        list.innerHTML = "";
+
+
+        strongest.forEach(pair => {
+
+            const li =
+                document.createElement("li");
+
+
+            li.textContent =
+                pair.a +
+                " ↔ " +
+                pair.b +
+                " — similarity " +
+                pair.similarity.toFixed(3);
+
+
+            list.appendChild(li);
+
+        });
+
+
+        // ----------------------------------------------------
         // DRAW FIGURE
-        // ====================================================
+        // ----------------------------------------------------
 
-        const canvas =
-            document.getElementById(
-                "similarity-figure"
-            );
+        status.textContent =
+            "Drawing figure...";
 
 
         const ctx =
             canvas.getContext("2d");
 
 
-        canvas.width =
-            FIGURE_WIDTH;
-
-        canvas.height =
-            FIGURE_HEIGHT;
+        canvas.width = 850;
+        canvas.height = 500;
 
 
         ctx.clearRect(
             0,
             0,
-            FIGURE_WIDTH,
-            FIGURE_HEIGHT
+            canvas.width,
+            canvas.height
         );
 
 
-        // ----------------------------------------------------
-        // Layout
-        // ----------------------------------------------------
-
-        const margin = {
-
-            left: 100,
-
-            right: 40,
-
-            top: 65,
-
-            bottom: 80
-
-        };
-
-
-        const plotWidth =
-            FIGURE_WIDTH -
-            margin.left -
-            margin.right;
-
-
-        const plotHeight =
-            FIGURE_HEIGHT -
-            margin.top -
-            margin.bottom;
-
-
-        const allData =
-            [
-                ...connected,
-                ...nonConnected
-            ];
-
-
-        const maxSimilarity =
-            Math.max(
-                ...allData.map(
-                    p => p.similarity
-                ),
-                0.1
-            );
-
-
-        // ----------------------------------------------------
         // Background
-        // ----------------------------------------------------
-
-        ctx.fillStyle =
-            "#ffffff";
+        ctx.fillStyle = "white";
 
         ctx.fillRect(
             0,
             0,
-            FIGURE_WIDTH,
-            FIGURE_HEIGHT
+            canvas.width,
+            canvas.height
         );
 
 
         // ----------------------------------------------------
-        // Title
+        // TITLE
         // ----------------------------------------------------
 
         ctx.fillStyle =
@@ -1023,55 +604,56 @@ async function buildFigure() {
 
 
         ctx.fillText(
-            "Textual Similarity vs. Network Connection",
-            FIGURE_WIDTH / 2,
-            32
+            "Marvel Character Textual Similarity",
+            425,
+            35
         );
 
 
         // ----------------------------------------------------
-        // Grid
+        // HISTOGRAM
         // ----------------------------------------------------
 
-        ctx.strokeStyle =
-            "#e5e7eb";
+        const bins = 10;
 
-        ctx.lineWidth = 1;
-
-
-        for (
-            let i = 0;
-            i <= 5;
-            i++
-        ) {
-
-            const y =
-                margin.top +
-                (plotHeight / 5) * i;
+        const counts =
+            new Array(bins).fill(0);
 
 
-            ctx.beginPath();
+        similarities.forEach(pair => {
 
-            ctx.moveTo(
-                margin.left,
-                y
-            );
-
-            ctx.lineTo(
-                FIGURE_WIDTH -
-                margin.right,
-                y
-            );
-
-            ctx.stroke();
-
-        }
+            let index =
+                Math.floor(
+                    pair.similarity * bins
+                );
 
 
-        // ----------------------------------------------------
+            if (index >= bins) {
+                index = bins - 1;
+            }
+
+
+            if (index < 0) {
+                index = 0;
+            }
+
+
+            counts[index]++;
+
+        });
+
+
+        const maxCount =
+            Math.max(...counts);
+
+
+        const chartLeft = 80;
+        const chartBottom = 420;
+        const chartWidth = 700;
+        const chartHeight = 330;
+
+
         // Axes
-        // ----------------------------------------------------
-
         ctx.strokeStyle =
             "#374151";
 
@@ -1081,28 +663,68 @@ async function buildFigure() {
         ctx.beginPath();
 
         ctx.moveTo(
-            margin.left,
-            margin.top
+            chartLeft,
+            chartBottom - chartHeight
         );
 
         ctx.lineTo(
-            margin.left,
-            FIGURE_HEIGHT -
-            margin.bottom
+            chartLeft,
+            chartBottom
         );
 
         ctx.lineTo(
-            FIGURE_WIDTH -
-            margin.right,
-            FIGURE_HEIGHT -
-            margin.bottom
+            chartLeft + chartWidth,
+            chartBottom
         );
 
         ctx.stroke();
 
 
+        // Bars
+        const barWidth =
+            chartWidth / bins;
+
+
+        counts.forEach(
+            (count, i) => {
+
+                const height =
+                    maxCount === 0
+                        ? 0
+                        : (
+                            count /
+                            maxCount
+                        ) *
+                        chartHeight;
+
+
+                const x =
+                    chartLeft +
+                    i * barWidth;
+
+
+                const y =
+                    chartBottom -
+                    height;
+
+
+                ctx.fillStyle =
+                    "#2563eb";
+
+
+                ctx.fillRect(
+                    x + 3,
+                    y,
+                    barWidth - 6,
+                    height
+                );
+
+            }
+        );
+
+
         // ----------------------------------------------------
-        // X axis
+        // X LABEL
         // ----------------------------------------------------
 
         ctx.fillStyle =
@@ -1117,43 +739,42 @@ async function buildFigure() {
 
         ctx.fillText(
             "Cosine textual similarity",
-            FIGURE_WIDTH / 2,
-            FIGURE_HEIGHT - 25
+            425,
+            475
         );
 
 
         // ----------------------------------------------------
-        // X tick labels
+        // X TICKS
         // ----------------------------------------------------
+
+        ctx.font =
+            "12px Arial";
+
 
         for (
             let i = 0;
-            i <= 5;
+            i <= 10;
             i++
         ) {
 
-            const value =
-                (maxSimilarity / 5) * i;
-
-
             const x =
-                margin.left +
-                (plotWidth / 5) * i;
+                chartLeft +
+                (i / 10) *
+                chartWidth;
 
 
             ctx.fillText(
-                value.toFixed(2),
+                (i / 10).toFixed(1),
                 x,
-                FIGURE_HEIGHT -
-                margin.bottom +
-                25
+                chartBottom + 20
             );
 
         }
 
 
         // ----------------------------------------------------
-        // Y axis labels
+        // Y LABEL
         // ----------------------------------------------------
 
         ctx.save();
@@ -1161,7 +782,7 @@ async function buildFigure() {
 
         ctx.translate(
             25,
-            FIGURE_HEIGHT / 2
+            250
         );
 
 
@@ -1171,7 +792,7 @@ async function buildFigure() {
 
 
         ctx.fillText(
-            "Network relationship",
+            "Number of character pairs",
             0,
             0
         );
@@ -1180,264 +801,35 @@ async function buildFigure() {
         ctx.restore();
 
 
-        ctx.textAlign =
-            "right";
-
-        ctx.font =
-            "bold 14px Arial";
-
-
-        ctx.fillText(
-            "Connected",
-            margin.left - 12,
-            margin.top +
-            plotHeight * 0.25 +
-            5
-        );
-
-
-        ctx.fillText(
-            "Not connected",
-            margin.left - 12,
-            margin.top +
-            plotHeight * 0.72 +
-            5
-        );
-
-
         // ----------------------------------------------------
-        // Draw points with small deterministic jitter
-        // ----------------------------------------------------
-
-        const random =
-            seededRandom(12345);
-
-
-        function drawPoints(
-            data,
-            baseY,
-            fill
-        ) {
-
-            ctx.fillStyle =
-                fill;
-
-
-            data.forEach(point => {
-
-                const x =
-                    margin.left +
-                    (
-                        point.similarity /
-                        maxSimilarity
-                    ) *
-                    plotWidth;
-
-
-                const jitter =
-                    (random() - 0.5) *
-                    55;
-
-
-                const y =
-                    baseY +
-                    jitter;
-
-
-                ctx.beginPath();
-
-
-                ctx.arc(
-                    x,
-                    y,
-                    3,
-                    0,
-                    Math.PI * 2
-                );
-
-
-                ctx.fill();
-
-            });
-
-        }
-
-
-        // Connected
-        drawPoints(
-            connected,
-            margin.top +
-            plotHeight * 0.25,
-            "#2563eb"
-        );
-
-
-        // Not connected
-        drawPoints(
-            nonConnected,
-            margin.top +
-            plotHeight * 0.72,
-            "#9ca3af"
-        );
-
-
-        // ----------------------------------------------------
-        // Legend
-        // ----------------------------------------------------
-
-        ctx.textAlign =
-            "left";
-
-        ctx.font =
-            "13px Arial";
-
-
-        ctx.fillStyle =
-            "#2563eb";
-
-
-        ctx.beginPath();
-
-        ctx.arc(
-            FIGURE_WIDTH - 210,
-            25,
-            4,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fill();
-
-
-        ctx.fillStyle =
-            "#374151";
-
-
-        ctx.fillText(
-            "Connected",
-            FIGURE_WIDTH - 198,
-            30
-        );
-
-
-        ctx.fillStyle =
-            "#9ca3af";
-
-
-        ctx.beginPath();
-
-        ctx.arc(
-            FIGURE_WIDTH - 210,
-            45,
-            4,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fill();
-
-
-        ctx.fillStyle =
-            "#374151";
-
-
-        ctx.fillText(
-            "Not connected",
-            FIGURE_WIDTH - 198,
-            50
-        );
-
-
-        // ====================================================
-        // STRONGEST TEXTUAL MATCHES
-        // ====================================================
-
-        const strongest =
-            [...allData]
-                .sort(
-                    (a, b) =>
-                        b.similarity -
-                        a.similarity
-                )
-                .slice(0, 5);
-
-
-        const list =
-            document.getElementById(
-                "strongest-matches"
-            );
-
-
-        list.innerHTML = "";
-
-
-        strongest.forEach(
-            pair => {
-
-                const li =
-                    document.createElement(
-                        "li"
-                    );
-
-
-                const isConnected =
-                    seenConnected.has(
-                        [
-                            normalizeName(pair.a),
-                            normalizeName(pair.b)
-                        ]
-                        .sort()
-                        .join("|||")
-                    );
-
-
-                li.textContent =
-                    `${pair.a} ↔ ${pair.b} — ` +
-                    `similarity ${pair.similarity.toFixed(3)} ` +
-                    `(${isConnected ? "connected" : "not connected"})`;
-
-
-                list.appendChild(li);
-
-            }
-        );
-
-
-        // ----------------------------------------------------
-        // Status
+        // FINAL STATUS
         // ----------------------------------------------------
 
         status.textContent =
-            `Generated from ${matchedPages} Marvel pages: ` +
-            `${connected.length} connected pairs and ` +
-            `${nonConnected.length} sampled non-connected pairs.`;
+            "Figure generated successfully from " +
+            Object.keys(characterText).length +
+            " Marvel Wikipedia pages and " +
+            similarities.length +
+            " character pairs.";
+
+        console.log(
+            "Week 5 figure generated successfully."
+        );
 
     }
-
 
     catch (error) {
 
         console.error(
-            "Week 5 figure error:",
+            "WEEK 5 FIGURE ERROR:",
             error
         );
 
 
         status.textContent =
-            "The figure could not be generated. " +
-            "Open the browser console (F12 → Console) " +
-            "to see the error.";
+            "Figure error: " +
+            error.message;
 
     }
 
-}
-
-
-// ------------------------------------------------------------
-// Start when page loads
-// ------------------------------------------------------------
-
-document.addEventListener(
-    "DOMContentLoaded",
-    buildFigure
-);
+});

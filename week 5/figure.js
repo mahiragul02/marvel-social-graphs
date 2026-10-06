@@ -1,6 +1,6 @@
 // ============================================================
-// MARVEL TEXT DETECTIVE — WEEK 5 FIGURE
-// Robust version
+// MARVEL TEXT ANALYSIS — WEEK 5 FIGURE
+// Histogram of pairwise cosine textual similarity
 // ============================================================
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -13,9 +13,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         status.textContent = "Loading Marvel data...";
 
-        // ----------------------------------------------------
-        // LOAD TSV
-        // ----------------------------------------------------
+        // ====================================================
+        // LOAD FILE
+        // ====================================================
 
         async function getText(path) {
 
@@ -23,8 +23,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             if (!response.ok) {
                 throw new Error(
-                    "Could not load " + path +
-                    " (HTTP " + response.status + ")"
+                    "Could not load " +
+                    path +
+                    " (HTTP " +
+                    response.status +
+                    ")"
                 );
             }
 
@@ -35,30 +38,19 @@ document.addEventListener("DOMContentLoaded", async function () {
         const nodesText =
             await getText("../week1_nodes.tsv");
 
-        const edgesText =
-            await getText("../week1_edges.tsv");
-
-
         console.log("Nodes file loaded");
-        console.log("Edges file loaded");
 
 
-        // ----------------------------------------------------
+        // ====================================================
         // PARSE TSV
-        // ----------------------------------------------------
+        // ====================================================
 
         function parseTSV(text) {
 
-            const lines =
-                text.trim().split(/\r?\n/);
-
-            if (lines.length === 0) {
-                return [];
-            }
-
-            return lines.map(line =>
-                line.split("\t")
-            );
+            return text
+                .trim()
+                .split(/\r?\n/)
+                .map(line => line.split("\t"));
 
         }
 
@@ -66,17 +58,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         const nodeRows =
             parseTSV(nodesText);
 
-        const edgeRows =
-            parseTSV(edgesText);
 
-
-        console.log("First node row:", nodeRows[0]);
-        console.log("First edge row:", edgeRows[0]);
-
-
-        // ----------------------------------------------------
-        // DETERMINE WHETHER THERE IS A HEADER
-        // ----------------------------------------------------
+        // ====================================================
+        // HEADER DETECTION
+        // ====================================================
 
         function isHeader(row) {
 
@@ -99,13 +84,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         const nodeStart =
             isHeader(nodeRows[0]) ? 1 : 0;
 
-        const edgeStart =
-            isHeader(edgeRows[0]) ? 1 : 0;
 
-
-        // ----------------------------------------------------
-        // NODE NAMES
-        // ----------------------------------------------------
+        // ====================================================
+        // EXTRACT CHARACTER NAMES
+        // ====================================================
 
         const characters = [];
 
@@ -116,21 +98,16 @@ document.addEventListener("DOMContentLoaded", async function () {
             i++
         ) {
 
-            const row =
-                nodeRows[i];
+            const row = nodeRows[i];
 
             if (!row.length) continue;
 
-
-            // The node name is normally the last
-            // or first useful text column.
             let name = null;
 
 
             for (const value of row) {
 
-                const v =
-                    value.trim();
+                const v = value.trim();
 
                 if (
                     v &&
@@ -147,8 +124,19 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
             if (name) {
+
                 characters.push(name);
+
             }
+
+        }
+
+
+        if (characters.length === 0) {
+
+            throw new Error(
+                "No Marvel characters were found."
+            );
 
         }
 
@@ -159,18 +147,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
 
 
-        if (characters.length === 0) {
-
-            throw new Error(
-                "No Marvel characters were found in week1_nodes.tsv."
-            );
-
-        }
-
-
-        // ----------------------------------------------------
+        // ====================================================
         // NORMALIZE NAMES
-        // ----------------------------------------------------
+        // ====================================================
 
         function normalize(name) {
 
@@ -184,9 +163,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
 
-        // ----------------------------------------------------
+        // ====================================================
         // LOAD ZIP
-        // ----------------------------------------------------
+        // ====================================================
 
         status.textContent =
             "Loading Marvel Wikipedia pages...";
@@ -236,9 +215,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
 
 
-        // ----------------------------------------------------
-        // CREATE PAGE LOOKUP
-        // ----------------------------------------------------
+        // ====================================================
+        // INDEX ZIP PAGES
+        // ====================================================
 
         const pages = {};
 
@@ -274,9 +253,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
 
 
-        // ----------------------------------------------------
-        // FIND TEXT FOR CHARACTER
-        // ----------------------------------------------------
+        // ====================================================
+        // MATCH CHARACTER → PAGE
+        // ====================================================
 
         const characterText = {};
 
@@ -297,7 +276,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
 
-            // Try partial matching
             const possible =
                 Object.keys(pages).find(
                     pageName =>
@@ -316,15 +294,17 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
 
+        const matchedCount =
+            Object.keys(characterText).length;
+
+
         console.log(
-            "Characters with Wikipedia text:",
-            Object.keys(characterText).length
+            "Characters with text:",
+            matchedCount
         );
 
 
-        if (
-            Object.keys(characterText).length < 10
-        ) {
+        if (matchedCount < 10) {
 
             throw new Error(
                 "Too few Marvel Wikipedia pages could be matched."
@@ -333,9 +313,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
 
-        // ----------------------------------------------------
-        // BAG OF WORDS
-        // ----------------------------------------------------
+        // ====================================================
+        // STOPWORDS
+        // ====================================================
 
         const stopwords = new Set([
 
@@ -353,15 +333,31 @@ document.addEventListener("DOMContentLoaded", async function () {
         ]);
 
 
+        // ====================================================
+        // BAG OF WORDS
+        // ====================================================
+
         function vectorize(text) {
 
             const words =
                 text
                     .toLowerCase()
-                    .replace(/<script[\s\S]*?<\/script>/gi, " ")
-                    .replace(/<style[\s\S]*?<\/style>/gi, " ")
-                    .replace(/<[^>]+>/g, " ")
-                    .replace(/[^a-z0-9\s]/g, " ")
+                    .replace(
+                        /<script[\s\S]*?<\/script>/gi,
+                        " "
+                    )
+                    .replace(
+                        /<style[\s\S]*?<\/style>/gi,
+                        " "
+                    )
+                    .replace(
+                        /<[^>]+>/g,
+                        " "
+                    )
+                    .replace(
+                        /[^a-z0-9\s]/g,
+                        " "
+                    )
                     .split(/\s+/)
                     .filter(
                         word =>
@@ -399,9 +395,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
 
-        // ----------------------------------------------------
+        // ====================================================
         // COSINE SIMILARITY
-        // ----------------------------------------------------
+        // ====================================================
 
         function cosine(a, b) {
 
@@ -454,9 +450,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
 
-        // ----------------------------------------------------
-        // CALCULATE ALL TEXTUAL SIMILARITIES
-        // ----------------------------------------------------
+        // ====================================================
+        // CALCULATE PAIRWISE SIMILARITY
+        // ====================================================
 
         status.textContent =
             "Calculating textual similarity...";
@@ -481,11 +477,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 j++
             ) {
 
-                const a =
-                    names[i];
-
-                const b =
-                    names[j];
+                const a = names[i];
+                const b = names[j];
 
 
                 similarities.push({
@@ -513,9 +506,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
 
 
-        // ----------------------------------------------------
-        // SORT STRONGEST MATCHES
-        // ----------------------------------------------------
+        // ====================================================
+        // SORT
+        // ====================================================
 
         similarities.sort(
             (a, b) =>
@@ -524,39 +517,47 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
 
 
+        // ====================================================
+        // TOP 5
+        // ====================================================
+
         const strongest =
             similarities.slice(0, 5);
 
 
-        // ----------------------------------------------------
-        // DISPLAY STRONGEST MATCHES
-        // ----------------------------------------------------
-
         list.innerHTML = "";
 
 
-        strongest.forEach(pair => {
+        strongest.forEach(
+            (pair, index) => {
 
-            const li =
-                document.createElement("li");
-
-
-            li.textContent =
-                pair.a +
-                " ↔ " +
-                pair.b +
-                " — similarity " +
-                pair.similarity.toFixed(3);
+                const li =
+                    document.createElement("li");
 
 
-            list.appendChild(li);
+                li.innerHTML =
+                    "<strong>" +
+                    (index + 1) +
+                    ".</strong> " +
+                    pair.a +
+                    " ↔ " +
+                    pair.b +
+                    " — " +
+                    "<strong>" +
+                    (pair.similarity * 100)
+                        .toFixed(2) +
+                    "%</strong> similarity";
 
-        });
+
+                list.appendChild(li);
+
+            }
+        );
 
 
-        // ----------------------------------------------------
-        // DRAW FIGURE
-        // ----------------------------------------------------
+        // ====================================================
+        // DRAW CANVAS
+        // ====================================================
 
         status.textContent =
             "Drawing figure...";
@@ -566,8 +567,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             canvas.getContext("2d");
 
 
-        canvas.width = 850;
-        canvas.height = 500;
+        canvas.width = 900;
+        canvas.height = 540;
 
 
         ctx.clearRect(
@@ -579,7 +580,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         // Background
-        ctx.fillStyle = "white";
+
+        ctx.fillStyle =
+            "#ffffff";
 
         ctx.fillRect(
             0,
@@ -589,30 +592,29 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
 
 
-        // ----------------------------------------------------
+        // ====================================================
         // TITLE
-        // ----------------------------------------------------
+        // ====================================================
 
         ctx.fillStyle =
             "#172033";
 
         ctx.font =
-            "bold 22px Arial";
+            "bold 24px Arial";
 
         ctx.textAlign =
             "center";
 
-
         ctx.fillText(
             "Marvel Character Textual Similarity",
-            425,
-            35
+            450,
+            38
         );
 
 
-        // ----------------------------------------------------
+        // ====================================================
         // HISTOGRAM
-        // ----------------------------------------------------
+        // ====================================================
 
         const bins = 10;
 
@@ -620,40 +622,90 @@ document.addEventListener("DOMContentLoaded", async function () {
             new Array(bins).fill(0);
 
 
-        similarities.forEach(pair => {
+        similarities.forEach(
+            pair => {
 
-            let index =
-                Math.floor(
-                    pair.similarity * bins
-                );
+                let index =
+                    Math.floor(
+                        pair.similarity * bins
+                    );
 
 
-            if (index >= bins) {
-                index = bins - 1;
+                if (index >= bins) {
+
+                    index = bins - 1;
+
+                }
+
+
+                if (index < 0) {
+
+                    index = 0;
+
+                }
+
+
+                counts[index]++;
+
             }
-
-
-            if (index < 0) {
-                index = 0;
-            }
-
-
-            counts[index]++;
-
-        });
+        );
 
 
         const maxCount =
             Math.max(...counts);
 
 
-        const chartLeft = 80;
-        const chartBottom = 420;
-        const chartWidth = 700;
-        const chartHeight = 330;
+        const chartLeft = 95;
+        const chartTop = 90;
+        const chartBottom = 440;
+        const chartWidth = 730;
+        const chartHeight =
+            chartBottom - chartTop;
 
 
-        // Axes
+        // ====================================================
+        // GRID LINES
+        // ====================================================
+
+        ctx.strokeStyle =
+            "#e5e7eb";
+
+        ctx.lineWidth = 1;
+
+
+        for (
+            let i = 0;
+            i <= 5;
+            i++
+        ) {
+
+            const y =
+                chartBottom -
+                (i / 5) *
+                chartHeight;
+
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                chartLeft,
+                y
+            );
+
+            ctx.lineTo(
+                chartLeft + chartWidth,
+                y
+            );
+
+            ctx.stroke();
+
+        }
+
+
+        // ====================================================
+        // AXES
+        // ====================================================
+
         ctx.strokeStyle =
             "#374151";
 
@@ -664,7 +716,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         ctx.moveTo(
             chartLeft,
-            chartBottom - chartHeight
+            chartTop
         );
 
         ctx.lineTo(
@@ -680,7 +732,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         ctx.stroke();
 
 
-        // Bars
+        // ====================================================
+        // BARS
+        // ====================================================
+
         const barWidth =
             chartWidth / bins;
 
@@ -691,7 +746,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 const height =
                     maxCount === 0
                         ? 0
-                        : (
+                        :
+                        (
                             count /
                             maxCount
                         ) *
@@ -700,7 +756,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                 const x =
                     chartLeft +
-                    i * barWidth;
+                    i *
+                    barWidth;
 
 
                 const y =
@@ -709,13 +766,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
                 ctx.fillStyle =
-                    "#2563eb";
+                    "#e63946";
 
 
                 ctx.fillRect(
-                    x + 3,
+                    x + 5,
                     y,
-                    barWidth - 6,
+                    barWidth - 10,
                     height
                 );
 
@@ -723,33 +780,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
 
 
-        // ----------------------------------------------------
-        // X LABEL
-        // ----------------------------------------------------
+        // ====================================================
+        // X TICKS
+        // ====================================================
 
         ctx.fillStyle =
             "#374151";
 
         ctx.font =
-            "14px Arial";
+            "12px Arial";
 
         ctx.textAlign =
             "center";
-
-
-        ctx.fillText(
-            "Cosine textual similarity",
-            425,
-            475
-        );
-
-
-        // ----------------------------------------------------
-        // X TICKS
-        // ----------------------------------------------------
-
-        ctx.font =
-            "12px Arial";
 
 
         for (
@@ -767,22 +809,37 @@ document.addEventListener("DOMContentLoaded", async function () {
             ctx.fillText(
                 (i / 10).toFixed(1),
                 x,
-                chartBottom + 20
+                chartBottom + 22
             );
 
         }
 
 
-        // ----------------------------------------------------
+        // ====================================================
+        // X LABEL
+        // ====================================================
+
+        ctx.font =
+            "14px Arial";
+
+
+        ctx.fillText(
+            "Cosine textual similarity",
+            450,
+            500
+        );
+
+
+        // ====================================================
         // Y LABEL
-        // ----------------------------------------------------
+        // ====================================================
 
         ctx.save();
 
 
         ctx.translate(
-            25,
-            250
+            28,
+            275
         );
 
 
@@ -801,22 +858,24 @@ document.addEventListener("DOMContentLoaded", async function () {
         ctx.restore();
 
 
-        // ----------------------------------------------------
-        // FINAL STATUS
-        // ----------------------------------------------------
+        // ====================================================
+        // STATUS
+        // ====================================================
 
         status.textContent =
             "Figure generated successfully from " +
-            Object.keys(characterText).length +
+            matchedCount +
             " Marvel Wikipedia pages and " +
             similarities.length +
             " character pairs.";
+
 
         console.log(
             "Week 5 figure generated successfully."
         );
 
     }
+
 
     catch (error) {
 

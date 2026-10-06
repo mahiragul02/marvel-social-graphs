@@ -1,1 +1,1280 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Marvel Social Graphs</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(90, 50, 180, 0.18), transparent 30%),
+                radial-gradient(circle at 80% 30%, rgba(220, 20, 60, 0.12), transparent 30%),
+                #070711;
+            color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 18px 6%;
+
+            background: rgba(7, 7, 17, 0.82);
+            backdrop-filter: blur(15px);
+
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: white;
+        }
+
+        .logo span {
+            color: #ff304f;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #ff304f;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 120px 20px 80px;
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated circles */
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(2px);
+            opacity: 0.25;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .orb.one {
+            width: 300px;
+            height: 300px;
+            background: #6c35ff;
+            top: 15%;
+            left: -100px;
+        }
+
+        .orb.two {
+            width: 250px;
+            height: 250px;
+            background: #ff1744;
+            bottom: 5%;
+            right: -80px;
+            animation-delay: 2s;
+        }
+
+        .orb.three {
+            width: 120px;
+            height: 120px;
+            background: #00d9ff;
+            top: 25%;
+            right: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%,100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-35px);
+            }
+        }
+
+        .hero-content {
+            max-width: 900px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 8px 18px;
+            border-radius: 30px;
+
+            background: rgba(255,48,79,0.12);
+            border: 1px solid rgba(255,48,79,0.4);
+
+            color: #ff536c;
+
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 2px;
+
+            margin-bottom: 25px;
+        }
+
+        .hero h1 {
+            font-size: clamp(50px, 8vw, 100px);
+            font-weight: 900;
+
+            line-height: 0.95;
+
+            letter-spacing: -4px;
+
+            margin-bottom: 25px;
+
+            text-transform: uppercase;
+
+            background: linear-gradient(
+                90deg,
+                #ffffff,
+                #ff3655,
+                #a86cff,
+                #ffffff
+            );
+
+            background-size: 300%;
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            animation: gradientMove 6s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0%;
+            }
+
+            50% {
+                background-position: 100%;
+            }
+
+            100% {
+                background-position: 0%;
+            }
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #aaa;
+            max-width: 650px;
+            margin: auto;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            margin-top: 35px;
+
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+
+            padding: 15px 28px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background: #ff304f;
+            color: white;
+
+            box-shadow:
+                0 0 25px rgba(255,48,79,0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow:
+                0 0 40px rgba(255,48,79,0.6);
+        }
+
+        .btn-secondary {
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-4px);
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats {
+            max-width: 1000px;
+
+            margin: -70px auto 100px;
+
+            padding: 30px;
+
+            position: relative;
+            z-index: 10;
+
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+
+            background: rgba(255,255,255,0.04);
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            border-radius: 20px;
+
+            backdrop-filter: blur(15px);
+        }
+
+        .stat {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 35px;
+            font-weight: 900;
+
+            color: #ff405c;
+
+            margin-bottom: 7px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #999;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 25px 100px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title small {
+            color: #ff405c;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: bold;
+        }
+
+        .section-title h2 {
+            font-size: 42px;
+            margin-top: 10px;
+        }
+
+        .section-title p {
+            color: #888;
+            margin-top: 12px;
+        }
+
+        /* =========================
+           ABOUT
+        ========================= */
+
+        .about {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 25px;
+
+            margin-bottom: 110px;
+        }
+
+        .glass-card {
+            background: linear-gradient(
+                145deg,
+                rgba(255,255,255,0.07),
+                rgba(255,255,255,0.025)
+            );
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            border-radius: 20px;
+
+            padding: 35px;
+
+            transition: 0.35s;
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-7px);
+
+            border-color: rgba(255,48,79,0.4);
+
+            box-shadow:
+                0 15px 50px rgba(0,0,0,0.35);
+        }
+
+        .glass-card h3 {
+            font-size: 25px;
+            margin-bottom: 18px;
+        }
+
+        .glass-card p {
+            color: #aaa;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .highlight {
+            color: #ff405c;
+            font-weight: bold;
+        }
+
+        /* =========================
+           DATA STORIES
+        ========================= */
+
+        .missions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+
+            margin-bottom: 110px;
+        }
+
+        .mission {
+            position: relative;
+
+            padding: 30px;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.07),
+                    rgba(255,255,255,0.02)
+                );
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            text-decoration: none;
+            color: white;
+
+            overflow: hidden;
+
+            transition: 0.35s;
+        }
+
+        .mission:hover {
+            transform: translateY(-8px) scale(1.01);
+
+            border-color: rgba(255,48,79,0.5);
+
+            box-shadow:
+                0 20px 50px rgba(0,0,0,0.4);
+        }
+
+        .mission-number {
+            position: absolute;
+
+            right: 20px;
+            top: 15px;
+
+            font-size: 70px;
+            font-weight: 900;
+
+            color: rgba(255,255,255,0.04);
+        }
+
+        .mission-icon {
+            font-size: 35px;
+            margin-bottom: 20px;
+        }
+
+        .mission h3 {
+            font-size: 23px;
+            margin-bottom: 12px;
+        }
+
+        .mission p {
+            color: #999;
+            line-height: 1.6;
+        }
+
+        .explore {
+            display: inline-block;
+
+            margin-top: 20px;
+
+            color: #ff405c;
+
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           TEXT DETECTIVE FEATURE
+        ========================= */
+
+        .detective {
+            margin-bottom: 110px;
+
+            padding: 50px;
+
+            border-radius: 25px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(108,53,255,0.25),
+                    transparent 40%
+                ),
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.08),
+                    rgba(255,255,255,0.02)
+                );
+
+            border: 1px solid rgba(150,100,255,0.25);
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+        .detective::before {
+            content: "";
+
+            position: absolute;
+
+            width: 300px;
+            height: 300px;
+
+            border: 1px solid rgba(255,255,255,0.05);
+
+            border-radius: 50%;
+
+            right: -100px;
+            bottom: -150px;
+        }
+
+        .detective-content {
+            max-width: 700px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .detective-label {
+            color: #a979ff;
+
+            text-transform: uppercase;
+
+            letter-spacing: 3px;
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+        .detective h2 {
+            font-size: 42px;
+
+            margin: 15px 0;
+        }
+
+        .detective p {
+            color: #aaa;
+
+            line-height: 1.8;
+
+            font-size: 17px;
+        }
+
+        .game-preview {
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 30px;
+
+            flex-wrap: wrap;
+        }
+
+        .answer {
+            padding: 12px 18px;
+
+            border-radius: 10px;
+
+            background: rgba(255,255,255,0.06);
+
+            border: 1px solid rgba(255,255,255,0.1);
+
+            font-size: 14px;
+        }
+
+        .answer.correct {
+            border-color: #39e58c;
+
+            color: #39e58c;
+        }
+
+        /* =========================
+           TEAM
+        ========================= */
+
+        .team {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 80px;
+        }
+
+        .member {
+            text-align: center;
+
+            padding: 30px;
+
+            background: rgba(255,255,255,0.04);
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            border-radius: 20px;
+
+            transition: 0.3s;
+        }
+
+        .member:hover {
+            transform: translateY(-6px);
+
+            border-color: rgba(255,48,79,0.3);
+        }
+
+        .avatar {
+            width: 75px;
+            height: 75px;
+
+            border-radius: 50%;
+
+            margin: auto auto 18px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 30px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff304f,
+                    #713cff
+                );
+
+            box-shadow:
+                0 0 25px rgba(255,48,79,0.25);
+        }
+
+        .member h3 {
+            font-size: 17px;
+            margin-bottom: 7px;
+        }
+
+        .member p {
+            color: #888;
+            font-size: 13px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            text-align: center;
+
+            padding: 50px 20px;
+
+            border-top: 1px solid rgba(255,255,255,0.08);
+
+            background: #05050c;
+        }
+
+        footer h3 {
+            margin-bottom: 10px;
+        }
+
+        footer p {
+            color: #666;
+            font-size: 13px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            nav ul {
+                display: none;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+
+                margin: -30px 20px 70px;
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+            }
+
+            .missions {
+                grid-template-columns: 1fr;
+            }
+
+            .team {
+                grid-template-columns: 1fr;
+            }
+
+            .detective {
+                padding: 35px 25px;
+            }
+
+            .detective h2 {
+                font-size: 32px;
+            }
+
+            .section-title h2 {
+                font-size: 32px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+                padding: 15px;
+            }
+
+            .stat {
+                padding: 12px 5px;
+            }
+
+            .stat-number {
+                font-size: 28px;
+            }
+
+            .hero h1 {
+                letter-spacing: -2px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav>
+
+    <div class="logo">
+        MARVEL<span>•</span>GRAPH
+    </div>
+
+    <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#missions">Data Stories</a></li>
+        <li><a href="#detective">Text Detective</a></li>
+        <li><a href="#team">Team</a></li>
+    </ul>
+
+</nav>
+
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="orb three"></div>
+
+    <div class="hero-content">
+
+        <div class="badge">
+            SOCIAL GRAPHS · 2026
+        </div>
+
+        <h1>
+            MARVEL<br>
+            SOCIAL GRAPHS
+        </h1>
+
+        <p>
+            Explore the hidden network behind Marvel characters.
+            Discover connections, communities, centrality,
+            and textual similarities through data science.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#missions" class="btn btn-primary">
+                🚀 Explore the Network
+            </a>
+
+            <a href="#detective" class="btn btn-secondary">
+                🕵️ Play Text Detective
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     STATS
+========================= -->
+
+<div class="stats">
+
+    <div class="stat">
+
+        <div class="stat-number">
+            303
+        </div>
+
+        <div class="stat-label">
+            Marvel Characters
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-number">
+            1,784
+        </div>
+
+        <div class="stat-label">
+            Network Connections
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-number">
+            4+
+        </div>
+
+        <div class="stat-label">
+            Data Stories
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-number">
+            NLP
+        </div>
+
+        <div class="stat-label">
+            Text Analysis
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<main>
+
+
+<!-- =========================
+     ABOUT
+========================= -->
+
+<section id="about">
+
+    <div class="section-title">
+
+        <small>THE MISSION</small>
+
+        <h2>Behind the Superheroes</h2>
+
+        <p>
+            What happens when Marvel becomes a data network?
+        </p>
+
+    </div>
+
+
+    <div class="about">
+
+
+        <div class="glass-card">
+
+            <h3>
+                🧠 Our Project
+            </h3>
+
+            <p>
+                Welcome to our Social Graphs project!
+                We investigate Marvel Comics as a network
+                of characters connected through relationships
+                and Wikipedia links.
+            </p>
+
+            <p>
+                Using <span class="highlight">
+                Python, NetworkX, graph theory and NLP
+                </span>,
+                we transform the Marvel universe into data
+                that can be explored and analyzed.
+            </p>
+
+            <p>
+                Instead of simply asking who the most famous
+                characters are, we ask:
+                <strong>Who is the most connected?</strong>
+                <strong>Which characters form communities?</strong>
+                <strong>And can text similarity help us identify a mystery character?</strong>
+            </p>
+
+        </div>
+
+
+        <div class="glass-card">
+
+            <h3>
+                🔬 What We Investigate
+            </h3>
+
+            <p>
+                🕸️ Network structure
+            </p>
+
+            <p>
+                ⭐ Character centrality
+            </p>
+
+            <p>
+                👥 Communities
+            </p>
+
+            <p>
+                📈 Preferential attachment
+            </p>
+
+            <p>
+                🧠 Textual similarity
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     DATA STORIES
+========================= -->
+
+<section id="missions">
+
+    <div class="section-title">
+
+        <small>MISSIONS</small>
+
+        <h2>Explore the Data Stories</h2>
+
+        <p>
+            Each week reveals another layer of the Marvel network.
+        </p>
+
+    </div>
+
+
+    <div class="missions">
+
+
+        <a href="week1.html" class="mission">
+
+            <div class="mission-number">
+                01
+            </div>
+
+            <div class="mission-icon">
+                🕸️
+            </div>
+
+            <h3>
+                Exploring the Marvel Network
+            </h3>
+
+            <p>
+                Discover the basic structure of the Marvel
+                social graph and investigate its most connected
+                characters.
+            </p>
+
+            <span class="explore">
+                START MISSION →
+            </span>
+
+        </a>
+
+
+
+        <a href="week2/index.html" class="mission">
+
+            <div class="mission-number">
+                02
+            </div>
+
+            <div class="mission-icon">
+                📈
+            </div>
+
+            <h3>
+                Preferential Attachment
+            </h3>
+
+            <p>
+                Compare the real Marvel network with a
+                Barabási–Albert model and investigate
+                how networks grow.
+            </p>
+
+            <span class="explore">
+                START MISSION →
+            </span>
+
+        </a>
+
+
+
+        <a href="week3/index.html" class="mission">
+
+            <div class="mission-number">
+                03
+            </div>
+
+            <div class="mission-icon">
+                🎯
+            </div>
+
+            <h3>
+                Centrality Analysis
+            </h3>
+
+            <p>
+                Find the characters that occupy important
+                positions in the Marvel network.
+            </p>
+
+            <span class="explore">
+                START MISSION →
+            </span>
+
+        </a>
+
+
+
+        <a href="week%205/index.html" class="mission">
+
+            <div class="mission-number">
+                05
+            </div>
+
+            <div class="mission-icon">
+                🕵️
+            </div>
+
+            <h3>
+                Marvel Text Detective
+            </h3>
+
+            <p>
+                Use textual similarity to identify a mystery
+                Marvel character from its Wikipedia page.
+            </p>
+
+            <span class="explore">
+                PLAY THE GAME →
+            </span>
+
+        </a>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     TEXT DETECTIVE
+========================= -->
+
+<section id="detective">
+
+    <div class="detective">
+
+        <div class="detective-content">
+
+            <div class="detective-label">
+                🕵️ SPECIAL MISSION
+            </div>
+
+            <h2>
+                Can You Identify<br>
+                the Mystery Character?
+            </h2>
+
+            <p>
+                One Marvel character is hidden.
+                Your mission is to analyze the textual clues
+                and choose the character whose Wikipedia page
+                is most similar.
+            </p>
+
+
+            <div class="game-preview">
+
+                <div class="answer">
+                    🕷️ Spider-Man
+                </div>
+
+                <div class="answer correct">
+                    ✓ Wolverine
+                </div>
+
+                <div class="answer">
+                    ⚡ Thor
+                </div>
+
+                <div class="answer">
+                    🛡️ Captain America
+                </div>
+
+            </div>
+
+
+            <br>
+
+
+            <a
+                href="week%205/index.html"
+                class="btn btn-primary"
+            >
+                🕵️ Enter Detective Mode
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     TEAM
+========================= -->
+
+<section id="team">
+
+    <div class="section-title">
+
+        <small>THE TEAM</small>
+
+        <h2>Meet the Researchers</h2>
+
+        <p>
+            Three researchers exploring one giant universe.
+        </p>
+
+    </div>
+
+
+    <div class="team">
+
+
+        <div class="member">
+
+            <div class="avatar">
+                👩‍💻
+            </div>
+
+            <h3>
+                Mahira Gul
+            </h3>
+
+            <p>
+                Data Analysis & Web Development
+            </p>
+
+        </div>
+
+
+        <div class="member">
+
+            <div class="avatar">
+                👩‍💻
+            </div>
+
+            <h3>
+                Ana Carolina Soares Araújo Barbosa
+            </h3>
+
+            <p>
+                Social Graphs Research
+            </p>
+
+        </div>
+
+
+        <div class="member">
+
+            <div class="avatar">
+                👨‍💻
+            </div>
+
+            <h3>
+                Søren Møller Jørgensen
+            </h3>
+
+            <p>
+                Network Analysis
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <h3>
+        MARVEL SOCIAL GRAPHS
+    </h3>
+
+    <p>
+        Social Graphs 2026 · Marvel Network Project
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>
+```

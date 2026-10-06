@@ -1,30 +1,112 @@
 document.addEventListener("DOMContentLoaded", async function () {
 
     // =========================================================
-    // GET HTML ELEMENTS
+    // HTML ELEMENTS
     // =========================================================
 
-    const loadingScreen = document.getElementById("loading-screen");
-    const loading = document.getElementById("loading");
-    const mysteryCharacter = document.getElementById("mystery-character");
-    const choices = document.getElementById("choices");
-    const result = document.getElementById("result");
-    const nextRound = document.getElementById("next-round");
+    const loadingScreen =
+        document.getElementById("loading-screen");
+
+    const loading =
+        document.getElementById("loading");
+
+    const mysteryCharacter =
+        document.getElementById("mystery-character");
+
+    const choices =
+        document.getElementById("choices");
+
+    const result =
+        document.getElementById("result");
+
+    const nextRound =
+        document.getElementById("next-round");
+
+    const startScreen =
+        document.getElementById("start-screen");
+
+    const startGameButton =
+        document.getElementById("start-game");
+
+    const finalScreen =
+        document.getElementById("final-screen");
+
+    const playAgainButton =
+        document.getElementById("play-again");
+
+    const scoreElement =
+        document.getElementById("score");
+
+    const livesElement =
+        document.getElementById("lives");
+
+    const streakElement =
+        document.getElementById("streak");
+
+    const timerElement =
+        document.getElementById("timer");
+
+    const roundLabel =
+        document.getElementById("round-label");
+
+    const progressFill =
+        document.getElementById("progress-fill");
+
+    const hintButton =
+        document.getElementById("hint-button");
+
+    const skipButton =
+        document.getElementById("skip-button");
+
+    const hintBox =
+        document.getElementById("hint-box");
+
+
+    // =========================================================
+    // GAME VARIABLES
+    // =========================================================
 
     let zip = null;
 
-    // List of Marvel pages
     let pages = [];
 
-    // Current mystery character
     let currentMystery = null;
 
-    // Current four answer choices
     let currentCandidates = [];
+
+    let currentMysteryVector = null;
+
+    let currentCorrect = null;
+
+    let timerInterval = null;
+
+    let timeLeft = 30;
+
+    let gameStarted = false;
+
+    let round = 0;
+
+    const TOTAL_ROUNDS = 10;
+
+    let score = 0;
+
+    let lives = 3;
+
+    let streak = 0;
+
+    let bestStreak = 0;
+
+    let correctAnswers = 0;
+
+    let answered = false;
+
+    let hintUsed = false;
+
+    let skipUsed = false;
 
 
     // =========================================================
-    // SHOW LOADING MESSAGE
+    // STATUS
     // =========================================================
 
     function status(message) {
@@ -32,8 +114,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.log(message);
 
         if (loading) {
-            loading.textContent = message;
+
+            loading.textContent =
+                message;
+
         }
+
     }
 
 
@@ -43,46 +129,105 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     function cleanCharacterName(filename) {
 
-        let name = filename.split("/").pop();
+        let name =
+            filename.split("/").pop();
 
-        // Remove file extension
-        name = name.replace(/\.(html?|txt)$/i, "");
 
-        // Decode URL characters if present
+        name =
+            name.replace(
+                /\.(html?|txt)$/i,
+                ""
+            );
+
+
         try {
-            name = decodeURIComponent(name);
-        } catch (error) {
-            // Keep original name if decoding fails
+
+            name =
+                decodeURIComponent(name);
+
         }
 
-        // Replace underscores and hyphens with spaces
-        name = name.replace(/[_-]+/g, " ");
+        catch (error) {
 
-        // Remove extra spaces
-        name = name.replace(/\s+/g, " ").trim();
+            // Keep original name
+
+        }
+
+
+        name =
+            name.replace(
+                /[_-]+/g,
+                " "
+            );
+
+
+        name =
+            name.replace(
+                /\s+/g,
+                " "
+            ).trim();
+
 
         return name;
+
     }
 
 
     // =========================================================
-    // NORMALIZE TEXT
+    // CLEAN TEXT
     // =========================================================
 
     function cleanText(text) {
 
         return String(text || "")
-            .replace(/<script[\s\S]*?<\/script>/gi, " ")
-            .replace(/<style[\s\S]*?<\/style>/gi, " ")
-            .replace(/<[^>]+>/g, " ")
-            .replace(/&nbsp;/gi, " ")
-            .replace(/&amp;/gi, " ")
-            .replace(/&quot;/gi, " ")
-            .replace(/&#39;/gi, " ")
+
+            .replace(
+                /<script[\s\S]*?<\/script>/gi,
+                " "
+            )
+
+            .replace(
+                /<style[\s\S]*?<\/style>/gi,
+                " "
+            )
+
+            .replace(
+                /<[^>]+>/g,
+                " "
+            )
+
+            .replace(
+                /&nbsp;/gi,
+                " "
+            )
+
+            .replace(
+                /&amp;/gi,
+                " "
+            )
+
+            .replace(
+                /&quot;/gi,
+                " "
+            )
+
+            .replace(
+                /&#39;/gi,
+                " "
+            )
+
             .toLowerCase()
-            .replace(/[^a-z\s]/g, " ")
+
+            .replace(
+                /[^a-z\s]/g,
+                " "
+            )
+
             .split(/\s+/)
-            .filter(word => word.length >= 3);
+
+            .filter(
+                word => word.length >= 3
+            );
 
     }
 
@@ -93,21 +238,28 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     function makeVector(text) {
 
-        const words = cleanText(text);
+        const words =
+            cleanText(text);
 
         const vector = {};
+
 
         words.forEach(word => {
 
             if (!vector[word]) {
+
                 vector[word] = 0;
+
             }
+
 
             vector[word]++;
 
         });
 
+
         return vector;
+
     }
 
 
@@ -117,10 +269,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     function cosineSimilarity(a, b) {
 
-        const allWords = new Set([
-            ...Object.keys(a),
-            ...Object.keys(b)
-        ]);
+        const allWords =
+            new Set([
+                ...Object.keys(a),
+                ...Object.keys(b)
+            ]);
+
 
         let dotProduct = 0;
 
@@ -131,20 +285,31 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         allWords.forEach(word => {
 
-            const valueA = a[word] || 0;
+            const valueA =
+                a[word] || 0;
 
-            const valueB = b[word] || 0;
+            const valueB =
+                b[word] || 0;
 
-            dotProduct += valueA * valueB;
 
-            magnitudeA += valueA * valueA;
+            dotProduct +=
+                valueA * valueB;
 
-            magnitudeB += valueB * valueB;
+
+            magnitudeA +=
+                valueA * valueA;
+
+
+            magnitudeB +=
+                valueB * valueB;
 
         });
 
 
-        if (magnitudeA === 0 || magnitudeB === 0) {
+        if (
+            magnitudeA === 0 ||
+            magnitudeB === 0
+        ) {
 
             return 0;
 
@@ -161,25 +326,39 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     // =========================================================
-    // FIND SHARED WORDS
+    // SHARED WORDS
     // =========================================================
 
-    function getSharedWords(vectorA, vectorB) {
+    function getSharedWords(
+        vectorA,
+        vectorB
+    ) {
 
         return Object.keys(vectorA)
 
-            .filter(word => vectorB[word])
+            .filter(
+                word => vectorB[word]
+            )
 
-            .sort((a, b) => {
+            .sort(
+                (a, b) => {
 
-                return (
-                    vectorA[b] + vectorB[b]
-                ) -
-                (
-                    vectorA[a] + vectorB[a]
-                );
+                    return (
 
-            })
+                        vectorA[b] +
+                        vectorB[b]
+
+                    ) -
+
+                    (
+
+                        vectorA[a] +
+                        vectorB[a]
+
+                    );
+
+                }
+            )
 
             .slice(0, 10);
 
@@ -187,16 +366,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     // =========================================================
-    // LOAD ZIP FILE
+    // LOAD DATASET
     // =========================================================
 
     async function loadDataset() {
 
-        status("Loading Marvel Wikipedia dataset...");
+        status(
+            "Loading Marvel Wikipedia dataset..."
+        );
 
 
         const response =
-            await fetch("../marvel_pages.zip");
+            await fetch(
+                "../marvel_pages.zip"
+            );
 
 
         if (!response.ok) {
@@ -208,7 +391,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
 
-        status("Opening Marvel Wikipedia dataset...");
+        status(
+            "Opening Marvel Wikipedia dataset..."
+        );
 
 
         const buffer =
@@ -216,48 +401,56 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         zip =
-            await JSZip.loadAsync(buffer);
+            await JSZip.loadAsync(
+                buffer
+            );
 
-
-        // -----------------------------------------------------
-        // FIND PAGE FILES
-        // -----------------------------------------------------
 
         const filenames =
-            Object.keys(zip.files).filter(filename => {
+            Object.keys(zip.files)
+                .filter(filename => {
 
-                const lower =
-                    filename.toLowerCase();
-
-
-                // Ignore folders
-                if (zip.files[filename].dir) {
-                    return false;
-                }
+                    const lower =
+                        filename.toLowerCase();
 
 
-                // Ignore unwanted files
-                if (
-                    lower.includes("readme") ||
-                    lower.includes("license") ||
-                    lower.includes("metadata") ||
-                    lower.includes(".git/")
-                ) {
-                    return false;
-                }
+                    if (
+                        zip.files[filename].dir
+                    ) {
+
+                        return false;
+
+                    }
 
 
-                // Only use web/text pages
-                return (
-                    lower.endsWith(".html") ||
-                    lower.endsWith(".htm") ||
-                    lower.endsWith(".txt")
-                );
+                    if (
 
-            });
+                        lower.includes("readme") ||
+                        lower.includes("license") ||
+                        lower.includes("metadata") ||
+                        lower.includes(".git/")
+
+                    ) {
+
+                        return false;
+
+                    }
 
 
-        if (filenames.length === 0) {
+                    return (
+
+                        lower.endsWith(".html") ||
+                        lower.endsWith(".htm") ||
+                        lower.endsWith(".txt")
+
+                    );
+
+                });
+
+
+        if (
+            filenames.length === 0
+        ) {
 
             throw new Error(
                 "No Marvel Wikipedia pages were found in the ZIP file."
@@ -266,21 +459,21 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
 
-        // -----------------------------------------------------
-        // CREATE PAGE LIST
-        // -----------------------------------------------------
+        pages =
+            filenames.map(filename => {
 
-        pages = filenames.map(filename => {
+                return {
 
-            return {
+                    filename: filename,
 
-                filename: filename,
+                    name:
+                        cleanCharacterName(
+                            filename
+                        )
 
-                name: cleanCharacterName(filename)
+                };
 
-            };
-
-        });
+            });
 
 
         console.log(
@@ -296,22 +489,27 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
 
 
-        // Give the browser a moment to display message
-        await new Promise(resolve =>
-            setTimeout(resolve, 500)
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    700
+                )
         );
 
     }
 
 
     // =========================================================
-    // READ ONE PAGE
+    // READ PAGE
     // =========================================================
 
     async function readPage(page) {
 
         if (!page) {
+
             return "";
+
         }
 
 
@@ -339,12 +537,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     // =========================================================
-    // SHUFFLE ARRAY
+    // SHUFFLE
     // =========================================================
 
     function shuffle(array) {
 
-        const copy = [...array];
+        const copy =
+            [...array];
 
 
         for (
@@ -355,15 +554,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             const j =
                 Math.floor(
-                    Math.random() * (i + 1)
+                    Math.random() *
+                    (i + 1)
                 );
 
 
             [
                 copy[i],
                 copy[j]
-            ] =
-            [
+            ] = [
                 copy[j],
                 copy[i]
             ];
@@ -377,31 +576,165 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     // =========================================================
-    // CREATE A NEW ROUND
+    // UPDATE HUD
+    // =========================================================
+
+    function updateHUD() {
+
+        scoreElement.textContent =
+            score;
+
+
+        livesElement.textContent =
+            "❤️".repeat(lives) +
+            "🖤".repeat(
+                Math.max(0, 3 - lives)
+            );
+
+
+        streakElement.textContent =
+            streak;
+
+
+        timerElement.textContent =
+            timeLeft;
+
+
+        roundLabel.textContent =
+            "ROUND " +
+            Math.min(round, TOTAL_ROUNDS) +
+            " / " +
+            TOTAL_ROUNDS;
+
+
+        const progress =
+            ((round - 1) /
+                TOTAL_ROUNDS) *
+            100;
+
+
+        progressFill.style.width =
+            Math.max(
+                0,
+                Math.min(100, progress)
+            ) + "%";
+
+    }
+
+
+    // =========================================================
+    // TIMER
+    // =========================================================
+
+    function startTimer() {
+
+        clearInterval(
+            timerInterval
+        );
+
+
+        timeLeft = 30;
+
+        updateHUD();
+
+
+        timerInterval =
+            setInterval(() => {
+
+                if (
+                    answered ||
+                    !gameStarted
+                ) {
+
+                    return;
+
+                }
+
+
+                timeLeft--;
+
+                updateHUD();
+
+
+                if (
+                    timeLeft <= 0
+                ) {
+
+                    clearInterval(
+                        timerInterval
+                    );
+
+
+                    handleTimeOut();
+
+                }
+
+            }, 1000);
+
+    }
+
+
+    // =========================================================
+    // STOP TIMER
+    // =========================================================
+
+    function stopTimer() {
+
+        clearInterval(
+            timerInterval
+        );
+
+    }
+
+
+    // =========================================================
+    // CREATE ROUND
     // =========================================================
 
     async function createRound() {
 
         try {
 
+            answered = false;
+
+            hintUsed = false;
+
+
+            if (round > TOTAL_ROUNDS) {
+
+                finishGame();
+
+                return;
+
+            }
+
+
             status(
                 "Preparing a new mystery character..."
             );
 
 
-            // Clear previous game
             result.innerHTML = "";
 
             choices.innerHTML = "";
 
-            nextRound.style.display = "none";
+            hintBox.style.display =
+                "none";
+
+            hintBox.innerHTML = "";
+
+            nextRound.style.display =
+                "none";
 
 
-            // -------------------------------------------------
-            // CHECK DATASET
-            // -------------------------------------------------
+            hintButton.disabled = false;
 
-            if (pages.length < 5) {
+            skipButton.disabled = false;
+
+
+            if (
+                pages.length < 5
+            ) {
 
                 throw new Error(
                     "Not enough Marvel pages were found."
@@ -409,10 +742,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             }
 
-
-            // -------------------------------------------------
-            // SELECT MYSTERY CHARACTER
-            // -------------------------------------------------
 
             const shuffledPages =
                 shuffle(pages);
@@ -422,17 +751,15 @@ document.addEventListener("DOMContentLoaded", async function () {
                 shuffledPages[0];
 
 
-            // -------------------------------------------------
-            // READ MYSTERY PAGE
-            // -------------------------------------------------
-
             status(
                 "Reading mystery character page..."
             );
 
 
             const mysteryText =
-                await readPage(currentMystery);
+                await readPage(
+                    currentMystery
+                );
 
 
             if (!mysteryText) {
@@ -444,13 +771,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
 
-            // -------------------------------------------------
-            // SELECT FOUR OTHER CHARACTERS
-            // -------------------------------------------------
-
             currentCandidates =
-                shuffledPages
-                    .slice(1, 5);
+                shuffledPages.slice(1, 5);
 
 
             if (
@@ -464,10 +786,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
 
-            // -------------------------------------------------
-            // READ FOUR CANDIDATE PAGES
-            // -------------------------------------------------
-
             status(
                 "Reading four candidate pages..."
             );
@@ -477,11 +795,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
             for (
-                const candidate of currentCandidates
+                const candidate
+                of currentCandidates
             ) {
 
                 const text =
-                    await readPage(candidate);
+                    await readPage(
+                        candidate
+                    );
 
 
                 candidateData.push({
@@ -501,37 +822,35 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
 
-            // -------------------------------------------------
-            // CALCULATE SIMILARITY
-            // -------------------------------------------------
-
             status(
                 "Calculating textual similarity..."
             );
 
 
             const mysteryVector =
-                makeVector(mysteryText);
+                makeVector(
+                    mysteryText
+                );
 
 
-            candidateData.forEach(candidate => {
+            candidateData.forEach(
+                candidate => {
 
-                candidate.vector =
-                    makeVector(candidate.text);
-
-
-                candidate.similarity =
-                    cosineSimilarity(
-                        mysteryVector,
-                        candidate.vector
-                    );
-
-            });
+                    candidate.vector =
+                        makeVector(
+                            candidate.text
+                        );
 
 
-            // -------------------------------------------------
-            // SORT BY SIMILARITY
-            // -------------------------------------------------
+                    candidate.similarity =
+                        cosineSimilarity(
+                            mysteryVector,
+                            candidate.vector
+                        );
+
+                }
+            );
+
 
             candidateData.sort(
                 (a, b) =>
@@ -544,62 +863,83 @@ document.addEventListener("DOMContentLoaded", async function () {
                 candidateData;
 
 
-            // -------------------------------------------------
-            // DISPLAY MYSTERY CHARACTER
-            // -------------------------------------------------
-
-            mysteryCharacter.textContent =
-                currentMystery.name;
+            currentMysteryVector =
+                mysteryVector;
 
 
+            currentCorrect =
+                candidateData[0];
+
+
             // -------------------------------------------------
-            // DISPLAY ANSWER BUTTONS
+            // DISPLAY ANSWERS
             // -------------------------------------------------
 
             choices.innerHTML = "";
 
 
-            candidateData.forEach(candidate => {
+            candidateData.forEach(
+                (candidate, index) => {
 
-                const button =
-                    document.createElement("button");
-
-
-                button.type = "button";
-
-                button.className =
-                    "choice-button";
-
-
-                button.textContent =
-                    candidate.name;
-
-
-                button.addEventListener(
-                    "click",
-                    function () {
-
-                        handleAnswer(
-                            candidate,
-                            candidateData[0],
-                            mysteryVector
+                    const button =
+                        document.createElement(
+                            "button"
                         );
 
-                    }
-                );
+
+                    button.type =
+                        "button";
 
 
-                choices.appendChild(button);
+                    button.className =
+                        "choice-button";
 
-            });
+
+                    button.textContent =
+                        candidate.name;
 
 
-            // -------------------------------------------------
-            // HIDE LOADING SCREEN
-            // -------------------------------------------------
+                    button.dataset.index =
+                        index;
+
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            handleAnswer(
+                                candidate,
+                                currentCorrect,
+                                mysteryVector
+                            );
+
+                        }
+                    );
+
+
+                    choices.appendChild(
+                        button
+                    );
+
+                }
+            );
+
 
             loadingScreen.style.display =
                 "none";
+
+
+            roundLabel.textContent =
+                "ROUND " +
+                round +
+                " / " +
+                TOTAL_ROUNDS;
+
+
+            updateHUD();
+
+
+            startTimer();
 
 
             console.log(
@@ -619,7 +959,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     // =========================================================
-    // HANDLE USER ANSWER
+    // HANDLE ANSWER
     // =========================================================
 
     function handleAnswer(
@@ -628,52 +968,67 @@ document.addEventListener("DOMContentLoaded", async function () {
         mysteryVector
     ) {
 
+        if (
+            answered ||
+            !gameStarted
+        ) {
 
-        // Disable all buttons
+            return;
+
+        }
+
+
+        answered = true;
+
+        stopTimer();
+
+
         const buttons =
             choices.querySelectorAll(
                 "button"
             );
 
 
-        buttons.forEach(button => {
+        buttons.forEach(
+            button => {
 
-            button.disabled = true;
-
-
-            // Highlight correct answer
-            if (
-                button.textContent ===
-                correct.name
-            ) {
-
-                button.classList.add(
-                    "correct"
-                );
-
-            }
+                button.disabled =
+                    true;
 
 
-            // Highlight wrong answer
-            if (
-                button.textContent ===
-                    selected.name &&
-                selected.name !==
+                if (
+                    button.textContent ===
                     correct.name
-            ) {
+                ) {
 
-                button.classList.add(
-                    "wrong"
-                );
+                    button.classList.add(
+                        "correct"
+                    );
+
+                }
+
+
+                if (
+                    button.textContent ===
+                    selected.name &&
+                    selected.name !==
+                    correct.name
+                ) {
+
+                    button.classList.add(
+                        "wrong"
+                    );
+
+                }
 
             }
+        );
 
-        });
 
+        const isCorrect =
+            selected.name ===
+            correct.name;
 
-        // -----------------------------------------------------
-        // GET SHARED WORDS
-        // -----------------------------------------------------
 
         const sharedWords =
             getSharedWords(
@@ -682,36 +1037,79 @@ document.addEventListener("DOMContentLoaded", async function () {
             );
 
 
-        const isCorrect =
-            selected.name ===
-            correct.name;
-
-
-        let html = "";
-
-
-        // -----------------------------------------------------
-        // RESULT MESSAGE
-        // -----------------------------------------------------
-
         if (isCorrect) {
 
-            html += `
+            correctAnswers++;
+
+            streak++;
+
+            bestStreak =
+                Math.max(
+                    bestStreak,
+                    streak
+                );
+
+
+            let points =
+                100;
+
+
+            // Speed bonus
+
+            points +=
+                timeLeft * 3;
+
+
+            // Streak bonus
+
+            points +=
+                Math.max(
+                    0,
+                    (streak - 1) * 25
+                );
+
+
+            // Hint penalty
+
+            if (hintUsed) {
+
+                points =
+                    Math.max(
+                        25,
+                        points - 40
+                    );
+
+            }
+
+
+            score += points;
+
+
+            result.innerHTML = `
 
                 <div class="result-success">
 
                     <h3>
-                        🎉 Correct!
+                        🎉 Excellent Detective Work!
                     </h3>
 
                     <p>
                         <strong>
-                            ${selected.name}
+                            ${escapeHTML(selected.name)}
                         </strong>
 
                         had the highest textual
-                        similarity among the
-                        four choices.
+                        similarity among the four choices.
+                    </p>
+
+                    <p style="margin-top:8px;">
+                        You earned
+                        <strong>
+                            +${points} points
+                        </strong>
+                        ${streak > 1
+                            ? "🔥 Streak x" + streak
+                            : ""}
                     </p>
 
                 </div>
@@ -722,21 +1120,28 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         else {
 
-            html += `
+            lives--;
+
+            streak = 0;
+
+
+            result.innerHTML = `
 
                 <div class="result-wrong">
 
                     <h3>
-                        Not quite!
+                        ❌ Case Not Solved
                     </h3>
 
                     <p>
-                        The strongest textual match
-                        was
-
+                        The strongest textual match was
                         <strong>
-                            ${correct.name}
+                            ${escapeHTML(correct.name)}
                         </strong>.
+                    </p>
+
+                    <p style="margin-top:8px;">
+                        You lost one life.
                     </p>
 
                 </div>
@@ -746,11 +1151,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
 
-        // -----------------------------------------------------
-        // SIMILARITY INFORMATION
-        // -----------------------------------------------------
-
-        html += `
+        result.innerHTML += `
 
             <div class="similarity-result">
 
@@ -759,7 +1160,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                         Your choice similarity:
                     </strong>
 
-                    ${selected.similarity.toFixed(3)}
+                    <span class="score-highlight">
+                        ${selected.similarity.toFixed(3)}
+                    </span>
                 </p>
 
 
@@ -768,7 +1171,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                         Best similarity:
                     </strong>
 
-                    ${correct.similarity.toFixed(3)}
+                    <span class="score-highlight">
+                        ${correct.similarity.toFixed(3)}
+                    </span>
                 </p>
 
 
@@ -779,42 +1184,40 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                     ${
                         sharedWords.length > 0
-                        ? sharedWords.join(", ")
+                        ? escapeHTML(
+                            sharedWords.join(", ")
+                        )
                         : "No strong shared words found."
                     }
-
                 </p>
 
 
                 <details>
 
                     <summary>
-                        Inspect the underlying text
+                        🔬 Inspect the NLP method
                     </summary>
 
-
                     <p>
-                        The similarity score is
-                        calculated from overlapping
-                        words between the two
-                        Wikipedia pages.
+                        The game represents each Wikipedia
+                        page as a
+                        <strong>Bag-of-Words</strong>
+                        vector.
                     </p>
 
-
                     <p>
-                        This game uses a
-                        <strong>
-                            Bag-of-Words
-                        </strong>
-                        representation and
-                        cosine similarity.
+                        Cosine similarity is then used
+                        to compare the two vectors.
                     </p>
 
+                    <p>
+                        A higher score means that the pages
+                        have more similar word distributions.
+                    </p>
 
                     <p>
-                        Therefore, it does not
-                        understand word order or
-                        deeper semantic meaning.
+                        This method does not understand
+                        word order or deeper semantic meaning.
                     </p>
 
                 </details>
@@ -824,75 +1227,354 @@ document.addEventListener("DOMContentLoaded", async function () {
         `;
 
 
-        result.innerHTML =
-            html;
+        updateHUD();
 
 
-        // Show next round button
+        if (lives <= 0) {
+
+            setTimeout(
+                finishGame,
+                1800
+            );
+
+            return;
+
+        }
+
+
         nextRound.style.display =
             "inline-block";
+
+
+        if (
+            round >= TOTAL_ROUNDS
+        ) {
+
+            nextRound.textContent =
+                "🏆 SEE RESULTS";
+
+        }
 
     }
 
 
     // =========================================================
-    // SHOW ERROR
+    // TIME OUT
     // =========================================================
 
-    function showError(error) {
+    function handleTimeOut() {
 
-        console.error(
-            "GAME ERROR:",
-            error
+        if (
+            answered ||
+            !gameStarted
+        ) {
+
+            return;
+
+        }
+
+
+        answered = true;
+
+
+        const buttons =
+            choices.querySelectorAll(
+                "button"
+            );
+
+
+        buttons.forEach(
+            button => {
+
+                button.disabled =
+                    true;
+
+
+                if (
+                    button.textContent ===
+                    currentCorrect.name
+                ) {
+
+                    button.classList.add(
+                        "correct"
+                    );
+
+                }
+
+            }
         );
 
 
-        loadingScreen.style.display =
-            "block";
+        lives--;
+
+        streak = 0;
 
 
-        loading.innerHTML = `
+        result.innerHTML = `
 
-            <div
-                style="
-                    color: #b00020;
-                    padding: 20px;
-                    text-align: center;
-                "
-            >
+            <div class="result-wrong">
 
-                <strong>
-                    Game error
-                </strong>
+                <h3>
+                    ⏰ Time's Up!
+                </h3>
 
-                <br><br>
+                <p>
+                    The mystery character was best
+                    matched by
+                    <strong>
+                        ${escapeHTML(
+                            currentCorrect.name
+                        )}
+                    </strong>.
+                </p>
 
-                ${error.message}
+                <p style="margin-top:8px;">
+                    You lost one life.
+                </p>
 
             </div>
 
         `;
 
+
+        updateHUD();
+
+
+        if (lives <= 0) {
+
+            setTimeout(
+                finishGame,
+                1800
+            );
+
+        }
+
+        else {
+
+            nextRound.style.display =
+                "inline-block";
+
+        }
+
     }
 
 
     // =========================================================
-    // NEXT ROUND BUTTON
+    // HINT
+    // =========================================================
+
+    hintButton.addEventListener(
+        "click",
+        function () {
+
+            if (
+                answered ||
+                hintUsed
+            ) {
+
+                return;
+
+            }
+
+
+            hintUsed = true;
+
+
+            const sharedWords =
+                getSharedWords(
+                    currentMysteryVector,
+                    currentCorrect.vector
+                );
+
+
+            hintBox.style.display =
+                "block";
+
+
+            if (
+                sharedWords.length > 0
+            ) {
+
+                hintBox.innerHTML = `
+
+                    💡 <strong>Detective Hint:</strong>
+
+                    The strongest candidate shares words such as:
+
+                    <strong>
+                        ${escapeHTML(
+                            sharedWords
+                                .slice(0, 5)
+                                .join(", ")
+                        )}
+                    </strong>
+
+                    <br><br>
+
+                    Using this hint reduces your
+                    potential score for this round.
+
+                `;
+
+            }
+
+            else {
+
+                hintBox.innerHTML = `
+
+                    💡 <strong>Detective Hint:</strong>
+
+                    Look carefully at the character
+                    descriptions. The correct answer has
+                    the highest cosine similarity.
+
+                `;
+
+            }
+
+
+            hintButton.disabled =
+                true;
+
+        }
+    );
+
+
+    // =========================================================
+    // SKIP
+    // =========================================================
+
+    skipButton.addEventListener(
+        "click",
+        function () {
+
+            if (
+                answered ||
+                skipUsed
+            ) {
+
+                return;
+
+            }
+
+
+            skipUsed = true;
+
+            hintButton.disabled =
+                true;
+
+            skipButton.disabled =
+                true;
+
+
+            stopTimer();
+
+
+            result.innerHTML = `
+
+                <div class="result-wrong">
+
+                    <h3>
+                        ⏭️ Case Skipped
+                    </h3>
+
+                    <p>
+                        The strongest textual match was
+                        <strong>
+                            ${escapeHTML(
+                                currentCorrect.name
+                            )}
+                        </strong>.
+                    </p>
+
+                </div>
+
+            `;
+
+
+            answered = true;
+
+            streak = 0;
+
+
+            const buttons =
+                choices.querySelectorAll(
+                    "button"
+                );
+
+
+            buttons.forEach(
+                button => {
+
+                    button.disabled =
+                        true;
+
+
+                    if (
+                        button.textContent ===
+                        currentCorrect.name
+                    ) {
+
+                        button.classList.add(
+                            "correct"
+                        );
+
+                    }
+
+                }
+            );
+
+
+            updateHUD();
+
+
+            nextRound.style.display =
+                "inline-block";
+
+        }
+    );
+
+
+    // =========================================================
+    // NEXT ROUND
     // =========================================================
 
     nextRound.addEventListener(
         "click",
         async function () {
 
+            if (
+                !answered
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                round >= TOTAL_ROUNDS
+            ) {
+
+                finishGame();
+
+                return;
+
+            }
+
+
+            round++;
+
+
+            skipUsed = false;
+
+
             loadingScreen.style.display =
-                "block";
-
-
-            choices.innerHTML = "";
+                "flex";
 
 
             status(
-                "Preparing the next round..."
+                "Preparing the next mystery..."
             );
 
 
@@ -906,6 +1588,259 @@ document.addEventListener("DOMContentLoaded", async function () {
     // START GAME
     // =========================================================
 
+    startGameButton.addEventListener(
+        "click",
+        async function () {
+
+            startScreen.style.display =
+                "none";
+
+
+            gameStarted = true;
+
+            round = 1;
+
+            score = 0;
+
+            lives = 3;
+
+            streak = 0;
+
+            bestStreak = 0;
+
+            correctAnswers = 0;
+
+
+            updateHUD();
+
+
+            await createRound();
+
+        }
+    );
+
+
+    // =========================================================
+    // PLAY AGAIN
+    // =========================================================
+
+    playAgainButton.addEventListener(
+        "click",
+        async function () {
+
+            finalScreen.style.display =
+                "none";
+
+
+            gameStarted = true;
+
+            round = 1;
+
+            score = 0;
+
+            lives = 3;
+
+            streak = 0;
+
+            bestStreak = 0;
+
+            correctAnswers = 0;
+
+
+            updateHUD();
+
+
+            await createRound();
+
+        }
+    );
+
+
+    // =========================================================
+    // FINAL SCREEN
+    // =========================================================
+
+    function finishGame() {
+
+        stopTimer();
+
+
+        gameStarted = false;
+
+
+        const accuracy =
+            round > 0
+                ? Math.round(
+                    (correctAnswers /
+                    Math.min(
+                        round,
+                        TOTAL_ROUNDS
+                    )) * 100
+                )
+                : 0;
+
+
+        let rank = "";
+
+
+        if (score >= 1200) {
+
+            rank =
+                "🦸 MARVEL MASTER";
+
+        }
+
+        else if (score >= 850) {
+
+            rank =
+                "🏆 SUPER DETECTIVE";
+
+        }
+
+        else if (score >= 550) {
+
+            rank =
+                "🕵️ ELITE AGENT";
+
+        }
+
+        else if (score >= 300) {
+
+            rank =
+                "🔎 FIELD DETECTIVE";
+
+        }
+
+        else {
+
+            rank =
+                "🛡️ S.H.I.E.L.D. TRAINEE";
+
+        }
+
+
+        document.getElementById(
+            "final-score"
+        ).textContent =
+            score;
+
+
+        document.getElementById(
+            "final-rank"
+        ).textContent =
+            rank;
+
+
+        document.getElementById(
+            "final-correct"
+        ).textContent =
+            correctAnswers;
+
+
+        document.getElementById(
+            "final-rounds"
+        ).textContent =
+            Math.min(
+                round,
+                TOTAL_ROUNDS
+            );
+
+
+        document.getElementById(
+            "final-streak"
+        ).textContent =
+            bestStreak;
+
+
+        document.getElementById(
+            "final-accuracy"
+        ).textContent =
+            accuracy + "%";
+
+
+        finalScreen.style.display =
+            "flex";
+
+    }
+
+
+    // =========================================================
+    // ERROR
+    // =========================================================
+
+    function showError(error) {
+
+        console.error(
+            "GAME ERROR:",
+            error
+        );
+
+
+        loadingScreen.style.display =
+            "flex";
+
+
+        loading.innerHTML = `
+
+            <div class="error-message">
+
+                <strong>
+                    Game error
+                </strong>
+
+                <br><br>
+
+                ${escapeHTML(
+                    error.message
+                )}
+
+            </div>
+
+        `;
+
+    }
+
+
+    // =========================================================
+    // HTML ESCAPE
+    // =========================================================
+
+    function escapeHTML(value) {
+
+        return String(value || "")
+
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+
+            .replace(
+                /</g,
+                "&lt;"
+            )
+
+            .replace(
+                />/g,
+                "&gt;"
+            )
+
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+    }
+
+
+    // =========================================================
+    // INITIAL DATA LOAD
+    // =========================================================
+
     try {
 
         status(
@@ -916,7 +1851,22 @@ document.addEventListener("DOMContentLoaded", async function () {
         await loadDataset();
 
 
-        await createRound();
+        /*
+         * Dataset is ready.
+         *
+         * Hide loading screen and show
+         * mission briefing.
+         */
+
+        loadingScreen.style.display =
+            "none";
+
+
+        startScreen.style.display =
+            "flex";
+
+
+        updateHUD();
 
     }
 

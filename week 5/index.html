@@ -1,2038 +1,700 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Marvel Text Detective</title>
 
     <style>
-
-        /* =====================================================
-           RESET
-        ===================================================== */
-
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
-
-
-        html {
-            scroll-behavior: smooth;
-        }
-
 
         body {
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            min-height: 100vh;
-
-            color: #f5f5f5;
-
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
             background:
-
-                radial-gradient(
-                    circle at 15% 15%,
-                    rgba(108, 53, 255, 0.18),
-                    transparent 30%
-                ),
-
-                radial-gradient(
-                    circle at 85% 20%,
-                    rgba(255, 48, 79, 0.15),
-                    transparent 30%
-                ),
-
-                radial-gradient(
-                    circle at 50% 100%,
-                    rgba(0, 217, 255, 0.08),
-                    transparent 35%
-                ),
-
-                #070711;
-
-            overflow-x: hidden;
+                radial-gradient(circle at top, #241010 0%, #090909 45%, #050505 100%);
+            color: #ffffff;
+            min-height: 100vh;
         }
 
-
-        button {
-            font-family: inherit;
-        }
-
-
-        /* =====================================================
-           BACKGROUND EFFECTS
-        ===================================================== */
-
-        .background-orb {
-
-            position: fixed;
-
-            border-radius: 50%;
-
-            filter: blur(5px);
-
-            opacity: 0.18;
-
-            pointer-events: none;
-
-            z-index: 0;
-
-            animation: floating 8s ease-in-out infinite;
-        }
-
-
-        .orb-1 {
-
-            width: 280px;
-            height: 280px;
-
-            background: #713cff;
-
-            top: 12%;
-            left: -120px;
-        }
-
-
-        .orb-2 {
-
-            width: 220px;
-            height: 220px;
-
-            background: #ff304f;
-
-            bottom: 10%;
-            right: -90px;
-
-            animation-delay: 2s;
-        }
-
-
-        .orb-3 {
-
-            width: 120px;
-            height: 120px;
-
-            background: #00d9ff;
-
-            top: 40%;
-            right: 15%;
-
-            animation-delay: 4s;
-        }
-
-
-        @keyframes floating {
-
-            0%, 100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-25px);
-            }
-
-        }
-
-
-        /* =====================================================
-           NAVIGATION
-        ===================================================== */
+        /* NAVBAR */
 
         nav {
-
-            height: 72px;
-
-            position: sticky;
-
-            top: 0;
-
-            z-index: 100;
-
+            height: 70px;
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
-
             padding: 0 6%;
-
-            background:
-                rgba(7, 7, 17, 0.86);
-
-            backdrop-filter: blur(16px);
-
-            border-bottom:
-                1px solid rgba(255,255,255,0.08);
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-
 
         .logo {
-
-            color: white;
-
-            text-decoration: none;
-
-            font-size: 20px;
-
+            font-size: 22px;
             font-weight: 900;
-
             letter-spacing: 2px;
+            color: #ffffff;
         }
-
 
         .logo span {
-            color: #ff304f;
+            color: #e62429;
         }
 
-
-        .back-home {
-
-            color: #aaa;
-
+        .back-link {
             text-decoration: none;
-
+            color: #cccccc;
             font-size: 14px;
-
-            transition: 0.3s;
+            font-weight: bold;
+            transition: 0.2s;
         }
 
-
-        .back-home:hover {
-            color: white;
+        .back-link:hover {
+            color: #e62429;
         }
 
-
-        /* =====================================================
-           MAIN CONTAINER
-        ===================================================== */
-
-        .game-wrapper {
-
-            position: relative;
-
-            z-index: 2;
-
-            width: min(1050px, 92%);
-
-            margin: 0 auto;
-
-            padding:
-                55px 0 80px;
-        }
-
-
-        /* =====================================================
-           HEADER
-        ===================================================== */
-
-        .game-header {
-
-            text-align: center;
-
-            margin-bottom: 35px;
-        }
-
-
-        .mission-label {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 8px;
-
-            padding: 8px 16px;
-
-            border-radius: 30px;
-
-            color: #ff6077;
-
-            background:
-                rgba(255,48,79,0.10);
-
-            border:
-                1px solid rgba(255,48,79,0.30);
-
-            font-size: 12px;
-
-            font-weight: 800;
-
-            letter-spacing: 2px;
-
-            margin-bottom: 18px;
-        }
-
-
-        .game-header h1 {
-
-            font-size:
-                clamp(42px, 7vw, 76px);
-
-            line-height: 0.95;
-
-            letter-spacing: -3px;
-
-            text-transform: uppercase;
-
-            margin-bottom: 15px;
-
-            background:
-
-                linear-gradient(
-                    90deg,
-                    #ffffff,
-                    #ff3655,
-                    #a86cff,
-                    #ffffff
-                );
-
-            background-size: 300%;
-
-            -webkit-background-clip: text;
-
-            -webkit-text-fill-color: transparent;
-
-            animation:
-                gradientMove 6s ease infinite;
-        }
-
-
-        @keyframes gradientMove {
-
-            0% {
-                background-position: 0%;
-            }
-
-            50% {
-                background-position: 100%;
-            }
-
-            100% {
-                background-position: 0%;
-            }
-
-        }
-
-
-        .game-header p {
-
-            max-width: 650px;
-
-            margin: auto;
-
-            color: #92929e;
-
-            line-height: 1.7;
-
-            font-size: 16px;
-        }
-
-
-        /* =====================================================
-           HUD
-        ===================================================== */
-
-        .hud {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
-            gap: 12px;
-
-            margin-bottom: 22px;
-        }
-
-
-        .hud-card {
-
-            padding: 16px;
-
-            border-radius: 15px;
-
-            text-align: center;
-
-            background:
-                rgba(255,255,255,0.045);
-
-            border:
-                1px solid rgba(255,255,255,0.08);
-
-            backdrop-filter: blur(12px);
-        }
-
-
-        .hud-icon {
-
-            font-size: 18px;
-
-            margin-bottom: 5px;
-        }
-
-
-        .hud-value {
-
-            font-size: 22px;
-
-            font-weight: 900;
-
-            color: white;
-        }
-
-
-        .hud-label {
-
-            margin-top: 4px;
-
-            font-size: 10px;
-
-            text-transform: uppercase;
-
-            letter-spacing: 1.5px;
-
-            color: #777783;
-        }
-
-
-        #lives {
-            color: #ff526b;
-        }
-
-
-        #streak {
-            color: #ffc857;
-        }
-
-
-        #timer {
-            color: #62dfff;
-        }
-
-
-        /* =====================================================
-           PROGRESS
-        ===================================================== */
-
-        .progress-area {
-
-            margin-bottom: 22px;
-        }
-
-
-        .progress-top {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            color: #777783;
-
-            font-size: 12px;
-
-            margin-bottom: 8px;
-        }
-
-
-        .progress-bar {
-
-            height: 7px;
-
-            background:
-                rgba(255,255,255,0.07);
-
-            border-radius: 20px;
-
-            overflow: hidden;
-        }
-
-
-        #progress-fill {
-
-            height: 100%;
-
-            width: 0%;
-
-            border-radius: inherit;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    #ff304f,
-                    #713cff
-                );
-
-            transition:
-                width 0.4s ease;
-        }
-
-
-        /* =====================================================
-           GAME CARD
-        ===================================================== */
-
-        .game-card {
-
-            position: relative;
-
-            padding: 42px;
-
-            border-radius: 26px;
-
-            background:
-
-                radial-gradient(
-                    circle at top right,
-                    rgba(108,53,255,0.12),
-                    transparent 35%
-                ),
-
-                linear-gradient(
-                    145deg,
-                    rgba(255,255,255,0.075),
-                    rgba(255,255,255,0.025)
-                );
-
-            border:
-                1px solid rgba(255,255,255,0.09);
-
-            box-shadow:
-                0 30px 90px rgba(0,0,0,0.35);
-
-            overflow: hidden;
-        }
-
-
-        .game-card::before {
-
-            content: "";
-
-            position: absolute;
-
-            width: 250px;
-            height: 250px;
-
-            border-radius: 50%;
-
-            border:
-                1px solid rgba(255,255,255,0.035);
-
-            right: -110px;
-            bottom: -140px;
-        }
-
-
-        /* =====================================================
-           LOADING SCREEN
-        ===================================================== */
+        /* LOADING */
 
         #loading-screen {
-
             position: fixed;
-
             inset: 0;
-
-            z-index: 1000;
-
+            background: #050505;
             display: flex;
-
-            align-items: center;
-
             justify-content: center;
-
-            padding: 20px;
-
-            background:
-                rgba(7,7,17,0.97);
-
-            backdrop-filter: blur(15px);
+            align-items: center;
+            z-index: 9999;
         }
-
 
         .loading-box {
-
-            width: min(500px, 90%);
-
-            padding: 40px;
-
             text-align: center;
-
-            border-radius: 24px;
-
-            background:
-                rgba(255,255,255,0.05);
-
-            border:
-                1px solid rgba(255,255,255,0.10);
-
-            box-shadow:
-                0 30px 80px rgba(0,0,0,0.5);
         }
 
-
-        .loading-icon {
-
-            font-size: 55px;
-
+        .loading-logo {
+            font-size: 40px;
+            font-weight: 900;
+            color: #e62429;
+            letter-spacing: 4px;
             margin-bottom: 20px;
-
-            animation:
-                detectivePulse 1.5s infinite;
         }
-
-
-        @keyframes detectivePulse {
-
-            0%,100% {
-                transform: scale(1);
-                opacity: 0.7;
-            }
-
-            50% {
-                transform: scale(1.15);
-                opacity: 1;
-            }
-
-        }
-
-
-        .loading-box h2 {
-
-            margin-bottom: 10px;
-
-            font-size: 25px;
-        }
-
 
         #loading {
-
-            color: #92929e;
-
-            line-height: 1.6;
-
-            font-size: 14px;
+            color: #bbbbbb;
+            font-size: 16px;
         }
 
+        /* START / FINAL OVERLAY */
 
-        /* =====================================================
-           QUESTION
-        ===================================================== */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 3, 3, 0.97);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 500;
+            padding: 20px;
+        }
 
-        .question-label {
+        .overlay-box {
+            max-width: 650px;
+            width: 100%;
+            text-align: center;
+            padding: 45px 35px;
+            border: 1px solid #3a3a3a;
+            border-radius: 20px;
+            background: linear-gradient(145deg, #171717, #0c0c0c);
+            box-shadow: 0 0 50px rgba(230, 36, 41, 0.15);
+        }
 
-            color: #a979ff;
+        .overlay-title {
+            color: #e62429;
+            font-size: 42px;
+            font-weight: 900;
+            margin: 0 0 10px;
+            letter-spacing: 2px;
+        }
 
-            text-transform: uppercase;
+        .overlay-subtitle {
+            color: #bbbbbb;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
 
-            font-size: 11px;
-
-            letter-spacing: 3px;
-
+        .start-button,
+        .play-again-button {
+            border: none;
+            background: #e62429;
+            color: white;
+            padding: 15px 35px;
+            border-radius: 10px;
+            font-size: 16px;
             font-weight: 800;
-
-            margin-bottom: 12px;
+            cursor: pointer;
+            transition: 0.2s;
         }
 
-
-        .question {
-
-            margin-bottom: 35px;
+        .start-button:hover,
+        .play-again-button:hover {
+            background: #ff3338;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(230, 36, 41, 0.35);
         }
 
+        /* GAME */
 
-        .question h2 {
-
-            font-size:
-                clamp(26px, 4vw, 40px);
-
-            line-height: 1.2;
-
-            margin-bottom: 12px;
+        .game-container {
+            width: min(1000px, 92%);
+            margin: 35px auto 60px;
         }
 
+        /* HUD */
 
-        .question-subtitle {
-
-            color: #8c8c98;
-
-            line-height: 1.6;
-
-            font-size: 14px;
+        .hud {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
-
-        .mystery-name {
-
-            color: #ff405c;
+        .hud-box {
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
         }
 
+        .hud-label {
+            color: #888;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
 
-        /* =====================================================
-           CHOICES
-        ===================================================== */
+        .hud-value {
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        #lives {
+            color: #ff4d52;
+        }
+
+        #streak {
+            color: #ffb000;
+        }
+
+        #timer {
+            color: #4ddcff;
+        }
+
+        /* PROGRESS */
+
+        .progress-area {
+            margin-bottom: 25px;
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: #aaa;
+            font-size: 13px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #252525;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        #progress-fill {
+            height: 100%;
+            width: 10%;
+            background: #e62429;
+            transition: width 0.3s ease;
+        }
+
+        /* MAIN CARD */
+
+        .game-card {
+            background: linear-gradient(145deg, #181818, #0e0e0e);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        /* TARGET CHARACTER */
+
+        .target-character {
+            text-align: center;
+            padding: 25px;
+            margin-bottom: 30px;
+            background: rgba(230, 36, 41, 0.06);
+            border: 1px solid rgba(230, 36, 41, 0.25);
+            border-radius: 16px;
+        }
+
+        .target-label {
+            display: block;
+            color: #e62429;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        #target-character {
+            margin: 0 0 10px;
+            font-size: 38px;
+            font-weight: 900;
+        }
+
+        .target-character p {
+            margin: 0;
+            color: #aaaaaa;
+            font-size: 15px;
+        }
+
+        /* CHOICES */
+
+        .choices-title {
+            color: #888;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+        }
 
         #choices {
-
             display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
+            grid-template-columns: repeat(2, 1fr);
             gap: 15px;
-
-            position: relative;
-
-            z-index: 3;
         }
-
 
         .choice-button {
-
-            position: relative;
-
-            min-height: 85px;
-
-            padding: 20px 22px;
-
-            border-radius: 16px;
-
-            border:
-                1px solid rgba(255,255,255,0.10);
-
-            background:
-                rgba(255,255,255,0.045);
-
-            color: white;
-
-            text-align: left;
-
-            font-size: 16px;
-
+            min-height: 75px;
+            padding: 18px;
+            background: #151515;
+            border: 1px solid #3a3a3a;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 17px;
             font-weight: 700;
-
             cursor: pointer;
-
-            transition:
-                transform 0.25s ease,
-                border-color 0.25s ease,
-                background 0.25s ease,
-                box-shadow 0.25s ease;
+            transition: all 0.2s ease;
         }
-
-
-        .choice-button::after {
-
-            content: "→";
-
-            position: absolute;
-
-            right: 20px;
-
-            top: 50%;
-
-            transform:
-                translateY(-50%);
-
-            color: #555563;
-
-            font-size: 20px;
-
-            transition: 0.25s;
-        }
-
 
         .choice-button:hover {
-
-            transform:
-                translateY(-4px);
-
-            border-color:
-                rgba(167,121,255,0.55);
-
-            background:
-                rgba(113,60,255,0.10);
-
-            box-shadow:
-                0 12px 30px rgba(0,0,0,0.25);
+            border-color: #e62429;
+            background: #211010;
+            transform: translateY(-2px);
         }
 
-
-        .choice-button:hover::after {
-            color: #a979ff;
-            right: 15px;
+        .choice-button.correct {
+            background: rgba(28, 150, 75, 0.2);
+            border-color: #38d77b;
+            color: #6ff0a2;
         }
 
+        .choice-button.wrong {
+            background: rgba(230, 36, 41, 0.15);
+            border-color: #e62429;
+            color: #ff6b6f;
+        }
 
         .choice-button:disabled {
             cursor: default;
         }
 
-
-        .choice-button.correct {
-
-            border-color:
-                #39e58c !important;
-
-            background:
-                rgba(57,229,140,0.12) !important;
-
-            color: #70f2ae;
-
-            box-shadow:
-                0 0 25px rgba(57,229,140,0.14);
-        }
-
-
-        .choice-button.correct::after {
-            content: "✓";
-            color: #39e58c;
-        }
-
-
-        .choice-button.wrong {
-
-            border-color:
-                #ff405c !important;
-
-            background:
-                rgba(255,64,92,0.11) !important;
-
-            color: #ff7186;
-
-            animation:
-                shake 0.35s ease;
-        }
-
-
-        .choice-button.wrong::after {
-            content: "×";
-            color: #ff405c;
-        }
-
-
-        @keyframes shake {
-
-            0%,100% {
-                transform: translateX(0);
-            }
-
-            25% {
-                transform: translateX(-7px);
-            }
-
-            75% {
-                transform: translateX(7px);
-            }
-
-        }
-
-
-        /* =====================================================
-           RESULT
-        ===================================================== */
-
-        #result {
-
-            margin-top: 28px;
-        }
-
-
-        .result-success,
-        .result-wrong {
-
-            padding: 24px;
-
-            border-radius: 17px;
-
-            margin-bottom: 15px;
-
-            animation:
-                resultAppear 0.4s ease;
-        }
-
-
-        .result-success {
-
-            background:
-                rgba(57,229,140,0.08);
-
-            border:
-                1px solid rgba(57,229,140,0.22);
-        }
-
-
-        .result-wrong {
-
-            background:
-                rgba(255,48,79,0.08);
-
-            border:
-                1px solid rgba(255,48,79,0.22);
-        }
-
-
-        .result-success h3 {
-            color: #4bea99;
-        }
-
-
-        .result-wrong h3 {
-            color: #ff6278;
-        }
-
-
-        .result-success h3,
-        .result-wrong h3 {
-
-            font-size: 22px;
-
-            margin-bottom: 8px;
-        }
-
-
-        .result-success p,
-        .result-wrong p {
-
-            color: #aaa;
-
-            line-height: 1.6;
-        }
-
-
-        @keyframes resultAppear {
-
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-        }
-
-
-        /* =====================================================
-           SIMILARITY PANEL
-        ===================================================== */
-
-        .similarity-result {
-
-            padding: 24px;
-
-            border-radius: 17px;
-
-            background:
-                rgba(255,255,255,0.035);
-
-            border:
-                1px solid rgba(255,255,255,0.07);
-
-            animation:
-                resultAppear 0.5s ease;
-        }
-
-
-        .similarity-result p {
-
-            color: #aaa;
-
-            line-height: 1.7;
-
-            margin-bottom: 8px;
-        }
-
-
-        .similarity-result strong {
-            color: white;
-        }
-
-
-        .score-highlight {
-            color: #62dfff;
-            font-weight: 900;
-        }
-
-
-        details {
-
-            margin-top: 18px;
-
-            padding-top: 15px;
-
-            border-top:
-                1px solid rgba(255,255,255,0.07);
-        }
-
-
-        summary {
-
-            cursor: pointer;
-
-            color: #a979ff;
-
-            font-weight: 700;
-
-            font-size: 14px;
-        }
-
-
-        details p {
-            margin-top: 12px;
-        }
-
-
-        /* =====================================================
-           BUTTONS
-        ===================================================== */
-
-        .action-row {
-
-            display: flex;
-
-            justify-content: center;
-
-            gap: 12px;
-
-            flex-wrap: wrap;
-
-            margin-top: 25px;
-        }
-
-
-        .game-button {
-
-            border: none;
-
-            border-radius: 12px;
-
-            padding: 14px 25px;
-
-            font-size: 14px;
-
-            font-weight: 800;
-
-            cursor: pointer;
-
-            transition: 0.3s;
-        }
-
-
-        .primary-button {
-
-            color: white;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #ff304f,
-                    #b522ff
-                );
-
-            box-shadow:
-                0 10px 30px rgba(255,48,79,0.20);
-        }
-
-
-        .primary-button:hover {
-
-            transform:
-                translateY(-3px);
-
-            box-shadow:
-                0 15px 35px rgba(255,48,79,0.35);
-        }
-
-
-        .secondary-button {
-
-            color: white;
-
-            background:
-                rgba(255,255,255,0.06);
-
-            border:
-                1px solid rgba(255,255,255,0.10);
-        }
-
-
-        .secondary-button:hover {
-
-            background:
-                rgba(255,255,255,0.10);
-
-            transform:
-                translateY(-3px);
-        }
-
-
-        #next-round {
-            display: none;
-        }
-
-
-        /* =====================================================
-           POWERUPS
-        ===================================================== */
+        /* POWER UPS */
 
         .powerups {
-
             display: flex;
-
-            justify-content: center;
-
-            gap: 10px;
-
-            margin-top: 22px;
+            gap: 12px;
+            margin-top: 20px;
         }
 
-
-        .powerup {
-
-            padding: 9px 14px;
-
+        .powerup-button {
+            flex: 1;
+            padding: 13px;
+            background: #101010;
+            border: 1px solid #383838;
+            color: #ddd;
             border-radius: 10px;
-
-            color: #aaa;
-
-            background:
-                rgba(255,255,255,0.035);
-
-            border:
-                1px solid rgba(255,255,255,0.07);
-
             cursor: pointer;
-
-            font-size: 12px;
-
             font-weight: 700;
-
-            transition: 0.25s;
+            transition: 0.2s;
         }
 
-
-        .powerup:hover {
-
+        .powerup-button:hover:not(:disabled) {
+            border-color: #e62429;
             color: white;
-
-            border-color:
-                rgba(167,121,255,0.45);
         }
 
-
-        .powerup:disabled {
-
+        .powerup-button:disabled {
             opacity: 0.35;
-
             cursor: not-allowed;
         }
 
-
-        /* =====================================================
-           HINT
-        ===================================================== */
+        /* HINT */
 
         #hint-box {
-
             display: none;
-
             margin-top: 18px;
-
-            padding: 16px 20px;
-
-            border-radius: 14px;
-
-            background:
-                rgba(98,223,255,0.06);
-
-            border:
-                1px solid rgba(98,223,255,0.18);
-
-            color: #a6eafa;
-
-            font-size: 14px;
-
+            padding: 16px;
+            border-radius: 10px;
+            background: rgba(255, 176, 0, 0.08);
+            border: 1px solid rgba(255, 176, 0, 0.35);
+            color: #ffd56b;
             line-height: 1.6;
+            font-size: 14px;
         }
 
+        /* RESULT */
 
-        /* =====================================================
-           START SCREEN
-        ===================================================== */
-
-        #start-screen {
-
-            position: fixed;
-
-            inset: 0;
-
-            z-index: 900;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
+        #result {
+            margin-top: 25px;
             padding: 20px;
-
-            background:
-                rgba(7,7,17,0.97);
-
-            backdrop-filter: blur(18px);
-        }
-
-
-        .start-card {
-
-            width: min(650px, 92%);
-
-            padding: 45px;
-
-            text-align: center;
-
-            border-radius: 28px;
-
-            background:
-
-                radial-gradient(
-                    circle at top,
-                    rgba(113,60,255,0.15),
-                    transparent 55%
-                ),
-
-                rgba(255,255,255,0.045);
-
-            border:
-                1px solid rgba(255,255,255,0.10);
-
-            box-shadow:
-                0 35px 100px rgba(0,0,0,0.55);
-        }
-
-
-        .start-icon {
-
-            font-size: 70px;
-
-            margin-bottom: 15px;
-        }
-
-
-        .start-card .small-label {
-
-            color: #ff526b;
-
-            text-transform: uppercase;
-
-            letter-spacing: 3px;
-
-            font-size: 11px;
-
-            font-weight: 800;
-
-            margin-bottom: 12px;
-        }
-
-
-        .start-card h2 {
-
-            font-size:
-                clamp(32px, 6vw, 54px);
-
-            margin-bottom: 15px;
-        }
-
-
-        .start-card p {
-
-            color: #92929e;
-
-            line-height: 1.7;
-
-            margin-bottom: 25px;
-        }
-
-
-        .rules {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 10px;
-
-            margin-bottom: 28px;
-        }
-
-
-        .rule {
-
-            padding: 15px 10px;
-
             border-radius: 12px;
-
-            background:
-                rgba(255,255,255,0.035);
-
-            border:
-                1px solid rgba(255,255,255,0.06);
-        }
-
-
-        .rule strong {
-
-            display: block;
-
-            color: white;
-
-            font-size: 18px;
-
-            margin-bottom: 5px;
-        }
-
-
-        .rule span {
-
-            color: #777783;
-
-            font-size: 10px;
-
-            text-transform: uppercase;
-
-            letter-spacing: 1px;
-        }
-
-
-        /* =====================================================
-           FINAL SCREEN
-        ===================================================== */
-
-        #final-screen {
-
             display: none;
-
-            position: fixed;
-
-            inset: 0;
-
-            z-index: 950;
-
-            align-items: center;
-
-            justify-content: center;
-
-            padding: 20px;
-
-            background:
-                rgba(7,7,17,0.97);
-
-            backdrop-filter: blur(18px);
+            line-height: 1.7;
+            background: #111;
+            border: 1px solid #333;
         }
 
-
-        .final-card {
-
-            width: min(600px, 92%);
-
-            padding: 45px;
-
-            text-align: center;
-
-            border-radius: 28px;
-
-            background:
-
-                radial-gradient(
-                    circle at top,
-                    rgba(255,48,79,0.14),
-                    transparent 50%
-                ),
-
-                rgba(255,255,255,0.045);
-
-            border:
-                1px solid rgba(255,255,255,0.10);
+        .result-correct {
+            border-color: #38d77b !important;
         }
 
-
-        .final-icon {
-
-            font-size: 65px;
-
-            margin-bottom: 15px;
+        .result-wrong {
+            border-color: #e62429 !important;
         }
 
-
-        .final-card h2 {
-
-            font-size: 40px;
-
-            margin-bottom: 10px;
-        }
-
-
-        .rank {
-
-            color: #ff405c;
-
-            font-size: 20px;
-
+        .result-title {
+            font-size: 21px;
             font-weight: 900;
-
-            margin-bottom: 20px;
+            margin-bottom: 8px;
         }
 
+        .similarity {
+            font-size: 26px;
+            font-weight: 900;
+            color: #4ddcff;
+            margin: 10px 0;
+        }
+
+        .result-explanation {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* NEXT BUTTON */
+
+        #next-round {
+            display: none;
+            width: 100%;
+            margin-top: 18px;
+            padding: 15px;
+            border: none;
+            background: #e62429;
+            color: white;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        #next-round:hover {
+            background: #ff3338;
+        }
+
+        /* FINAL */
+
+        .final-rank {
+            font-size: 34px;
+            color: #e62429;
+            font-weight: 900;
+            margin: 15px 0;
+        }
 
         .final-score {
-
             font-size: 55px;
-
             font-weight: 900;
-
-            color: #62dfff;
-
-            margin-bottom: 5px;
+            margin: 10px 0 30px;
         }
-
-
-        .final-label {
-
-            color: #777783;
-
-            text-transform: uppercase;
-
-            letter-spacing: 2px;
-
-            font-size: 10px;
-
-            margin-bottom: 25px;
-        }
-
 
         .final-stats {
-
             display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
+            grid-template-columns: repeat(4, 1fr);
             gap: 10px;
-
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
-
 
         .final-stat {
-
             padding: 15px;
-
-            border-radius: 12px;
-
-            background:
-                rgba(255,255,255,0.04);
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 10px;
         }
 
-
-        .final-stat strong {
-
+        .final-stat-number {
             display: block;
-
-            font-size: 20px;
-
-            color: white;
-
+            font-size: 22px;
+            font-weight: 900;
             margin-bottom: 5px;
         }
 
-
-        .final-stat span {
-
-            color: #777783;
-
-            font-size: 10px;
-
+        .final-stat-label {
+            color: #888;
+            font-size: 11px;
             text-transform: uppercase;
-
-            letter-spacing: 1px;
         }
 
-
-        /* =====================================================
-           ERROR
-        ===================================================== */
-
-        .error-message {
-
-            color: #ff7186;
-
-            padding: 20px;
-
-            border-radius: 15px;
-
-            background:
-                rgba(255,48,79,0.08);
-
-            border:
-                1px solid rgba(255,48,79,0.20);
-
-            line-height: 1.6;
-        }
-
-
-        /* =====================================================
-           RESPONSIVE
-        ===================================================== */
+        /* RESPONSIVE */
 
         @media (max-width: 700px) {
-
-            .game-wrapper {
-                padding-top: 35px;
-            }
-
-
             .hud {
-                grid-template-columns:
-                    repeat(2, 1fr);
+                grid-template-columns: repeat(2, 1fr);
             }
-
-
-            .game-card {
-                padding: 27px 20px;
-            }
-
 
             #choices {
                 grid-template-columns: 1fr;
             }
 
-
-            .rules {
-                grid-template-columns: 1fr;
+            .game-card {
+                padding: 20px;
             }
 
-
-            .start-card,
-            .final-card {
-                padding: 30px 20px;
+            #target-character {
+                font-size: 28px;
             }
 
-
-            .game-header h1 {
-                letter-spacing: -2px;
+            .final-stats {
+                grid-template-columns: repeat(2, 1fr);
             }
 
+            .overlay-title {
+                font-size: 32px;
+            }
         }
-
-
-        @media (max-width: 450px) {
-
-            nav {
-                padding: 0 20px;
-            }
-
-
-            .logo {
-                font-size: 16px;
-            }
-
-
-            .back-home {
-                font-size: 12px;
-            }
-
-
-            .hud-value {
-                font-size: 19px;
-            }
-
-        }
-
     </style>
-
 </head>
-
 
 <body>
 
+    <!-- LOADING SCREEN -->
 
-<!-- =========================================================
-     BACKGROUND
-========================================================= -->
-
-<div class="background-orb orb-1"></div>
-<div class="background-orb orb-2"></div>
-<div class="background-orb orb-3"></div>
-
-
-<!-- =========================================================
-     NAVIGATION
-========================================================= -->
-
-<nav>
-
-    <a href="../index.html" class="logo">
-        MARVEL<span>•</span>GRAPH
-    </a>
-
-    <a href="../index.html" class="back-home">
-        ← Back to Project
-    </a>
-
-</nav>
-
-
-<!-- =========================================================
-     LOADING SCREEN
-========================================================= -->
-
-<div id="loading-screen">
-
-    <div class="loading-box">
-
-        <div class="loading-icon">
-            🕵️
+    <div id="loading-screen">
+        <div class="loading-box">
+            <div class="loading-logo">MARVEL</div>
+            <div id="loading">Loading Marvel dataset...</div>
         </div>
-
-        <h2>
-            Preparing Detective Mode
-        </h2>
-
-        <p id="loading">
-            Starting Marvel Text Detective...
-        </p>
-
     </div>
 
-</div>
-
-
-<!-- =========================================================
-     START SCREEN
-========================================================= -->
-
-<div id="start-screen" style="display:none;">
-
-    <div class="start-card">
-
-        <div class="start-icon">
-            🕵️‍♀️
-        </div>
-
-        <div class="small-label">
-            SPECIAL MISSION
-        </div>
-
-        <h2>
-            Marvel Text Detective
-        </h2>
-
-        <p>
-            A mystery Marvel character is hiding in the
-            dataset. Analyze the textual clues and identify
-            the character whose Wikipedia page is most
-            similar to the mystery page.
-        </p>
-
-
-        <div class="rules">
-
-            <div class="rule">
-                <strong>10</strong>
-                <span>Rounds</span>
-            </div>
-
-            <div class="rule">
-                <strong>3 ❤️</strong>
-                <span>Lives</span>
-            </div>
-
-            <div class="rule">
-                <strong>30s</strong>
-                <span>Per Round</span>
-            </div>
-
-        </div>
-
-
-        <button
-            id="start-game"
-            class="game-button primary-button"
-        >
-            🚀 START MISSION
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- =========================================================
-     FINAL SCREEN
-========================================================= -->
-
-<div id="final-screen">
-
-    <div class="final-card">
-
-        <div class="final-icon">
-            🏆
-        </div>
-
-        <h2>
-            Mission Complete
-        </h2>
-
-        <div
-            id="final-rank"
-            class="rank"
-        >
-            Marvel Detective
-        </div>
-
-
-        <div
-            id="final-score"
-            class="final-score"
-        >
-            0
-        </div>
-
-        <div class="final-label">
-            Total Score
-        </div>
-
-
-        <div class="final-stats">
-
-            <div class="final-stat">
-
-                <strong id="final-correct">
-                    0
-                </strong>
-
-                <span>
-                    Correct
-                </span>
-
-            </div>
-
-
-            <div class="final-stat">
-
-                <strong id="final-rounds">
-                    0
-                </strong>
-
-                <span>
-                    Rounds
-                </span>
-
-            </div>
-
-
-            <div class="final-stat">
-
-                <strong id="final-streak">
-                    0
-                </strong>
-
-                <span>
-                    Best Streak
-                </span>
-
-            </div>
-
-
-            <div class="final-stat">
-
-                <strong id="final-accuracy">
-                    0%
-                </strong>
-
-                <span>
-                    Accuracy
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <button
-            id="play-again"
-            class="game-button primary-button"
-        >
-            🔄 PLAY AGAIN
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- =========================================================
-     GAME
-========================================================= -->
-
-<div class="game-wrapper">
-
-
-    <!-- HEADER -->
-
-    <header class="game-header">
-
-        <div class="mission-label">
-            🕵️ NLP · SPECIAL MISSION
-        </div>
-
-        <h1>
-            Text Detective
-        </h1>
-
-        <p>
-            Use textual similarity to uncover the hidden
-            Marvel character.
-        </p>
-
-    </header>
-
-
-    <!-- HUD -->
-
-    <section class="hud">
-
-
-        <div class="hud-card">
-
-            <div class="hud-icon">
-                ⭐
-            </div>
-
-            <div
-                id="score"
-                class="hud-value"
-            >
-                0
-            </div>
-
-            <div class="hud-label">
-                Score
-            </div>
-
-        </div>
-
-
-        <div class="hud-card">
-
-            <div class="hud-icon">
-                ❤️
-            </div>
-
-            <div
-                id="lives"
-                class="hud-value"
-            >
-                ❤️❤️❤️
-            </div>
-
-            <div class="hud-label">
-                Lives
-            </div>
-
-        </div>
-
-
-        <div class="hud-card">
-
-            <div class="hud-icon">
-                🔥
-            </div>
-
-            <div
-                id="streak"
-                class="hud-value"
-            >
-                0
-            </div>
-
-            <div class="hud-label">
-                Streak
-            </div>
-
-        </div>
-
-
-        <div class="hud-card">
-
-            <div class="hud-icon">
-                ⏱️
-            </div>
-
-            <div
-                id="timer"
-                class="hud-value"
-            >
-                30
-            </div>
-
-            <div class="hud-label">
-                Seconds
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- PROGRESS -->
-
-    <section class="progress-area">
-
-        <div class="progress-top">
-
-            <span id="round-label">
-                ROUND 1 / 10
-            </span>
-
-            <span>
-                Mission Progress
-            </span>
-
-        </div>
-
-
-        <div class="progress-bar">
-
-            <div id="progress-fill"></div>
-
-        </div>
-
-    </section>
-
-
-    <!-- GAME CARD -->
-
-    <section class="game-card">
-
-
-        <!-- QUESTION -->
-
-        <div class="question">
-
-            <div class="question-label">
-                CLASSIFIED CHARACTER
-            </div>
-
-
-            <h2>
-
-                Which character has the
-                <span class="mystery-name">
-                    most similar
-                </span>
-                Wikipedia page?
-
-            </h2>
-
-
-            <p class="question-subtitle">
-
-                Four characters are shown below.
-                Select the one with the highest
-                textual similarity to the mystery character.
-
+    <!-- START SCREEN -->
+
+    <div id="start-screen" class="overlay" style="display:none;">
+        <div class="overlay-box">
+            <div class="overlay-title">TEXT DETECTIVE</div>
+
+            <p class="overlay-subtitle">
+                Analyze Marvel Wikipedia pages using NLP and cosine similarity.
+                <br><br>
+                You will see a target character and four possible answers.
+                Your mission is to identify the character whose Wikipedia page
+                is most textually similar.
+                <br><br>
+                You have <strong>3 lives</strong> and <strong>30 seconds</strong>
+                per round.
             </p>
 
+            <button id="start-game" class="start-button">
+                START MISSION
+            </button>
         </div>
+    </div>
 
+    <!-- FINAL SCREEN -->
 
-        <!-- ANSWERS -->
+    <div id="final-screen" class="overlay" style="display:none;">
+        <div class="overlay-box">
 
-        <div id="choices"></div>
+            <div class="overlay-title">MISSION COMPLETE</div>
 
+            <div id="final-rank" class="final-rank">
+                S.H.I.E.L.D. TRAINEE
+            </div>
 
-        <!-- HINT -->
+            <div id="final-score" class="final-score">
+                0
+            </div>
 
-        <div id="hint-box"></div>
+            <div class="final-stats">
 
+                <div class="final-stat">
+                    <span id="final-correct" class="final-stat-number">0</span>
+                    <span class="final-stat-label">Correct</span>
+                </div>
 
-        <!-- POWERUPS -->
+                <div class="final-stat">
+                    <span id="final-rounds" class="final-stat-number">0</span>
+                    <span class="final-stat-label">Rounds</span>
+                </div>
 
-        <div class="powerups">
+                <div class="final-stat">
+                    <span id="final-streak" class="final-stat-number">0</span>
+                    <span class="final-stat-label">Best Streak</span>
+                </div>
 
-            <button
-                id="hint-button"
-                class="powerup"
-            >
-                💡 Hint
+                <div class="final-stat">
+                    <span id="final-accuracy" class="final-stat-number">0%</span>
+                    <span class="final-stat-label">Accuracy</span>
+                </div>
+
+            </div>
+
+            <button id="play-again" class="play-again-button">
+                PLAY AGAIN
             </button>
 
-            <button
-                id="skip-button"
-                class="powerup"
-            >
-                ⏭️ Skip
-            </button>
+        </div>
+    </div>
+
+    <!-- NAVIGATION -->
+
+    <nav>
+        <div class="logo">
+            MARVEL<span>•</span>GRAPH
+        </div>
+
+        <a href="../index.html" class="back-link">
+            ← BACK TO PROJECT
+        </a>
+    </nav>
+
+    <!-- GAME -->
+
+    <main class="game-container">
+
+        <!-- HUD -->
+
+        <div class="hud">
+
+            <div class="hud-box">
+                <div class="hud-label">Score</div>
+                <div id="score" class="hud-value">0</div>
+            </div>
+
+            <div class="hud-box">
+                <div class="hud-label">Lives</div>
+                <div id="lives" class="hud-value">❤️❤️❤️</div>
+            </div>
+
+            <div class="hud-box">
+                <div class="hud-label">Streak</div>
+                <div id="streak" class="hud-value">0</div>
+            </div>
+
+            <div class="hud-box">
+                <div class="hud-label">Time</div>
+                <div id="timer" class="hud-value">30</div>
+            </div>
 
         </div>
 
+        <!-- PROGRESS -->
 
-        <!-- RESULT -->
+        <div class="progress-area">
 
-        <div id="result"></div>
+            <div class="progress-top">
+                <span id="round-label">ROUND 1 / 10</span>
+                <span>TEXT DETECTIVE</span>
+            </div>
 
-
-        <!-- NEXT ROUND -->
-
-        <div class="action-row">
-
-            <button
-                id="next-round"
-                class="game-button primary-button"
-            >
-                NEXT MISSION →
-            </button>
+            <div class="progress-bar">
+                <div id="progress-fill"></div>
+            </div>
 
         </div>
 
+        <!-- GAME CARD -->
 
-    </section>
+        <section class="game-card">
 
+            <!-- TARGET CHARACTER -->
 
-</div>
+            <div class="target-character">
 
+                <span class="target-label">
+                    TARGET CHARACTER
+                </span>
 
-<!-- =========================================================
-     JSZip
-========================================================= -->
+                <h2 id="target-character">
+                    Loading...
+                </h2>
 
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js">
-</script>
+                <p>
+                    Which character has the most similar Wikipedia page?
+                </p>
 
+            </div>
 
-<!-- =========================================================
-     GAME JS
-========================================================= -->
+            <!-- ANSWERS -->
 
-<script src="game.js"></script>
+            <div class="choices-title">
+                Choose the most textually similar character
+            </div>
 
+            <div id="choices"></div>
+
+            <!-- POWER UPS -->
+
+            <div class="powerups">
+
+                <button id="hint-button" class="powerup-button">
+                    💡 HINT
+                </button>
+
+                <button id="skip-button" class="powerup-button">
+                    ⏭️ SKIP
+                </button>
+
+            </div>
+
+            <!-- HINT -->
+
+            <div id="hint-box"></div>
+
+            <!-- RESULT -->
+
+            <div id="result"></div>
+
+            <!-- NEXT -->
+
+            <button id="next-round">
+                NEXT ROUND →
+            </button>
+
+        </section>
+
+    </main>
+
+    <!-- JSZIP -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <!-- GAME SCRIPT -->
+
+    <script src="game.js"></script>
 
 </body>
-
 </html>

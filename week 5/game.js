@@ -1,1212 +1,1068 @@
 // ============================================================
 // MARVEL TEXT DETECTIVE
-// Week 5 - Social Interactions and Graphs
+// Week 5 - Social Graphs
 // ============================================================
 
-const ZIP_URL = "../marvel_pages.zip";
-const NODES_URL = "../week1_nodes.tsv";
-const EDGES_URL = "../week1_edges.tsv";
+document.addEventListener("DOMContentLoaded", function () {
 
-const STOPWORDS = new Set(`
-a about above after again against all am an and any are as at be because been
-before being below between both but by can could did do does doing down during
-each few for from further had has have having he her here hers herself him
-himself his how i if in into is it its itself just me more most my myself no
-nor not of off on once only or other our ours ourselves out over own same she
-should so some such than that the their theirs them themselves then there
-these they this those through to too under until up very was we were what when
-where which while who whom why will with would you your yours yourself yourselves
-the page pages character characters marvel comics comic wikipedia wiki
-`.trim().split(/\s+/));
+    const loading = document.getElementById("loading");
+    const mysteryCharacter =
+        document.getElementById("mystery-character");
+    const choices =
+        document.getElementById("choices");
+    const result =
+        document.getElementById("result");
+    const nextButton =
+        document.getElementById("next-round");
 
-let characters = [];
-let pages = {};
-let edges = [];
-let currentRound = null;
-let score = 0;
-let roundNumber = 0;
+    let characters = [];
+    let pages = {};
+    let vectors = {};
+    let currentCharacter = null;
+    let currentRound = 0;
+    let score = 0;
+
+    const TOTAL_ROUNDS = 5;
 
 
-// ============================================================
-// UTILITY
-// ============================================================
+    // ========================================================
+    // STOPWORDS
+    // ========================================================
 
-function normalizeName(name) {
-    if (!name) return "";
+    const STOPWORDS = new Set([
 
-    try {
-        return decodeURIComponent(String(name))
-            .replace(/_/g, " ")
+        "the", "and", "for", "that", "with",
+        "this", "from", "were", "was", "are",
+        "his", "her", "their", "have", "has",
+        "had", "not", "but", "which", "who",
+        "into", "also", "been", "being", "they",
+        "them", "than", "then", "when", "where",
+        "about", "after", "before", "during",
+        "while", "there", "these", "those",
+        "more", "most", "other", "some",
+        "such", "only", "very", "known",
+        "will", "would", "could", "should",
+        "may", "might", "can", "one", "two",
+        "three", "first", "second", "new",
+        "use", "used", "using"
+
+    ]);
+
+
+    // ========================================================
+    // NORMALIZE NAMES
+    // ========================================================
+
+    function normalizeName(name) {
+
+        return name
+            .toLowerCase()
             .replace(/\.(html?|txt)$/i, "")
-            .trim()
-            .toLowerCase();
-    } catch {
-        return String(name)
-            .replace(/_/g, " ")
-            .replace(/\.(html?|txt)$/i, "")
-            .trim()
-            .toLowerCase();
-    }
-}
+            .replace(/[_-]/g, " ")
+            .replace(/\s+/g, " ")
+            .trim();
 
-
-function cleanText(html) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
-
-    doc.querySelectorAll(
-        "script, style, nav, footer, header, table, svg, noscript"
-    ).forEach(el => el.remove());
-
-    return doc.body ? doc.body.innerText : "";
-}
-
-
-function tokenize(text) {
-    return text
-        .toLowerCase()
-        .replace(/[^a-z0-9\s'-]/g, " ")
-        .split(/\s+/)
-        .map(w => w.replace(/^[-']+|[-']+$/g, ""))
-        .filter(w =>
-            w.length >= 3 &&
-            !STOPWORDS.has(w) &&
-            !/^\d+$/.test(w)
-        );
-}
-
-
-function wordFrequency(tokens) {
-    const counts = new Map();
-
-    for (const word of tokens) {
-        counts.set(word, (counts.get(word) || 0) + 1);
     }
 
-    return counts;
-}
 
+    // ========================================================
+    // CLEAN HTML
+    // ========================================================
 
-function cosineSimilarity(freqA, freqB) {
-    let dot = 0;
-    let normA = 0;
-    let normB = 0;
+    function cleanText(text) {
 
-    for (const value of freqA.values()) {
-        normA += value * value;
+        return text
+            .replace(/<script[\s\S]*?<\/script>/gi, " ")
+            .replace(/<style[\s\S]*?<\/style>/gi, " ")
+            .replace(/<[^>]*>/g, " ")
+            .replace(/&nbsp;/gi, " ")
+            .replace(/&amp;/gi, " and ")
+            .replace(/&#39;/gi, "'")
+            .replace(/&quot;/gi, '"')
+            .replace(/\s+/g, " ");
+
     }
 
-    for (const value of freqB.values()) {
-        normB += value * value;
-    }
 
-    for (const [word, value] of freqA.entries()) {
-        if (freqB.has(word)) {
-            dot += value * freqB.get(word);
-        }
-    }
+    // ========================================================
+    // BAG OF WORDS
+    // ========================================================
 
-    if (normA === 0 || normB === 0) {
-        return 0;
-    }
+    function makeVector(text) {
 
-    return dot / (Math.sqrt(normA) * Math.sqrt(normB));
-}
+        const cleaned =
+            cleanText(text)
+                .toLowerCase()
+                .replace(/[^a-z0-9\s]/g, " ");
 
 
-function getSharedWords(freqA, freqB, limit = 8) {
-    const shared = [];
-
-    for (const [word, countA] of freqA.entries()) {
-        if (freqB.has(word)) {
-            shared.push({
-                word,
-                score: countA + freqB.get(word)
-            });
-        }
-    }
-
-    return shared
-        .sort((a, b) => b.score - a.score)
-        .slice(0, limit)
-        .map(x => x.word);
-}
+        const words =
+            cleaned
+                .split(/\s+/)
+                .filter(word =>
+                    word.length >= 3 &&
+                    !STOPWORDS.has(word)
+                );
 
 
-function randomItem(array) {
-    return array[Math.floor(Math.random() * array.length)];
-}
+        const vector = {};
 
+        for (const word of words) {
 
-function shuffle(array) {
-    return [...array].sort(() => Math.random() - 0.5);
-}
+            vector[word] =
+                (vector[word] || 0) + 1;
 
-
-// ============================================================
-// TSV LOADING
-// ============================================================
-
-async function loadTSV(url) {
-
-    const response = await fetch(url);
-
-    if (!response.ok) {
-        throw new Error(`Could not load ${url}`);
-    }
-
-    const text = await response.text();
-
-    const lines = text
-        .trim()
-        .split(/\r?\n/)
-        .filter(line => line.trim());
-
-    if (!lines.length) {
-        return [];
-    }
-
-    const headers = lines[0]
-        .split("\t")
-        .map(x => x.trim());
-
-    return lines.slice(1).map(line => {
-
-        const values = line.split("\t");
-        const row = {};
-
-        headers.forEach((header, i) => {
-            row[header] = values[i] ?? "";
-        });
-
-        return row;
-    });
-}
-
-
-// ============================================================
-// LOAD MARVEL PAGES
-// ============================================================
-
-async function loadMarvelPages() {
-
-    if (typeof JSZip === "undefined") {
-        throw new Error(
-            "JSZip was not loaded. Check the JSZip script in index.html."
-        );
-    }
-
-    const response = await fetch(ZIP_URL);
-
-    if (!response.ok) {
-        throw new Error(
-            `Could not load ${ZIP_URL}.`
-        );
-    }
-
-    const blob = await response.blob();
-
-    const zip = await JSZip.loadAsync(blob);
-
-    const fileNames = Object.keys(zip.files);
-
-    let loaded = 0;
-
-    for (const fileName of fileNames) {
-
-        const file = zip.files[fileName];
-
-        if (file.dir) continue;
-
-        if (!/\.(html?|txt)$/i.test(fileName)) {
-            continue;
         }
 
-        try {
+        return vector;
 
-            const html = await file.async("text");
+    }
 
-            const clean = cleanText(html);
 
-            if (clean.length <= 200) {
-                continue;
+    // ========================================================
+    // COSINE SIMILARITY
+    // ========================================================
+
+    function cosineSimilarity(a, b) {
+
+        let dot = 0;
+        let normA = 0;
+        let normB = 0;
+
+
+        for (const word in a) {
+
+            normA +=
+                a[word] * a[word];
+
+
+            if (b[word]) {
+
+                dot +=
+                    a[word] * b[word];
+
             }
 
+        }
+
+
+        for (const word in b) {
+
+            normB +=
+                b[word] * b[word];
+
+        }
+
+
+        if (
+            normA === 0 ||
+            normB === 0
+        ) {
+
+            return 0;
+
+        }
+
+
+        return (
+            dot /
+            (
+                Math.sqrt(normA) *
+                Math.sqrt(normB)
+            )
+        );
+
+    }
+
+
+    // ========================================================
+    // SHARED WORDS
+    // ========================================================
+
+    function getSharedWords(a, b) {
+
+        const shared = [];
+
+
+        for (const word in a) {
+
+            if (
+                b[word] &&
+                !STOPWORDS.has(word)
+            ) {
+
+                shared.push({
+
+                    word: word,
+
+                    score:
+                        a[word] *
+                        b[word]
+
+                });
+
+            }
+
+        }
+
+
+        shared.sort(
+            (x, y) =>
+                y.score - x.score
+        );
+
+
+        return shared
+            .slice(0, 8)
+            .map(x => x.word);
+
+    }
+
+
+    // ========================================================
+    // LOAD TSV
+    // ========================================================
+
+    async function loadTSV(path) {
+
+        const response =
+            await fetch(path);
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Could not load " +
+                path +
+                " (" +
+                response.status +
+                ")"
+            );
+
+        }
+
+
+        return await response.text();
+
+    }
+
+
+    // ========================================================
+    // PARSE NODE FILE
+    // ========================================================
+
+    function parseNodes(text) {
+
+        const lines =
+            text
+                .trim()
+                .split(/\r?\n/);
+
+
+        console.log(
+            "Node header:",
+            lines[0]
+        );
+
+
+        const header =
+            lines[0]
+                .split("\t")
+                .map(x => x.trim().toLowerCase());
+
+
+        let nameIndex =
+            header.indexOf("name");
+
+
+        if (nameIndex === -1) {
+
+            nameIndex =
+                header.indexOf("label");
+
+        }
+
+
+        if (nameIndex === -1) {
+
+            nameIndex =
+                header.indexOf("title");
+
+        }
+
+
+        if (nameIndex === -1) {
+
+            // fallback:
+            // find the first column containing text
+
+            nameIndex = 0;
+
+        }
+
+
+        const result = [];
+
+
+        for (
+            let i = 1;
+            i < lines.length;
+            i++
+        ) {
+
+            const row =
+                lines[i].split("\t");
+
+
+            const name =
+                row[nameIndex]
+                    ?.trim();
+
+
+            if (
+                name &&
+                name.length > 1
+            ) {
+
+                result.push(name);
+
+            }
+
+        }
+
+
+        return [
+            ...new Set(result)
+        ];
+
+    }
+
+
+    // ========================================================
+    // LOAD MARVEL PAGES
+    // ========================================================
+
+    async function loadPages() {
+
+        loading.textContent =
+            "Loading Marvel Wikipedia pages...";
+
+
+        if (
+            typeof JSZip === "undefined"
+        ) {
+
+            throw new Error(
+                "JSZip is not available."
+            );
+
+        }
+
+
+        const response =
+            await fetch(
+                "../marvel_pages.zip"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Could not load marvel_pages.zip"
+            );
+
+        }
+
+
+        const buffer =
+            await response.arrayBuffer();
+
+
+        const zip =
+            await JSZip.loadAsync(buffer);
+
+
+        const filenames =
+            Object.keys(zip.files);
+
+
+        console.log(
+            "Total ZIP entries:",
+            filenames.length
+        );
+
+
+        // ----------------------------------------------------
+        // IMPORTANT:
+        // ONLY USE ACTUAL PAGE FILES
+        // IGNORE README, folders, metadata, etc.
+        // ----------------------------------------------------
+
+        const pageFiles =
+            filenames.filter(filename => {
+
+                const file =
+                    zip.files[filename];
+
+
+                if (file.dir) {
+                    return false;
+                }
+
+
+                const lower =
+                    filename.toLowerCase();
+
+
+                // Ignore README and metadata
+                if (
+                    lower.includes("readme") ||
+                    lower.includes("license") ||
+                    lower.includes("metadata") ||
+                    lower.includes(".git")
+                ) {
+
+                    return false;
+
+                }
+
+
+                // Only page-like files
+                return (
+                    lower.endsWith(".html") ||
+                    lower.endsWith(".htm") ||
+                    lower.endsWith(".txt")
+                );
+
+            });
+
+
+        console.log(
+            "Potential Marvel pages:",
+            pageFiles.length
+        );
+
+
+        if (pageFiles.length === 0) {
+
+            throw new Error(
+                "No Marvel page files were found in the ZIP."
+            );
+
+        }
+
+
+        pages = {};
+
+
+        for (const filename of pageFiles) {
+
+            const file =
+                zip.files[filename];
+
+
+            const text =
+                await file.async("text");
+
+
             const baseName =
-                fileName.split("/").pop();
+                filename
+                    .split("/")
+                    .pop();
+
+
+            const characterName =
+                baseName
+                    .replace(/\.(html?|txt)$/i, "")
+                    .replace(/[_-]/g, " ")
+                    .trim();
+
+
+            // Ignore suspicious generic files
+            if (
+                !characterName ||
+                characterName.length < 2
+            ) {
+
+                continue;
+
+            }
+
 
             const key =
-                normalizeName(baseName);
+                normalizeName(characterName);
+
 
             pages[key] = {
 
-                name: baseName
-                    .replace(/\.(html?|txt)$/i, "")
-                    .replace(/_/g, " "),
+                name: characterName,
 
-                text: clean,
+                text: text
 
-                tokens: tokenize(clean)
             };
 
-            loaded++;
+        }
 
-        } catch (error) {
+
+        console.log(
+            "Indexed Marvel pages:",
+            Object.keys(pages).length
+        );
+
+    }
+
+
+    // ========================================================
+    // MATCH CHARACTERS TO PAGES
+    // ========================================================
+
+    function buildVectors() {
+
+        vectors = {};
+
+        let matched = 0;
+
+
+        for (const character of characters) {
+
+            const key =
+                normalizeName(character);
+
+
+            let page =
+                pages[key];
+
+
+            // Exact match
+            if (!page) {
+
+                // Try removing common prefixes
+                const possibleKeys =
+                    Object.keys(pages);
+
+
+                const match =
+                    possibleKeys.find(
+                        pageKey =>
+                            pageKey === key
+                    );
+
+
+                if (match) {
+                    page = pages[match];
+                }
+
+            }
+
+
+            if (page) {
+
+                const vector =
+                    makeVector(page.text);
+
+
+                // Make sure this is real text
+                if (
+                    Object.keys(vector).length > 0
+                ) {
+
+                    vectors[character] =
+                        vector;
+
+                    matched++;
+
+                }
+
+            }
+
+        }
+
+
+        console.log(
+            "Characters:",
+            characters.length
+        );
+
+
+        console.log(
+            "Characters with text:",
+            matched
+        );
+
+
+        if (matched < 10) {
 
             console.warn(
-                "Could not read:",
-                fileName,
-                error
-            );
-        }
-    }
-
-    console.log(
-        `Loaded ${loaded} Marvel pages.`
-    );
-
-    if (loaded === 0) {
-
-        throw new Error(
-            "No Marvel article pages were found inside marvel_pages.zip."
-        );
-    }
-}
-
-
-// ============================================================
-// FIND PAGE
-// ============================================================
-
-function findPageForCharacter(name) {
-
-    const normalized =
-        normalizeName(name);
-
-    if (pages[normalized]) {
-        return pages[normalized];
-    }
-
-    const keys =
-        Object.keys(pages);
-
-    const exactPartial =
-        keys.find(key =>
-            key.includes(normalized) ||
-            normalized.includes(key)
-        );
-
-    return exactPartial
-        ? pages[exactPartial]
-        : null;
-}
-
-
-// ============================================================
-// NETWORK
-// ============================================================
-
-function getRowValue(row, possibleNames) {
-
-    const keys =
-        Object.keys(row);
-
-    for (const possible of possibleNames) {
-
-        const found =
-            keys.find(
-                key =>
-                    key.toLowerCase() ===
-                    possible.toLowerCase()
+                "Only " +
+                matched +
+                " pages matched."
             );
 
-        if (
-            found &&
-            row[found] !== undefined
-        ) {
-            return row[found];
-        }
-    }
-
-    return null;
-}
-
-
-function buildNetwork(edgesData) {
-
-    edges = edgesData
-        .map(row => {
-
-            const source =
-                getRowValue(row, [
-                    "source",
-                    "from",
-                    "src"
-                ]);
-
-            const target =
-                getRowValue(row, [
-                    "target",
-                    "to",
-                    "dst"
-                ]);
-
-            return {
-
-                source:
-                    normalizeName(source || ""),
-
-                target:
-                    normalizeName(target || "")
-            };
-
-        })
-        .filter(
-            e =>
-                e.source &&
-                e.target
-        );
-}
-
-
-function areConnected(nameA, nameB) {
-
-    const a =
-        normalizeName(nameA);
-
-    const b =
-        normalizeName(nameB);
-
-    return edges.some(e =>
-
-        (e.source === a &&
-         e.target === b)
-
-        ||
-
-        (e.source === b &&
-         e.target === a)
-    );
-}
-
-
-// ============================================================
-// TEXT SIMILARITY
-// ============================================================
-
-function calculateSimilarities(targetName) {
-
-    const targetPage =
-        findPageForCharacter(targetName);
-
-    if (!targetPage) {
-        return [];
-    }
-
-    const targetFreq =
-        wordFrequency(targetPage.tokens);
-
-    const results = [];
-
-    for (const key of Object.keys(pages)) {
-
-        const candidate =
-            pages[key];
-
-        if (
-            normalizeName(candidate.name) ===
-            normalizeName(targetName)
-        ) {
-            continue;
         }
 
-        const candidateFreq =
-            wordFrequency(candidate.tokens);
+    }
 
-        const similarity =
-            cosineSimilarity(
-                targetFreq,
-                candidateFreq
+
+    // ========================================================
+    // PICK RANDOM CHARACTER
+    // ========================================================
+
+    function randomCharacter() {
+
+        const available =
+            Object.keys(vectors);
+
+
+        if (available.length === 0) {
+
+            throw new Error(
+                "No characters with usable text were found."
             );
 
-        results.push({
-
-            name: candidate.name,
-
-            similarity: similarity,
-
-            sharedWords:
-                getSharedWords(
-                    targetFreq,
-                    candidateFreq
-                )
-        });
-    }
-
-    return results.sort(
-        (a, b) =>
-            b.similarity -
-            a.similarity
-    );
-}
-
-
-// ============================================================
-// CREATE ROUND
-// ============================================================
-
-function createRound() {
-
-    if (characters.length < 4) {
-
-        throw new Error(
-            "Not enough Marvel characters were loaded."
-        );
-    }
-
-    let attempts = 0;
-
-    while (attempts < 50) {
-
-        attempts++;
-
-        const target =
-            randomItem(characters);
-
-        const similarities =
-            calculateSimilarities(
-                target.name
-            );
-
-        if (!similarities.length) {
-            continue;
         }
 
-        const correct =
-            similarities[0];
 
-        const possibleDistractors =
-            characters.filter(c =>
+        return available[
+            Math.floor(
+                Math.random() *
+                available.length
+            )
+        ];
 
-                normalizeName(c.name) !==
-                normalizeName(target.name)
-
-                &&
-
-                normalizeName(c.name) !==
-                normalizeName(correct.name)
-            );
-
-        if (possibleDistractors.length < 3) {
-            continue;
-        }
-
-        const distractors =
-            shuffle(
-                possibleDistractors
-            ).slice(0, 3);
-
-        const choices =
-            shuffle([
-                correct.name,
-                ...distractors.map(
-                    x => x.name
-                )
-            ]);
-
-        currentRound = {
-
-            target,
-
-            correct,
-
-            choices
-        };
-
-        roundNumber++;
-
-        displayRound();
-
-        return;
     }
 
-    throw new Error(
-        "Could not create a game round."
-    );
-}
+
+    // ========================================================
+    // FIND SIMILAR CHARACTERS
+    // ========================================================
+
+    function getSimilarCharacters(target) {
+
+        const results = [];
 
 
-// ============================================================
-// DISPLAY ROUND
-// ============================================================
+        for (const character of Object.keys(vectors)) {
 
-function displayRound() {
+            if (character === target) {
+                continue;
+            }
 
-    const targetElement =
-        document.getElementById(
-            "mystery-character"
-        );
 
-    const choicesElement =
-        document.getElementById(
-            "choices"
-        );
-
-    const resultElement =
-        document.getElementById(
-            "result"
-        );
-
-    const nextButton =
-        document.getElementById(
-            "next-round"
-        );
-
-    if (
-        !targetElement ||
-        !choicesElement ||
-        !resultElement
-    ) {
-
-        throw new Error(
-            "Game HTML elements are missing. Check index.html."
-        );
-    }
-
-    targetElement.textContent =
-        currentRound.target.name;
-
-    choicesElement.innerHTML = "";
-
-    currentRound.choices.forEach(
-        name => {
-
-            const button =
-                document.createElement(
-                    "button"
+            const similarity =
+                cosineSimilarity(
+                    vectors[target],
+                    vectors[character]
                 );
 
+
+            results.push({
+
+                name: character,
+
+                similarity: similarity
+
+            });
+
+        }
+
+
+        results.sort(
+            (a, b) =>
+                b.similarity -
+                a.similarity
+        );
+
+
+        return results;
+
+    }
+
+
+    // ========================================================
+    // CREATE ROUND
+    // ========================================================
+
+    function createRound() {
+
+        result.innerHTML = "";
+
+        nextButton.style.display = "none";
+
+
+        currentCharacter =
+            randomCharacter();
+
+
+        const similar =
+            getSimilarCharacters(
+                currentCharacter
+            );
+
+
+        console.log(
+            "Mystery character:",
+            currentCharacter
+        );
+
+
+        console.log(
+            "Best text matches:",
+            similar.slice(0, 5)
+        );
+
+
+        // ----------------------------------------------------
+        // We deliberately use the real character's
+        // strongest textual matches as choices.
+        // This makes the game meaningful.
+        // ----------------------------------------------------
+
+        const candidates =
+            similar.slice(0, 3);
+
+
+        const options = [
+
+            {
+                name: currentCharacter,
+                correct: true,
+                similarity: 1
+            },
+
+            ...candidates.map(item => ({
+
+                name: item.name,
+
+                correct: false,
+
+                similarity:
+                    cosineSimilarity(
+                        vectors[currentCharacter],
+                        vectors[item.name]
+                    )
+
+            }))
+
+        ];
+
+
+        // Shuffle
+        options.sort(
+            () => Math.random() - 0.5
+        );
+
+
+        mysteryCharacter.textContent =
+            "Which Marvel character is this page most similar to?";
+
+
+        choices.innerHTML = "";
+
+
+        options.forEach(option => {
+
+            const button =
+                document.createElement("button");
+
+
             button.type = "button";
+
 
             button.className =
                 "choice-button";
 
-            button.textContent =
-                name;
 
-            button.disabled = false;
+            button.textContent =
+                option.name;
+
 
             button.addEventListener(
                 "click",
                 function () {
 
-                    checkAnswer(
-                        name,
-                        button
+                    handleAnswer(
+                        option,
+                        options
                     );
+
                 }
             );
 
-            choicesElement.appendChild(
-                button
+
+            choices.appendChild(button);
+
+        });
+
+    }
+
+
+    // ========================================================
+    // HANDLE ANSWER
+    // ========================================================
+
+    function handleAnswer(
+        selected,
+        options
+    ) {
+
+        const buttons =
+            choices.querySelectorAll(
+                "button"
             );
-        }
-    );
 
-    resultElement.classList.add(
-        "hidden"
-    );
-
-    if (nextButton) {
-
-        nextButton.classList.add(
-            "hidden"
-        );
-
-        nextButton.disabled = false;
-    }
-
-    const roundNumberElement =
-        document.getElementById(
-            "round-number"
-        );
-
-    const scoreElement =
-        document.getElementById(
-            "score"
-        );
-
-    if (roundNumberElement) {
-        roundNumberElement.textContent =
-            roundNumber;
-    }
-
-    if (scoreElement) {
-        scoreElement.textContent =
-            score;
-    }
-}
-
-
-// ============================================================
-// CHECK ANSWER
-// ============================================================
-
-function checkAnswer(
-    answer,
-    clickedButton
-) {
-
-    if (!currentRound) {
-        return;
-    }
-
-    const buttons =
-        document.querySelectorAll(
-            ".choice-button"
-        );
-
-    buttons.forEach(
-        button => {
-            button.disabled = true;
-        }
-    );
-
-    const correctName =
-        currentRound.correct.name;
-
-    const isCorrect =
-        normalizeName(answer) ===
-        normalizeName(correctName);
-
-    if (isCorrect) {
-
-        score++;
-
-        clickedButton.classList.add(
-            "correct"
-        );
-
-    } else {
-
-        clickedButton.classList.add(
-            "incorrect"
-        );
 
         buttons.forEach(
-            button => {
+            button =>
+                button.disabled = true
+        );
 
-                if (
-                    normalizeName(
-                        button.textContent
-                    ) ===
-                    normalizeName(
-                        correctName
-                    )
-                ) {
 
-                    button.classList.add(
-                        "correct"
-                    );
-                }
+        const similarity =
+            selected.similarity;
+
+
+        if (selected.correct) {
+
+            score++;
+
+        }
+
+
+        // Highlight
+        buttons.forEach(button => {
+
+            if (
+                button.textContent ===
+                currentCharacter
+            ) {
+
+                button.style.border =
+                    "3px solid #16a34a";
+
             }
-        );
+
+
+            if (
+                button.textContent ===
+                selected.name &&
+                !selected.correct
+            ) {
+
+                button.style.border =
+                    "3px solid #dc2626";
+
+            }
+
+        });
+
+
+        // ----------------------------------------------------
+        // Shared words
+        // ----------------------------------------------------
+
+        const sharedWords =
+            getSharedWords(
+                vectors[currentCharacter],
+                vectors[selected.name]
+            );
+
+
+        // ----------------------------------------------------
+        // SCORE
+        // ----------------------------------------------------
+
+        let html = "";
+
+
+        if (selected.correct) {
+
+            html +=
+                "<h3>Correct! 🎉</h3>";
+
+        } else {
+
+            html +=
+                "<h3>Not quite.</h3>";
+
+        }
+
+
+        html +=
+            "<p><strong>Character:</strong> " +
+            currentCharacter +
+            "</p>";
+
+
+        html +=
+            "<p><strong>Your answer:</strong> " +
+            selected.name +
+            "</p>";
+
+
+        html +=
+            "<p><strong>Textual similarity:</strong> " +
+            similarity.toFixed(3) +
+            "</p>";
+
+
+        if (sharedWords.length > 0) {
+
+            html +=
+                "<p><strong>Shared words:</strong> " +
+                sharedWords.join(", ") +
+                "</p>";
+
+        } else {
+
+            html +=
+                "<p><strong>Shared words:</strong> " +
+                "No strong shared words found.</p>";
+
+        }
+
+
+        html +=
+            "<p class='small-note'>" +
+            "Similarity is calculated using a Bag-of-Words " +
+            "representation and cosine similarity. " +
+            "It measures word overlap, not deeper meaning." +
+            "</p>";
+
+
+        result.innerHTML =
+            html;
+
+
+        currentRound++;
+
+
+        if (
+            currentRound < TOTAL_ROUNDS
+        ) {
+
+            nextButton.textContent =
+                "Next Mystery Character";
+
+
+            nextButton.style.display =
+                "inline-block";
+
+
+        } else {
+
+            nextButton.textContent =
+                "Play Again";
+
+
+            nextButton.style.display =
+                "inline-block";
+
+
+            result.innerHTML +=
+                "<hr><h3>Final score: " +
+                score +
+                " / " +
+                TOTAL_ROUNDS +
+                "</h3>";
+
+        }
+
     }
 
-    const scoreElement =
-        document.getElementById(
-            "score"
-        );
 
-    if (scoreElement) {
-        scoreElement.textContent =
-            score;
-    }
+    // ========================================================
+    // NEXT ROUND
+    // ========================================================
 
-    showResult(isCorrect);
-}
+    nextButton.addEventListener(
+        "click",
+        function () {
+
+            if (
+                currentRound >= TOTAL_ROUNDS
+            ) {
+
+                currentRound = 0;
+                score = 0;
+
+            }
 
 
-// ============================================================
-// SHOW RESULT
-// ============================================================
+            createRound();
 
-function showResult(isCorrect) {
-
-    const resultElement =
-        document.getElementById(
-            "result"
-        );
-
-    if (!resultElement) {
-        return;
-    }
-
-    const targetPage =
-        findPageForCharacter(
-            currentRound.target.name
-        );
-
-    const matchPage =
-        findPageForCharacter(
-            currentRound.correct.name
-        );
-
-    const connected =
-        areConnected(
-            currentRound.target.name,
-            currentRound.correct.name
-        );
-
-    const similarity =
-        currentRound.correct.similarity;
-
-    const sharedWords =
-        currentRound.correct.sharedWords;
-
-    const evidence =
-        createEvidence(
-            targetPage
-                ? targetPage.text
-                : "",
-
-            matchPage
-                ? matchPage.text
-                : "",
-
-            sharedWords
-        );
-
-    resultElement.innerHTML = `
-
-        <div class="result-header ${
-            isCorrect
-                ? "success"
-                : "failure"
-        }">
-
-            <div class="result-icon">
-                ${
-                    isCorrect
-                        ? "✓"
-                        : "!"
-                }
-            </div>
-
-            <div>
-
-                <h3>
-                    ${
-                        isCorrect
-                            ? "Correct!"
-                            : "Not quite!"
-                    }
-                </h3>
-
-                <p>
-                    The strongest textual match was
-                    <strong>
-                        ${escapeHTML(
-                            currentRound
-                                .correct
-                                .name
-                        )}
-                    </strong>.
-                </p>
-
-            </div>
-
-        </div>
-
-        <div class="result-grid">
-
-            <div class="result-card">
-
-                <span class="result-label">
-                    TEXTUAL SIMILARITY
-                </span>
-
-                <strong class="similarity-number">
-                    ${similarity.toFixed(3)}
-                </strong>
-
-            </div>
-
-            <div class="result-card">
-
-                <span class="result-label">
-                    NETWORK CONNECTION
-                </span>
-
-                <strong>
-                    ${
-                        connected
-                            ? "✓ Directly connected"
-                            : "✗ Not directly connected"
-                    }
-                </strong>
-
-            </div>
-
-        </div>
-
-        <div class="evidence-section">
-
-            <h4>
-                Shared words
-            </h4>
-
-            <div class="word-list">
-
-                ${
-                    sharedWords
-                        .map(
-                            word =>
-                                `<span>
-                                    ${escapeHTML(word)}
-                                </span>`
-                        )
-                        .join("")
-                }
-
-            </div>
-
-        </div>
-
-        <div class="evidence-section">
-
-            <h4>
-                🔎 Inspect the underlying text
-            </h4>
-
-            <p class="evidence-intro">
-                The similarity score is only a clue.
-                Here is actual text from the matched
-                Marvel page containing one of the
-                shared words.
-            </p>
-
-            <div class="quote-box">
-
-                ${escapeHTML(evidence)}
-
-            </div>
-
-        </div>
-    `;
-
-    resultElement.classList.remove(
-        "hidden"
+        }
     );
 
-    const nextButton =
-        document.getElementById(
-            "next-round"
-        );
 
-    if (nextButton) {
+    // ========================================================
+    // START GAME
+    // ========================================================
 
-        nextButton.classList.remove(
-            "hidden"
-        );
+    async function startGame() {
 
-        nextButton.disabled = false;
-    }
-}
+        try {
+
+            loading.textContent =
+                "Loading Marvel characters...";
 
 
-// ============================================================
-// TEXT EVIDENCE
-// ============================================================
-
-function createEvidence(
-    textA,
-    textB,
-    sharedWords
-) {
-
-    const sourceText =
-        textB || textA;
-
-    if (!sourceText) {
-        return "No text evidence was available.";
-    }
-
-    const sentences =
-        sourceText
-            .replace(/\s+/g, " ")
-            .split(/(?<=[.!?])\s+/);
-
-    for (const word of sharedWords) {
-
-        const sentence =
-            sentences.find(
-                sentence =>
-                    sentence
-                        .toLowerCase()
-                        .includes(
-                            word.toLowerCase()
-                        )
-            );
-
-        if (
-            sentence &&
-            sentence.length > 50
-        ) {
-
-            return (
-                sentence.substring(
-                    0,
-                    500
-                ) +
-
-                (
-                    sentence.length > 500
-                        ? "…"
-                        : ""
-                )
-            );
-        }
-    }
-
-    return sentences[0]
-        ? sentences[0].substring(
-            0,
-            500
-        )
-        : "No text evidence was available.";
-}
-
-
-// ============================================================
-// ESCAPE HTML
-// ============================================================
-
-function escapeHTML(text) {
-
-    return String(text)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-}
-
-
-// ============================================================
-// START GAME
-// ============================================================
-
-async function startGame() {
-
-    const loading =
-        document.getElementById(
-            "loading"
-        );
-
-    try {
-
-        if (!loading) {
-
-            throw new Error(
-                "The loading element is missing from index.html."
-            );
-        }
-
-        loading.textContent =
-            "Loading the Marvel Wikipedia pages…";
-
-        await loadMarvelPages();
-
-        loading.textContent =
-            "Loading the Marvel network…";
-
-        const nodesData =
-            await loadTSV(
-                NODES_URL
-            );
-
-        const edgesData =
-            await loadTSV(
-                EDGES_URL
-            );
-
-        buildNetwork(
-            edgesData
-        );
-
-        characters =
-            nodesData
-
-                .map(row => {
-
-                    const name =
-                        getRowValue(
-                            row,
-                            [
-                                "name",
-                                "Name",
-                                "label",
-                                "Label",
-                                "node",
-                                "Node"
-                            ]
-                        );
-
-                    return name
-                        ? { name }
-                        : null;
-                })
-
-                .filter(Boolean)
-
-                .filter(
-                    c =>
-                        findPageForCharacter(
-                            c.name
-                        )
+            const nodeText =
+                await loadTSV(
+                    "../week1_nodes.tsv"
                 );
 
-        if (
-            characters.length < 10
-        ) {
 
             characters =
-                Object.values(
-                    pages
-                ).map(
-                    page => ({
-                        name:
-                            page.name
-                    })
-                );
-        }
+                parseNodes(nodeText);
 
-        if (
-            characters.length < 4
-        ) {
 
-            throw new Error(
-                `Only ${characters.length} usable Marvel characters were found.`
+            console.log(
+                "Loaded characters:",
+                characters
             );
-        }
 
-        loading.textContent =
-            `${characters.length} Marvel pages loaded.`;
 
-        setTimeout(() => {
+            await loadPages();
 
-            const loadingScreen =
-                document.getElementById(
-                    "loading-screen"
-                );
 
-            const gameContainer =
-                document.getElementById(
-                    "game-container"
-                );
+            loading.textContent =
+                "Matching Marvel pages...";
 
-            if (loadingScreen) {
 
-                loadingScreen.classList.add(
-                    "hidden"
-                );
-            }
+            buildVectors();
 
-            if (gameContainer) {
 
-                gameContainer.classList.remove(
-                    "hidden"
-                );
-            }
+            console.log(
+                "Usable characters:",
+                Object.keys(vectors)
+            );
+
+
+            loading.style.display =
+                "none";
+
 
             createRound();
 
-        }, 500);
-
-    } catch (error) {
-
-        console.error(error);
-
-        loading.innerHTML = `
-
-            <strong>
-                Something went wrong.
-            </strong>
-
-            <br><br>
-
-            ${escapeHTML(
-                error.message
-            )}
-
-            <br><br>
-
-            Check that these files exist
-            in the repository root:
-
-            <br><br>
-
-            <code>
-                marvel_pages.zip
-            </code>
-
-            <br>
-
-            <code>
-                week1_nodes.tsv
-            </code>
-
-            <br>
-
-            <code>
-                week1_edges.tsv
-            </code>
-        `;
-    }
-}
-
-
-// ============================================================
-// NEXT ROUND
-// ============================================================
-
-document.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target &&
-            event.target.id ===
-            "next-round"
-        ) {
-
-            createRound();
         }
+
+        catch (error) {
+
+            console.error(
+                "MARVEL GAME ERROR:",
+                error
+            );
+
+
+            loading.textContent =
+                "Game error: " +
+                error.message;
+
+        }
+
     }
-);
 
 
-// ============================================================
-// INITIALIZE
-// ============================================================
+    startGame();
 
-document.addEventListener(
-    "DOMContentLoaded",
-    startGame
-);
+});

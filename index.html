@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,133 +9,352 @@
     <title>Marvel Social Graphs</title>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
+
+        * {
+            box-sizing: border-box;
             margin: 0;
-            background: #f5f5f5;
-            color: #222;
+            padding: 0;
         }
 
-        header {
-            background: #111;
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(90, 50, 180, 0.18), transparent 30%),
+                radial-gradient(circle at 80% 30%, rgba(220, 20, 60, 0.12), transparent 30%),
+                #070711;
+            color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 18px 6%;
+
+            background: rgba(7, 7, 17, 0.82);
+            backdrop-filter: blur(15px);
+
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 2px;
             color: white;
-            padding: 50px 20px;
+        }
+
+        .logo span {
+            color: #ff304f;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #ff304f;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
             text-align: center;
+
+            padding: 120px 20px 80px;
+
+            position: relative;
+            overflow: hidden;
         }
 
-        header h1 {
-            font-size: 42px;
-            margin-bottom: 10px;
+        /* Animated circles */
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(2px);
+            opacity: 0.25;
+            animation: float 8s ease-in-out infinite;
         }
 
-        header p {
-            font-size: 18px;
+        .orb.one {
+            width: 300px;
+            height: 300px;
+            background: #6c35ff;
+            top: 15%;
+            left: -100px;
         }
+
+        .orb.two {
+            width: 250px;
+            height: 250px;
+            background: #ff1744;
+            bottom: 5%;
+            right: -80px;
+            animation-delay: 2s;
+        }
+
+        .orb.three {
+            width: 120px;
+            height: 120px;
+            background: #00d9ff;
+            top: 25%;
+            right: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%,100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-35px);
+            }
+        }
+
+        .hero-content {
+            max-width: 900px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 8px 18px;
+            border-radius: 30px;
+
+            background: rgba(255,48,79,0.12);
+            border: 1px solid rgba(255,48,79,0.4);
+
+            color: #ff536c;
+
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 2px;
+
+            margin-bottom: 25px;
+        }
+
+        .hero h1 {
+            font-size: clamp(50px, 8vw, 100px);
+            font-weight: 900;
+
+            line-height: 0.95;
+
+            letter-spacing: -4px;
+
+            margin-bottom: 25px;
+
+            text-transform: uppercase;
+
+            background: linear-gradient(
+                90deg,
+                #ffffff,
+                #ff3655,
+                #a86cff,
+                #ffffff
+            );
+
+            background-size: 300%;
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            animation: gradientMove 6s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0%;
+            }
+
+            50% {
+                background-position: 100%;
+            }
+
+            100% {
+                background-position: 0%;
+            }
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #aaa;
+            max-width: 650px;
+            margin: auto;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            margin-top: 35px;
+
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+
+            padding: 15px 28px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background: #ff304f;
+            color: white;
+
+            box-shadow:
+                0 0 25px rgba(255,48,79,0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow:
+                0 0 40px rgba(255,48,79,0.6);
+        }
+
+        .btn-secondary {
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-4px);
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats {
+            max-width: 1000px;
+
+            margin: -70px auto 100px;
+
+            padding: 30px;
+
+            position: relative;
+            z-index: 10;
+
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+
+            background: rgba(255,255,255,0.04);
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            border-radius: 20px;
+
+            backdrop-filter: blur(15px);
+        }
+
+        .stat {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 35px;
+            font-weight: 900;
+
+            color: #ff405c;
+
+            margin-bottom: 7px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #999;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
 
         main {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 25px 100px;
         }
 
-        .card {
-            background: white;
-            padding: 30px;
-            margin-bottom: 25px;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
         }
 
-        .card h2 {
-            margin-top: 0;
-        }
-
-        a {
-            color: #c62828;
-            text-decoration: none;
+        .section-title small {
+            color: #ff405c;
+            text-transform: uppercase;
+            letter-spacing: 3px;
             font-weight: bold;
         }
 
-        footer {
-            text-align: center;
-            padding: 30px;
-            background: #111;
-            color: white;
-            margin-top: 50px;
+        .section-title h2 {
+            font-size: 42px;
+            margin-top: 10px;
         }
-    </style>
-</head>
 
-<body>
+        .section-title p {
+            color: #888;
+            margin-top: 12px;
+        }
 
-    <header>
-        <h1>Marvel Social Graphs</h1>
-        <p>Exploring the network of Marvel Comics superheroes</p>
-    </header>
+        /* =========================
+           ABOUT
+        ========================= */
 
-    <main>
+        .about {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 25px;
 
-        <div class="card">
-            <h2>About Our Project</h2>
-
-            <p>
-                Welcome to our Social Graphs project!
-                We are exploring the network structure of
-                Marvel Comics superheroes using network analysis,
-                Python, and NetworkX.
-            </p>
-
-            <p>
-                Our dataset contains 303 Marvel superheroes
-                and the links between their Wikipedia pages.
-            </p>
-        </div>
-
-        <div class="card">
-            <h2> Group</h2>
-
-            <p>
-                👩‍💻 Mahira Gul
-                <br>
-                👩‍💻 Ana Carolina Soares Araújo Barbosa
-                <br>
-                👩‍💻 Søren Møller Jørgensen
-            </p>
-        </div>
-
-       <div class="card">
-            <h2>Weekly Data Stories</h2>
-
-            <p>
-                <a href="week1.html">
-                    Week 1 — Exploring the Marvel Network
-                </a>
-            </p>
-
-            <p>
-                <a href="week2/index.html">
-                    Week 2 — Marvel Network and Preferential Attachment
-                </a>
-            </p>
-
-            <p>
-                <a href="week3/index.html">
-                    Week 3 — Centrality Analysis
-                </a>
-            </p>
-            <p>
-                <a href="week%205/index.html">
-                    Week 5 — Marvel Text Detective
-                </a>
-            </p>
-        </div>
-
-    </main>
-
-    <footer>
-        Social Graphs 2026 · Marvel Network Project
-    </footer>
-
-</body>
-
-</html>
+            margin-bottom: 110px;
+```

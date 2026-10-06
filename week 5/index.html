@@ -3,9 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Marvel Text Detective | Week 5</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Marvel Text Detective | Social Graphs Week 5</title>
+
+    <!-- JSZip: needed by game.js to open marvel_pages.zip -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js">
+    </script>
 
     <style>
 
@@ -20,1386 +27,992 @@
         body {
             margin: 0;
             font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                Roboto,
-                Helvetica,
                 Arial,
+                Helvetica,
                 sans-serif;
-
             background: #f5f7fb;
-            color: #172033;
+            color: #20242b;
             line-height: 1.6;
         }
 
-        /* ---------------- NAVIGATION ---------------- */
+        /* --------------------------------------------------
+           NAVIGATION
+        -------------------------------------------------- */
 
         nav {
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
 
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(10px);
+            background: #ffffff;
+            border-bottom: 1px solid #e1e4e8;
 
-            border-bottom: 1px solid #e5e7eb;
-
-            padding: 14px 5%;
-        }
-
-        .nav-inner {
-            max-width: 1100px;
-            margin: auto;
+            padding: 14px 30px;
 
             display: flex;
             justify-content: space-between;
             align-items: center;
-
-            gap: 20px;
         }
 
-        .nav-title {
-            font-weight: 800;
-            color: #172033;
-            text-decoration: none;
-            white-space: nowrap;
+        nav .logo {
+            font-weight: bold;
+            font-size: 18px;
         }
 
-        .nav-links {
+        nav .links {
             display: flex;
-            gap: 22px;
+            gap: 20px;
             flex-wrap: wrap;
-            justify-content: flex-end;
         }
 
-        .nav-links a {
+        nav a {
+            color: #333;
             text-decoration: none;
-            color: #4b5563;
-
-            font-size: 0.92rem;
-            font-weight: 600;
+            font-size: 14px;
         }
 
-        .nav-links a:hover {
-            color: #111827;
+        nav a:hover {
+            text-decoration: underline;
         }
 
-        /* ---------------- HERO ---------------- */
+        /* --------------------------------------------------
+           MAIN
+        -------------------------------------------------- */
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 25px 60px;
+        }
+
+        /* --------------------------------------------------
+           HERO
+        -------------------------------------------------- */
 
         .hero {
-            padding: 95px 20px 85px;
+            background: #ffffff;
+            margin-top: 30px;
+            padding: 55px 45px;
+
+            border-radius: 18px;
+
+            border: 1px solid #e2e6ec;
 
             text-align: center;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #111827,
-                    #273449
-                );
-
-            color: white;
-        }
-
-        .hero-content {
-            max-width: 900px;
-            margin: auto;
-        }
-
-        .eyebrow {
-            display: inline-block;
-
-            padding: 6px 14px;
-
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 999px;
-
-            font-size: 0.82rem;
-            font-weight: 700;
-
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-
-            margin-bottom: 20px;
         }
 
         .hero h1 {
-            margin: 0 0 20px;
-
-            font-size:
-                clamp(2.5rem, 6vw, 4.8rem);
-
-            line-height: 1.05;
+            font-size: 42px;
+            margin: 0 0 15px;
         }
 
         .hero p {
-            max-width: 720px;
-            margin: auto;
-
-            font-size: 1.15rem;
-
-            color: #dbe4f0;
+            max-width: 760px;
+            margin: 12px auto;
+            color: #5f6670;
         }
 
-        /* ---------------- GENERAL SECTIONS ---------------- */
+        .tag {
+            display: inline-block;
 
-        section {
-            padding: 70px 20px;
-        }
+            padding: 7px 14px;
 
-        .container {
-            max-width: 1100px;
-            margin: auto;
-        }
+            border-radius: 20px;
 
-        .section-title {
-            font-size: 2rem;
-            margin: 0 0 12px;
-        }
+            background: #eef2ff;
 
-        .section-intro {
-            max-width: 780px;
-
-            color: #5b6472;
-
-            margin: 0 0 35px;
-        }
-
-        /* ---------------- QUESTION ---------------- */
-
-        .question-card {
-            background: white;
-
-            border: 1px solid #e5e7eb;
-            border-radius: 18px;
-
-            padding: 32px;
-
-            box-shadow:
-                0 10px 30px rgba(15,23,42,0.06);
-        }
-
-        .question-card h2 {
-            margin-top: 0;
-        }
-
-        .question {
-            font-size: 1.4rem;
-            font-weight: 750;
-
-            margin: 20px 0;
-        }
-
-        .question-card p:last-child {
-            margin-bottom: 0;
-        }
-
-        /* ---------------- HOW IT WORKS ---------------- */
-
-        .steps {
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 20px;
-        }
-
-        .step {
-            background: white;
-
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
-
-            padding: 25px;
-        }
-
-        .step-number {
-            width: 38px;
-            height: 38px;
-
-            border-radius: 50%;
-
-            background: #172033;
-            color: white;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-weight: 800;
+            font-size: 13px;
 
             margin-bottom: 15px;
         }
 
-        .step h3 {
-            margin: 0 0 8px;
+        /* --------------------------------------------------
+           SECTIONS
+        -------------------------------------------------- */
+
+        section {
+            background: #ffffff;
+
+            margin-top: 28px;
+
+            padding: 35px;
+
+            border-radius: 16px;
+
+            border: 1px solid #e2e6ec;
         }
 
-        .step p {
-            margin: 0;
-            color: #626b78;
+        section h2 {
+            margin-top: 0;
+            font-size: 28px;
         }
 
-        /* ---------------- GAME ---------------- */
-
-        #game-section {
-            background: #eef2f7;
+        section h3 {
+            margin-top: 25px;
         }
 
-        .game-card {
-            max-width: 850px;
+        /* --------------------------------------------------
+           RESEARCH QUESTION
+        -------------------------------------------------- */
 
-            margin: auto;
+        .question {
+            font-size: 22px;
+            font-weight: bold;
 
-            background: white;
+            padding: 25px;
 
-            border-radius: 22px;
+            border-left: 5px solid #4f46e5;
 
-            padding: 40px;
+            background: #f5f5ff;
 
-            box-shadow:
-                0 18px 50px rgba(15,23,42,0.10);
-
-            text-align: center;
+            border-radius: 8px;
         }
 
-        .game-top {
-            display: flex;
+        /* --------------------------------------------------
+           METHOD CARDS
+        -------------------------------------------------- */
 
-            justify-content: space-between;
-            align-items: center;
-
-            margin-bottom: 30px;
-
-            gap: 20px;
-        }
-
-        .game-stat {
-            background: #f3f4f6;
-
-            border-radius: 12px;
-
-            padding: 10px 18px;
-
-            font-size: 0.9rem;
-            font-weight: 700;
-        }
-
-        .game-stat span {
-            font-size: 1.2rem;
-            margin-left: 5px;
-        }
-
-        .mystery-label {
-            color: #6b7280;
-
-            text-transform: uppercase;
-
-            letter-spacing: 0.1em;
-
-            font-size: 0.78rem;
-            font-weight: 800;
-
-            margin-bottom: 8px;
-        }
-
-        #mystery-character {
-            font-size:
-                clamp(2rem, 5vw, 3.3rem);
-
-            font-weight: 850;
-
-            margin: 0 0 35px;
-        }
-
-        #choices {
+        .cards {
             display: grid;
 
             grid-template-columns:
-                repeat(2, 1fr);
+                repeat(
+                    auto-fit,
+                    minmax(220px, 1fr)
+                );
 
-            gap: 15px;
+            gap: 18px;
+
+            margin-top: 20px;
+        }
+
+        .card {
+            padding: 22px;
+
+            background: #f8f9fb;
+
+            border-radius: 12px;
+
+            border: 1px solid #e4e7eb;
+        }
+
+        .card h3 {
+            margin-top: 0;
+        }
+
+        /* --------------------------------------------------
+           GAME
+        -------------------------------------------------- */
+
+        #game-section {
+            text-align: center;
+        }
+
+        #game-container {
+            max-width: 850px;
+            margin: 25px auto 0;
+        }
+
+        #loading-screen {
+            padding: 35px;
+            background: #f8f9fb;
+
+            border-radius: 12px;
+
+            border: 1px solid #e1e4e8;
 
             margin-bottom: 25px;
         }
 
-        .choice-button {
-            display: block;
-
-            width: 100%;
-
-            min-height: 70px;
-
-            padding: 16px 20px;
-
-            border: 2px solid #d7dce3;
-
-            border-radius: 14px;
-
-            background: white;
-            color: #172033;
-
-            font-size: 1rem;
-            font-weight: 750;
-
-            cursor: pointer;
-
-            position: relative;
-            z-index: 10;
-
-            transition:
-                transform .15s ease,
-                border-color .15s ease,
-                background .15s ease,
-                box-shadow .15s ease;
+        #loading {
+            font-size: 17px;
+            font-weight: 500;
         }
 
-        .choice-button:hover {
-            transform: translateY(-2px);
-
-            border-color: #172033;
-
-            box-shadow:
-                0 8px 20px rgba(15,23,42,0.08);
-        }
-
-        .choice-button:active {
-            transform: translateY(0);
-        }
-
-        .choice-button:disabled {
-            cursor: default;
-            opacity: 1;
-        }
-
-        .choice-button.correct {
-            border-color: #15803d;
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .choice-button.incorrect {
-            border-color: #b91c1c;
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        #next-round {
-            border: none;
-
-            border-radius: 12px;
-
-            padding: 14px 28px;
-
-            background: #172033;
-            color: white;
-
-            font-size: 1rem;
-            font-weight: 750;
-
-            cursor: pointer;
-
-            margin-top: 10px;
-        }
-
-        #next-round:hover {
-            background: #2c394d;
-        }
-
-        /* ---------------- GAME RESULT ---------------- */
-
-        #result {
-            margin-top: 30px;
-            text-align: left;
-        }
-
-        .result-header {
-            display: flex;
-
-            gap: 15px;
-
-            align-items: center;
-
-            padding: 20px;
-
-            border-radius: 15px;
-
-            margin-bottom: 20px;
-        }
-
-        .result-header.success {
-            background: #ecfdf5;
-            color: #166534;
-        }
-
-        .result-header.failure {
-            background: #fff7ed;
-            color: #9a3412;
-        }
-
-        .result-header h3 {
-            margin: 0 0 4px;
-
-            font-size: 1.3rem;
-        }
-
-        .result-header p {
-            margin: 0;
-
-            color: #374151;
-        }
-
-        .result-icon {
-            width: 45px;
-            height: 45px;
-
-            border-radius: 50%;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: white;
-
-            font-size: 1.3rem;
-            font-weight: 900;
-
-            flex-shrink: 0;
-        }
-
-        .result-grid {
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 15px;
-
-            margin-bottom: 20px;
-        }
-
-        .result-card {
-            padding: 20px;
-
-            background: #f8fafc;
-
-            border: 1px solid #e5e7eb;
-
-            border-radius: 14px;
-        }
-
-        .result-label {
-            display: block;
-
-            font-size: .72rem;
-
-            font-weight: 800;
-
-            letter-spacing: .08em;
-
-            color: #6b7280;
-
-            margin-bottom: 6px;
-        }
-
-        .similarity-number {
-            font-size: 1.8rem;
-        }
-
-        .evidence-section {
-            margin-top: 25px;
-
-            padding-top: 20px;
-
-            border-top: 1px solid #e5e7eb;
-        }
-
-        .evidence-section h4 {
-            margin: 0 0 10px;
-
-            font-size: 1.1rem;
-        }
-
-        .evidence-intro {
-            color: #626b78;
-            font-size: .94rem;
-        }
-
-        .word-list {
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 8px;
-        }
-
-        .word-list span {
-            padding: 6px 10px;
-
-            background: #eef2f7;
-
-            border-radius: 999px;
-
-            font-size: .85rem;
-
-            font-weight: 650;
-        }
-
-        .quote-box {
-            background: #f8fafc;
-
-            border-left: 4px solid #172033;
-
-            padding: 18px;
-
-            border-radius: 8px;
-
-            color: #4b5563;
-
-            font-size: .92rem;
-        }
-
-        /* ---------------- METHOD ---------------- */
-
-        .method-grid {
-            display: grid;
-
-            grid-template-columns:
-                1fr 1fr;
-
-            gap: 25px;
-        }
-
-        .method-card {
-            background: white;
-
-            border: 1px solid #e5e7eb;
-
-            border-radius: 16px;
-
-            padding: 28px;
-        }
-
-        .method-card h3 {
-            margin-top: 0;
-        }
-
-        .method-card p {
-            color: #5f6875;
-        }
-
-        .formula {
-            padding: 15px;
-
-            background: #f3f4f6;
-
-            border-radius: 10px;
-
-            font-family: monospace;
-
-            text-align: center;
-
-            font-size: 1rem;
-        }
-
-        /* ---------------- FIGURE ---------------- */
-
-        .figure-box {
-            background: white;
-
-            border: 1px solid #e5e7eb;
-
-            border-radius: 18px;
-
-            padding: 35px;
-
-            text-align: center;
-        }
-
-        #similarity-figure {
-            display: block;
-
-            width: 100%;
-
-            max-width: 850px;
-
-            height: auto;
-
-            margin: auto;
-        }
-
-        #figure-status {
-            margin-top: 20px;
-
-            color: #6b7280;
-
-            font-size: .9rem;
-        }
-
-        #strongest-matches {
-            text-align: left;
-
-            max-width: 700px;
-
-            margin: 15px auto 0;
-        }
-
-        #strongest-matches li {
-            margin-bottom: 8px;
-        }
-
-        /* ---------------- REFLECTION ---------------- */
-
-        .two-column {
-            display: grid;
-
-            grid-template-columns:
-                1fr 1fr;
-
-            gap: 25px;
-        }
-
-        .info-card {
-            background: white;
-
-            border: 1px solid #e5e7eb;
-
-            border-radius: 16px;
-
-            padding: 28px;
-        }
-
-        .info-card h3 {
-            margin-top: 0;
-        }
-
-        .info-card p {
-            color: #5f6875;
-        }
-
-        /* ---------------- FOOTER ---------------- */
-
-        footer {
-            padding: 35px 20px;
-
-            text-align: center;
-
-            color: #6b7280;
-
-            border-top: 1px solid #e5e7eb;
-
-            background: white;
-        }
-
-        /* ---------------- LOADING ---------------- */
-
-        .hidden {
-            display: none !important;
-        }
-
-        #loading-screen {
-            text-align: center;
-
-            padding: 45px 20px;
-
-            background: #f8fafc;
-
-            border-radius: 15px;
-
-            margin-bottom: 20px;
-        }
-
-        .loader {
-            width: 40px;
-            height: 40px;
-
-            border: 4px solid #e5e7eb;
-
-            border-top-color: #172033;
+        .loading-spinner {
+            width: 35px;
+            height: 35px;
+
+            border: 4px solid #ddd;
+            border-top: 4px solid #4f46e5;
 
             border-radius: 50%;
 
             animation:
                 spin 1s linear infinite;
 
-            margin: 0 auto 20px;
+            margin: 15px auto;
         }
 
         @keyframes spin {
-
             to {
                 transform: rotate(360deg);
             }
-
         }
 
-        /* ---------------- MOBILE ---------------- */
+        #game {
+            padding: 30px;
+
+            border-radius: 14px;
+
+            background: #fafbfc;
+
+            border: 1px solid #e1e4e8;
+        }
+
+        #mystery-character {
+            font-size: 30px;
+
+            font-weight: bold;
+
+            margin: 15px 0 30px;
+        }
+
+        #choices {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(0, 1fr)
+                );
+
+            gap: 15px;
+
+            max-width: 700px;
+
+            margin: 0 auto;
+        }
+
+        .choice-button {
+            border: none;
+
+            padding: 16px 20px;
+
+            border-radius: 10px;
+
+            background: #4f46e5;
+
+            color: white;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.15s,
+                opacity 0.15s;
+        }
+
+        .choice-button:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .choice-button:disabled {
+            cursor: default;
+            opacity: 0.75;
+        }
+
+        .choice-button.correct {
+            background: #16803c;
+        }
+
+        .choice-button.wrong {
+            background: #c62828;
+        }
+
+        /* --------------------------------------------------
+           RESULT
+        -------------------------------------------------- */
+
+        #result {
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .result-success,
+        .result-wrong {
+            padding: 20px;
+
+            border-radius: 10px;
+
+            margin-bottom: 15px;
+        }
+
+        .result-success {
+            background: #edf8f1;
+            border: 1px solid #b9dfc5;
+        }
+
+        .result-wrong {
+            background: #fff1f1;
+            border: 1px solid #efc1c1;
+        }
+
+        .result-success h3,
+        .result-wrong h3 {
+            margin-top: 0;
+        }
+
+        .similarity-result {
+            background: white;
+
+            border: 1px solid #e1e4e8;
+
+            border-radius: 10px;
+
+            padding: 20px;
+        }
+
+        .similarity-result p {
+            margin: 10px 0;
+        }
+
+        details {
+            margin-top: 20px;
+
+            padding: 15px;
+
+            background: #f5f6f8;
+
+            border-radius: 8px;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #next-round {
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 13px 24px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #20242b;
+
+            color: white;
+
+            font-size: 15px;
+
+            cursor: pointer;
+        }
+
+        #next-round:hover {
+            opacity: 0.85;
+        }
+
+        /* --------------------------------------------------
+           FIGURE
+        -------------------------------------------------- */
+
+        #figure-container {
+            text-align: center;
+        }
+
+        #similarity-figure {
+            width: 100%;
+            max-width: 950px;
+
+            min-height: 450px;
+
+            margin: 20px auto;
+
+            display: block;
+
+            border: 1px solid #e1e4e8;
+
+            border-radius: 10px;
+
+            background: #ffffff;
+        }
+
+        #figure-status {
+            color: #666;
+            font-size: 14px;
+        }
+
+        #strongest-matches {
+            max-width: 800px;
+            margin: 25px auto;
+            text-align: left;
+        }
+
+        #strongest-matches li {
+            margin-bottom: 8px;
+        }
+
+        /* --------------------------------------------------
+           REFLECTION
+        -------------------------------------------------- */
+
+        .reflection {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(250px, 1fr)
+                );
+
+            gap: 18px;
+        }
+
+        .reflection div {
+            background: #f8f9fb;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            border: 1px solid #e4e7eb;
+        }
+
+        /* --------------------------------------------------
+           FOOTER
+        -------------------------------------------------- */
+
+        footer {
+            text-align: center;
+
+            padding: 35px 20px;
+
+            color: #6b7280;
+
+            font-size: 14px;
+        }
+
+        /* --------------------------------------------------
+           MOBILE
+        -------------------------------------------------- */
 
         @media (max-width: 700px) {
 
-            .nav-inner {
-                flex-direction: column;
+            nav {
+                padding: 12px 15px;
+
+                align-items: flex-start;
 
                 gap: 10px;
+
+                flex-direction: column;
             }
 
-            .nav-links {
-                justify-content: center;
-
-                gap: 12px;
+            .hero {
+                padding: 35px 20px;
             }
 
-            .steps {
-                grid-template-columns: 1fr;
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            section {
+                padding: 25px 20px;
             }
 
             #choices {
                 grid-template-columns: 1fr;
             }
 
-            .result-grid {
-                grid-template-columns: 1fr;
+            #similarity-figure {
+                min-height: 300px;
             }
-
-            .method-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .two-column {
-                grid-template-columns: 1fr;
-            }
-
-            .game-card {
-                padding: 25px 18px;
-            }
-
-            .game-top {
-                flex-direction: column;
-            }
-
-            .figure-box {
-                padding: 15px;
-            }
-
         }
 
     </style>
-
 </head>
 
 
 <body>
 
+    <!-- ==================================================
+         NAVIGATION
+    ================================================== -->
 
-<!-- ================= NAVIGATION ================= -->
+    <nav>
 
-<nav>
+        <div class="logo">
+            Social Graphs — Week 5
+        </div>
 
-    <div class="nav-inner">
+        <div class="links">
 
-        <a
-            href="../index.html"
-            class="nav-title">
-            Marvel Social Graphs
-        </a>
-
-        <div class="nav-links">
-
-            <a href="#question">
-                Question
+            <a href="../index.html">
+                Home
             </a>
 
-            <a href="#method">
-                Method
+            <a href="../week1.html">
+                Week 1
+            </a>
+
+            <a href="../week2/index.html">
+                Week 2
+            </a>
+
+            <a href="../week3/index.html">
+                Week 3
             </a>
 
             <a href="#game-section">
                 Game
             </a>
 
-            <a href="#figure">
+            <a href="#figure-section">
                 Figure
             </a>
 
-            <a href="#reflection">
-                Reflection
-            </a>
+        </div>
+
+    </nav>
+
+
+    <main>
+
+        <!-- ==================================================
+             HERO
+        ================================================== -->
+
+        <div class="hero">
+
+            <span class="tag">
+                Social Interactions and Graphs · Week 5
+            </span>
+
+            <h1>
+                Marvel Text Detective
+            </h1>
+
+            <p>
+                Can textual similarity help us identify
+                Marvel characters from their Wikipedia pages?
+            </p>
+
+            <p>
+                This project explores the relationship between
+                textual similarity and the Marvel character
+                network using Wikipedia page text.
+            </p>
 
         </div>
 
-    </div>
 
-</nav>
+        <!-- ==================================================
+             RESEARCH QUESTION
+        ================================================== -->
 
-
-<!-- ================= HERO ================= -->
-
-<header class="hero">
-
-    <div class="hero-content">
-
-        <div class="eyebrow">
-            Week 5 · Social Interactions and Graphs
-        </div>
-
-        <h1>
-            Marvel Text Detective
-        </h1>
-
-        <p>
-            Can the language used on Marvel Wikipedia pages
-            help us identify characters and reveal patterns
-            in the Marvel social network?
-        </p>
-
-    </div>
-
-</header>
-
-
-<!-- ================= RESEARCH QUESTION ================= -->
-
-<section id="question">
-
-    <div class="container">
-
-        <div class="question-card">
+        <section>
 
             <h2>
                 Research Question
             </h2>
 
-            <p class="question">
-                Can textual similarity help us identify Marvel
-                characters from their Wikipedia pages?
+            <div class="question">
+
+                Can textual similarity help us identify
+                Marvel characters from their Wikipedia pages?
+
+            </div>
+
+            <p>
+                The idea is to treat each character's Wikipedia
+                page as a text document and compare documents
+                using a simple Bag-of-Words representation
+                and cosine similarity.
+            </p>
+
+        </section>
+
+
+        <!-- ==================================================
+             HOW IT WORKS
+        ================================================== -->
+
+        <section>
+
+            <h2>
+                How the Text Detective Works
+            </h2>
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <h3>
+                        1. Mystery Character
+                    </h3>
+
+                    <p>
+                        A Marvel character is selected as the
+                        mystery character.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>
+                        2. Wikipedia Text
+                    </h3>
+
+                    <p>
+                        The character's Wikipedia page is used
+                        as the text document.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>
+                        3. Text Similarity
+                    </h3>
+
+                    <p>
+                        Words are converted into a Bag-of-Words
+                        representation and compared using
+                        cosine similarity.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>
+                        4. Your Guess
+                    </h3>
+
+                    <p>
+                        Choose the candidate whose Wikipedia
+                        page is most textually similar to the
+                        mystery character.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==================================================
+             GAME
+        ================================================== -->
+
+        <section id="game-section">
+
+            <h2>
+                Play the Text Detective
+            </h2>
+
+            <p>
+                Pick the character whose Wikipedia page is
+                most textually similar to the mystery character.
+            </p>
+
+
+            <div id="game-container">
+
+                <!-- LOADING -->
+
+                <div id="loading-screen">
+
+                    <div class="loading-spinner"></div>
+
+                    <div id="loading">
+                        Starting Marvel Text Detective...
+                    </div>
+
+                </div>
+
+
+                <!-- GAME -->
+
+                <div id="game">
+
+                    <h3>
+                        Mystery Character
+                    </h3>
+
+                    <div id="mystery-character">
+                        Loading...
+                    </div>
+
+
+                    <p>
+                        Which of the following characters has
+                        the most similar Wikipedia page?
+                    </p>
+
+
+                    <div id="choices">
+                        <!-- Buttons created by game.js -->
+                    </div>
+
+
+                    <div id="result">
+                        <!-- Result created by game.js -->
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="next-round">
+
+                        Next Round
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==================================================
+             METHOD
+        ================================================== -->
+
+        <section>
+
+            <h2>
+                Method
+            </h2>
+
+            <p>
+                The game uses a Bag-of-Words representation.
+                Each Wikipedia page is converted into a vector
+                based on the words occurring in the text.
             </p>
 
             <p>
-                The Marvel network tells us which characters are
-                connected, but the Wikipedia pages contain another
-                type of information: <strong>language</strong>.
-                This experiment asks whether characters with
-                similar Wikipedia descriptions also tend to be
-                connected in the Marvel network.
+                The similarity between two character pages is
+                then calculated using cosine similarity.
+                A higher cosine similarity means that the two
+                pages share more similar word patterns.
             </p>
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <h3>
+                        Bag-of-Words
+                    </h3>
+
+                    <p>
+                        Represents a page by counting the
+                        occurrence of its words.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>
+                        Cosine Similarity
+                    </h3>
+
+                    <p>
+                        Measures the angle between two text
+                        vectors. Values closer to 1 indicate
+                        greater textual similarity.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>
+                        Text Inspection
+                    </h3>
+
+                    <p>
+                        Shared words are displayed after each
+                        round so that the similarity result can
+                        be inspected rather than accepted blindly.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==================================================
+             FIGURE
+        ================================================== -->
+
+        <section id="figure-section">
+
+            <h2>
+                Main Figure
+            </h2>
 
             <p>
-                To explore this question, I built an interactive
-                <strong>Marvel Text Detective</strong> game.
-                The game uses Bag-of-Words and cosine similarity
-                to compare character pages and then allows the
-                player to inspect the evidence behind each result.
+                The figure summarizes the strongest textual
+                similarities found in the Marvel character
+                Wikipedia pages.
             </p>
 
-        </div>
 
-    </div>
+            <div id="figure-container">
 
-</section>
-
-
-<!-- ================= HOW IT WORKS ================= -->
-
-<section>
-
-    <div class="container">
-
-        <h2 class="section-title">
-            How it works
-        </h2>
-
-        <p class="section-intro">
-            Each round compares the mystery character's Wikipedia
-            page with other Marvel pages using a simple
-            Bag-of-Words representation.
-        </p>
-
-
-        <div class="steps">
-
-
-            <div class="step">
-
-                <div class="step-number">
-                    1
-                </div>
-
-                <h3>
-                    Read the pages
-                </h3>
-
-                <p>
-                    Marvel Wikipedia pages are converted into
-                    cleaned word lists. Common stopwords are
-                    removed so that frequent words such as
-                    "the" and "and" do not dominate the comparison.
+                <p id="figure-status">
+                    Loading the Marvel pages...
                 </p>
 
-            </div>
-
-
-            <div class="step">
-
-                <div class="step-number">
-                    2
-                </div>
-
-                <h3>
-                    Compare the words
-                </h3>
-
-                <p>
-                    Each page becomes a word-frequency vector.
-                    Cosine similarity measures how similar two
-                    character pages are based on their vocabulary.
-                </p>
+                <canvas
+                    id="similarity-figure"
+                    width="900"
+                    height="500">
+                </canvas>
 
             </div>
 
 
-            <div class="step">
+            <div id="strongest-matches">
 
-                <div class="step-number">
-                    3
-                </div>
-
-                <h3>
-                    Inspect the evidence
-                </h3>
-
-                <p>
-                    After each guess, the game shows the similarity
-                    score, shared words, network relationship, and
-                    a piece of the underlying Wikipedia text.
-                </p>
+                <!-- figure.js can populate this -->
 
             </div>
 
-
-        </div>
-
-    </div>
-
-</section>
+        </section>
 
 
-<!-- ================= GAME ================= -->
+        <!-- ==================================================
+             REFLECTION
+        ================================================== -->
 
-<section id="game-section">
+        <section>
 
-    <div class="container">
-
-        <h2 class="section-title">
-            Play the Text Detective
-        </h2>
-
-        <p class="section-intro">
-            Pick the character whose Wikipedia page is most
-            textually similar to the mystery character.
-        </p>
-
-
-        <!-- Loading -->
-
-        <div id="loading-screen">
-
-            <div class="loader"></div>
-
-            <div id="loading">
-                Loading the Marvel dataset…
-            </div>
-
-        </div>
-
-
-        <!-- Game -->
-
-        <div
-            id="game-container"
-            class="game-card hidden">
-
-
-            <div class="game-top">
-
-                <div class="game-stat">
-
-                    Round
-
-                    <span id="round-number">
-                        0
-                    </span>
-
-                </div>
-
-
-                <div class="game-stat">
-
-                    Score
-
-                    <span id="score">
-                        0
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="mystery-label">
-                Mystery character
-            </div>
-
-
-            <h2 id="mystery-character">
-                Loading…
+            <h2>
+                Reflection
             </h2>
 
 
-            <p>
-                Which character has the most similar
-                Wikipedia page?
-            </p>
+            <div class="reflection">
+
+                <div>
+
+                    <h3>
+                        What surprised me?
+                    </h3>
+
+                    <p>
+                        Characters that appear related in the
+                        Marvel network do not necessarily have
+                        the most textually similar Wikipedia
+                        pages.
+                    </p>
+
+                </div>
 
 
-            <div id="choices"></div>
+                <div>
+
+                    <h3>
+                        What did I check?
+                    </h3>
+
+                    <p>
+                        Instead of relying only on numerical
+                        similarity scores, I inspected the
+                        underlying text and the words shared
+                        between pages.
+                    </p>
+
+                </div>
 
 
-            <div
-                id="result"
-                class="hidden">
-            </div>
+                <div>
 
+                    <h3>
+                        Limitation
+                    </h3>
 
-            <button
-                id="next-round"
-                type="button"
-                class="hidden">
+                    <p>
+                        Bag-of-Words ignores word order and
+                        deeper meaning. Two pages can therefore
+                        receive a high similarity score simply
+                        because they use many of the same words.
+                    </p>
 
-                Next Mystery →
-
-            </button>
-
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ================= METHOD ================= -->
-
-<section id="method">
-
-    <div class="container">
-
-        <h2 class="section-title">
-            Method
-        </h2>
-
-        <p class="section-intro">
-            The analysis uses a deliberately simple text
-            similarity method so that the evidence can be
-            inspected directly.
-        </p>
-
-
-        <div class="method-grid">
-
-
-            <div class="method-card">
-
-                <h3>
-                    Bag of Words
-                </h3>
-
-                <p>
-                    Each Marvel page is represented by the
-                    frequency of the words appearing in it.
-                    Word order is ignored.
-                </p>
-
-                <div class="formula">
-                    Page → word frequencies → vector
                 </div>
 
             </div>
 
+        </section>
 
-            <div class="method-card">
 
-                <h3>
-                    Cosine Similarity
-                </h3>
+        <!-- ==================================================
+             CONCLUSION
+        ================================================== -->
 
-                <p>
-                    Cosine similarity compares the direction
-                    of two word-frequency vectors. A larger
-                    value indicates greater textual similarity.
-                </p>
-
-                <div class="formula">
-                    similarity(A,B) =
-                    A · B / (||A|| ||B||)
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ================= FIGURE ================= -->
-
-<section id="figure">
-
-    <div class="container">
-
-        <h2 class="section-title">
-            One strong figure
-        </h2>
-
-        <p class="section-intro">
-            The central comparison is whether character pairs
-            that are connected in the Marvel network also have
-            more similar Wikipedia pages.
-        </p>
-
-
-        <div class="figure-box">
-
-            <canvas
-                id="similarity-figure"
-                width="850"
-                height="500">
-            </canvas>
-
-
-            <p id="figure-status">
-                Generating figure from the Marvel dataset…
-            </p>
-
-        </div>
-
-
-        <!-- Strongest matches -->
-
-        <div
-            class="info-card"
-            style="margin-top:25px;">
-
-            <h3>
-                Strongest textual matches
-            </h3>
-
-            <p>
-                These are the character pairs with the highest
-                Bag-of-Words cosine similarity in the analysed
-                Marvel pages.
-            </p>
-
-            <ol id="strongest-matches"></ol>
-
-        </div>
-
-
-        <!-- Interpretation -->
-
-        <div
-            class="info-card"
-            style="margin-top:25px;">
-
-            <h3>
-                How to read the figure
-            </h3>
-
-            <p>
-                The figure compares the distribution of textual
-                similarity for connected and non-connected
-                character pairs. If connected pairs tend to have
-                higher similarity, their Wikipedia pages may share
-                vocabulary because the characters appear in
-                related stories, teams, events, or settings.
-            </p>
-
-            <p>
-                However, textual similarity does not automatically
-                mean that two characters are socially connected.
-                Two characters can have similar pages because they
-                share topics or recurring vocabulary even when no
-                direct network edge exists between them.
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ================= WHAT DID WE LEARN ================= -->
-
-<section id="reflection">
-
-    <div class="container">
-
-        <h2 class="section-title">
-            What did we learn?
-        </h2>
-
-        <p class="section-intro">
-            The analysis is not only about obtaining a similarity
-            score. The important step is to inspect the underlying
-            text and consider what the score actually represents.
-        </p>
-
-
-        <div class="two-column">
-
-
-            <div class="info-card">
-
-                <h3>
-                    What surprised us?
-                </h3>
-
-                <p>
-                    Textual similarity does not necessarily mean
-                    that two characters are directly connected in
-                    the Marvel network.
-                </p>
-
-                <p>
-                    Characters can share vocabulary because they
-                    belong to similar stories, teams, locations,
-                    events, or fictional settings.
-                </p>
-
-            </div>
-
-
-            <div class="info-card">
-
-                <h3>
-                    What did we check?
-                </h3>
-
-                <p>
-                    Rather than treating the similarity score as
-                    proof, the game exposes shared words and a
-                    piece of the underlying Wikipedia text.
-                </p>
-
-                <p>
-                    This makes it possible to ask:
-                    <strong>
-                        Why were these two pages considered similar?
-                    </strong>
-                </p>
-
-            </div>
-
-
-        </div>
-
-
-        <br><br>
-
-
-        <div class="info-card">
-
-            <h3>
-                Limitation
-            </h3>
-
-            <p>
-                Bag-of-Words ignores word order and deeper meaning.
-                Two pages can therefore appear similar because they
-                repeatedly use the same names or topics, even when
-                their actual relationships are different.
-            </p>
-
-            <p>
-                Another limitation is that the figure compares
-                connected pairs with a sample of non-connected pairs.
-                A future analysis could use TF-IDF, semantic
-                embeddings, or the complete set of non-connected
-                pairs to obtain a more detailed comparison.
-            </p>
-
-        </div>
-
-
-        <br><br>
-
-
-        <!-- Week 5 takeaway -->
-
-        <div class="question-card">
+        <section>
 
             <h2>
                 Takeaway
             </h2>
 
             <p>
-                The experiment shows that the Marvel network and
-                the text of Wikipedia pages provide two different
-                views of the same fictional universe.
+                Textual similarity provides a simple way to
+                compare Marvel character descriptions.
+                However, similarity scores should be interpreted
+                carefully because word overlap does not
+                necessarily represent semantic similarity.
             </p>
 
             <p>
-                The network captures explicit relationships,
-                while textual similarity captures shared language
-                and context. Combining the two helps us investigate
-                whether structural relationships are also reflected
-                in how characters are described.
+                The Text Detective game makes this limitation
+                visible by allowing the player to inspect the
+                shared words behind each prediction.
             </p>
 
-        </div>
+        </section>
 
-    </div>
-
-</section>
+    </main>
 
 
-<!-- ================= FOOTER ================= -->
+    <!-- ==================================================
+         FOOTER
+    ================================================== -->
 
-<footer>
+    <footer>
 
-    Marvel Social Graphs · Week 5
+        Marvel Text Detective · Social Interactions and Graphs
+        · Week 5
 
-    <br>
-
-    Textual similarity · Network relationships · Evidence
-
-</footer>
-
-
-<!-- ================= SCRIPTS ================= -->
-
-<!-- JSZip is required for reading marvel_pages.zip -->
-
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
-    crossorigin="anonymous">
-</script>
+    </footer>
 
 
-<!-- Your working Text Detective game -->
+    <!-- ==================================================
+         SCRIPTS
+         
+         IMPORTANT:
+         JSZip MUST come before game.js.
+         game.js MUST come before figure.js.
+    ================================================== -->
 
-<script src="game.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js">
+    </script>
 
+    <script src="game.js"></script>
 
-<!-- Week 5 figure -->
-
-<script src="figure.js"></script>
-
+    <script src="figure.js"></script>
 
 </body>
 

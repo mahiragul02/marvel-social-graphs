@@ -1,1075 +1,468 @@
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", () => {
 
-    // =========================================================
-    // HTML ELEMENTS
-    // =========================================================
+    /* =========================
+       GAME SETTINGS
+    ========================= */
 
-    const loadingScreen =
-        document.getElementById("loading-screen");
+    const TOTAL_ROUNDS = 10;
+    const STARTING_LIVES = 3;
+    const ROUND_TIME = 30;
 
-    const loading =
-        document.getElementById("loading");
+    /* =========================
+       HTML ELEMENTS
+    ========================= */
 
-    const mysteryCharacter =
-        document.getElementById("mystery-character");
+    const loadingScreen = document.getElementById("loading-screen");
+    const loading = document.getElementById("loading");
 
-    const choices =
-        document.getElementById("choices");
+    const startScreen = document.getElementById("start-screen");
+    const startGameButton = document.getElementById("start-game");
 
-    const result =
-        document.getElementById("result");
+    const finalScreen = document.getElementById("final-screen");
+    const finalRank = document.getElementById("final-rank");
+    const finalScore = document.getElementById("final-score");
+    const finalCorrect = document.getElementById("final-correct");
+    const finalRounds = document.getElementById("final-rounds");
+    const finalStreak = document.getElementById("final-streak");
+    const finalAccuracy = document.getElementById("final-accuracy");
+    const playAgainButton = document.getElementById("play-again");
 
-    const nextRound =
-        document.getElementById("next-round");
+    const targetCharacter = document.getElementById("target-character");
 
-    const startScreen =
-        document.getElementById("start-screen");
+    const choicesContainer = document.getElementById("choices");
 
-    const startGameButton =
-        document.getElementById("start-game");
+    const scoreElement = document.getElementById("score");
+    const livesElement = document.getElementById("lives");
+    const streakElement = document.getElementById("streak");
+    const timerElement = document.getElementById("timer");
 
-    const finalScreen =
-        document.getElementById("final-screen");
+    const roundLabel = document.getElementById("round-label");
+    const progressFill = document.getElementById("progress-fill");
 
-    const playAgainButton =
-        document.getElementById("play-again");
+    const hintButton = document.getElementById("hint-button");
+    const skipButton = document.getElementById("skip-button");
+    const hintBox = document.getElementById("hint-box");
 
-    const scoreElement =
-        document.getElementById("score");
+    const resultBox = document.getElementById("result");
+    const nextRoundButton = document.getElementById("next-round");
 
-    const livesElement =
-        document.getElementById("lives");
-
-    const streakElement =
-        document.getElementById("streak");
-
-    const timerElement =
-        document.getElementById("timer");
-
-    const roundLabel =
-        document.getElementById("round-label");
-
-    const progressFill =
-        document.getElementById("progress-fill");
-
-    const hintButton =
-        document.getElementById("hint-button");
-
-    const skipButton =
-        document.getElementById("skip-button");
-
-    const hintBox =
-        document.getElementById("hint-box");
-
-
-    // =========================================================
-    // GAME VARIABLES
-    // =========================================================
-
-    let zip = null;
+    /* =========================
+       GAME VARIABLES
+    ========================= */
 
     let pages = [];
 
-    let currentMystery = null;
-
-    let currentCandidates = [];
-
-    let currentMysteryVector = null;
-
-    let currentCorrect = null;
-
-    let timerInterval = null;
-
-    let timeLeft = 30;
-
-    let gameStarted = false;
-
-    let round = 0;
-
-    const TOTAL_ROUNDS = 10;
-
     let score = 0;
-
-    let lives = 3;
-
+    let lives = STARTING_LIVES;
     let streak = 0;
-
     let bestStreak = 0;
-
     let correctAnswers = 0;
 
+    let round = 1;
+
+    let timeLeft = ROUND_TIME;
+    let timerInterval = null;
+
     let answered = false;
-
     let hintUsed = false;
-
     let skipUsed = false;
 
+    let currentMystery = null;
+    let currentCorrect = null;
+    let currentCandidates = [];
 
-    // =========================================================
-    // STATUS
-    // =========================================================
+    /* =========================
+       UTILITY FUNCTIONS
+    ========================= */
 
-    function status(message) {
+    function shuffle(array) {
+        const copied = [...array];
 
-        console.log(message);
+        for (let i = copied.length - 1; i > 0; i--) {
 
-        if (loading) {
+            const j = Math.floor(Math.random() * (i + 1));
 
-            loading.textContent =
-                message;
-
+            [copied[i], copied[j]] =
+                [copied[j], copied[i]];
         }
 
+        return copied;
     }
 
+    function escapeHTML(text) {
 
-    // =========================================================
-    // CLEAN CHARACTER NAME
-    // =========================================================
+        const div = document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+    }
 
     function cleanCharacterName(filename) {
 
-        let name =
-            filename.split("/").pop();
+        let name = filename
+            .replace(/\.(html|htm|txt)$/i, "")
+            .replace(/[_-]+/g, " ")
+            .trim();
 
-
-        name =
-            name.replace(
-                /\.(html?|txt)$/i,
-                ""
-            );
-
-
-        try {
-
-            name =
-                decodeURIComponent(name);
-
-        }
-
-        catch (error) {
-
-            // Keep original name
-
-        }
-
-
-        name =
-            name.replace(
-                /[_-]+/g,
-                " "
-            );
-
-
-        name =
-            name.replace(
-                /\s+/g,
-                " "
-            ).trim();
-
+        name = name.replace(/\s+/g, " ");
 
         return name;
-
     }
 
-
-    // =========================================================
-    // CLEAN TEXT
-    // =========================================================
-
-    function cleanText(text) {
-
-        return String(text || "")
-
-            .replace(
-                /<script[\s\S]*?<\/script>/gi,
-                " "
-            )
-
-            .replace(
-                /<style[\s\S]*?<\/style>/gi,
-                " "
-            )
-
-            .replace(
-                /<[^>]+>/g,
-                " "
-            )
-
-            .replace(
-                /&nbsp;/gi,
-                " "
-            )
-
-            .replace(
-                /&amp;/gi,
-                " "
-            )
-
-            .replace(
-                /&quot;/gi,
-                " "
-            )
-
-            .replace(
-                /&#39;/gi,
-                " "
-            )
-
-            .toLowerCase()
-
-            .replace(
-                /[^a-z\s]/g,
-                " "
-            )
-
-            .split(/\s+/)
-
-            .filter(
-                word => word.length >= 3
-            );
-
-    }
-
-
-    // =========================================================
-    // BAG OF WORDS
-    // =========================================================
-
-    function makeVector(text) {
-
-        const words =
-            cleanText(text);
-
-        const vector = {};
-
-
-        words.forEach(word => {
-
-            if (!vector[word]) {
-
-                vector[word] = 0;
-
-            }
-
-
-            vector[word]++;
-
-        });
-
-
-        return vector;
-
-    }
-
-
-    // =========================================================
-    // COSINE SIMILARITY
-    // =========================================================
-
-    function cosineSimilarity(a, b) {
-
-        const allWords =
-            new Set([
-                ...Object.keys(a),
-                ...Object.keys(b)
-            ]);
-
-
-        let dotProduct = 0;
-
-        let magnitudeA = 0;
-
-        let magnitudeB = 0;
-
-
-        allWords.forEach(word => {
-
-            const valueA =
-                a[word] || 0;
-
-            const valueB =
-                b[word] || 0;
-
-
-            dotProduct +=
-                valueA * valueB;
-
-
-            magnitudeA +=
-                valueA * valueA;
-
-
-            magnitudeB +=
-                valueB * valueB;
-
-        });
-
-
-        if (
-            magnitudeA === 0 ||
-            magnitudeB === 0
-        ) {
-
-            return 0;
-
-        }
-
-
-        return dotProduct /
-            (
-                Math.sqrt(magnitudeA) *
-                Math.sqrt(magnitudeB)
-            );
-
-    }
-
-
-    // =========================================================
-    // SHARED WORDS
-    // =========================================================
-
-    function getSharedWords(
-        vectorA,
-        vectorB
-    ) {
-
-        return Object.keys(vectorA)
-
-            .filter(
-                word => vectorB[word]
-            )
-
-            .sort(
-                (a, b) => {
-
-                    return (
-
-                        vectorA[b] +
-                        vectorB[b]
-
-                    ) -
-
-                    (
-
-                        vectorA[a] +
-                        vectorB[a]
-
-                    );
-
-                }
-            )
-
-            .slice(0, 10);
-
-    }
-
-
-    // =========================================================
-    // LOAD DATASET
-    // =========================================================
-
-    async function loadDataset() {
-
-        status(
-            "Loading Marvel Wikipedia dataset..."
-        );
-
-
-        const response =
-            await fetch(
-                "../marvel_pages.zip"
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Could not load marvel_pages.zip"
-            );
-
-        }
-
-
-        status(
-            "Opening Marvel Wikipedia dataset..."
-        );
-
-
-        const buffer =
-            await response.arrayBuffer();
-
-
-        zip =
-            await JSZip.loadAsync(
-                buffer
-            );
-
-
-        const filenames =
-            Object.keys(zip.files)
-                .filter(filename => {
-
-                    const lower =
-                        filename.toLowerCase();
-
-
-                    if (
-                        zip.files[filename].dir
-                    ) {
-
-                        return false;
-
-                    }
-
-
-                    if (
-
-                        lower.includes("readme") ||
-                        lower.includes("license") ||
-                        lower.includes("metadata") ||
-                        lower.includes(".git/")
-
-                    ) {
-
-                        return false;
-
-                    }
-
-
-                    return (
-
-                        lower.endsWith(".html") ||
-                        lower.endsWith(".htm") ||
-                        lower.endsWith(".txt")
-
-                    );
-
-                });
-
-
-        if (
-            filenames.length === 0
-        ) {
-
-            throw new Error(
-                "No Marvel Wikipedia pages were found in the ZIP file."
-            );
-
-        }
-
-
-        pages =
-            filenames.map(filename => {
-
-                return {
-
-                    filename: filename,
-
-                    name:
-                        cleanCharacterName(
-                            filename
-                        )
-
-                };
-
-            });
-
-
-        console.log(
-            "Marvel pages found:",
-            pages.length
-        );
-
-
-        status(
-            "SUCCESS! " +
-            pages.length +
-            " Marvel pages loaded."
-        );
-
-
-        await new Promise(
-            resolve =>
-                setTimeout(
-                    resolve,
-                    700
-                )
-        );
-
-    }
-
-
-    // =========================================================
-    // READ PAGE
-    // =========================================================
+    /* =========================
+       READ PAGE
+    ========================= */
 
     async function readPage(page) {
 
-        if (!page) {
-
-            return "";
-
-        }
-
-
         try {
 
-            return await zip.files[
-                page.filename
-            ].async("text");
+            const content = await page.file.async("text");
 
-        }
+            return content;
 
-        catch (error) {
+        } catch (error) {
 
-            console.error(
-                "Could not read page:",
-                page.filename,
-                error
-            );
+            console.error("Could not read page:", page.name);
 
             return "";
-
         }
-
     }
 
+    /* =========================
+       BAG OF WORDS
+    ========================= */
 
-    // =========================================================
-    // SHUFFLE
-    // =========================================================
+    function tokenize(text) {
 
-    function shuffle(array) {
-
-        const copy =
-            [...array];
-
-
-        for (
-            let i = copy.length - 1;
-            i > 0;
-            i--
-        ) {
-
-            const j =
-                Math.floor(
-                    Math.random() *
-                    (i + 1)
-                );
-
-
-            [
-                copy[i],
-                copy[j]
-            ] = [
-                copy[j],
-                copy[i]
-            ];
-
-        }
-
-
-        return copy;
-
+        return text
+            .toLowerCase()
+            .replace(/<script[\s\S]*?<\/script>/gi, " ")
+            .replace(/<style[\s\S]*?<\/style>/gi, " ")
+            .replace(/<[^>]+>/g, " ")
+            .replace(/[^a-z0-9\s]/g, " ")
+            .split(/\s+/)
+            .filter(word =>
+                word.length > 2 &&
+                word.length < 25
+            );
     }
 
+    function createVector(tokens) {
 
-    // =========================================================
-    // UPDATE HUD
-    // =========================================================
+        const vector = {};
+
+        tokens.forEach(word => {
+
+            if (!vector[word]) {
+                vector[word] = 0;
+            }
+
+            vector[word]++;
+        });
+
+        return vector;
+    }
+
+    /* =========================
+       COSINE SIMILARITY
+    ========================= */
+
+    function cosineSimilarity(vectorA, vectorB) {
+
+        const words = new Set([
+            ...Object.keys(vectorA),
+            ...Object.keys(vectorB)
+        ]);
+
+        let dotProduct = 0;
+        let magnitudeA = 0;
+        let magnitudeB = 0;
+
+        words.forEach(word => {
+
+            const a = vectorA[word] || 0;
+            const b = vectorB[word] || 0;
+
+            dotProduct += a * b;
+
+            magnitudeA += a * a;
+            magnitudeB += b * b;
+        });
+
+        if (magnitudeA === 0 || magnitudeB === 0) {
+            return 0;
+        }
+
+        return dotProduct /
+            (Math.sqrt(magnitudeA) *
+             Math.sqrt(magnitudeB));
+    }
+
+    /* =========================
+       UPDATE HUD
+    ========================= */
 
     function updateHUD() {
 
-        scoreElement.textContent =
-            score;
-
+        scoreElement.textContent = score;
 
         livesElement.textContent =
             "❤️".repeat(lives) +
-            "🖤".repeat(
-                Math.max(0, 3 - lives)
-            );
+            "🖤".repeat(STARTING_LIVES - lives);
 
+        streakElement.textContent = streak;
 
-        streakElement.textContent =
-            streak;
-
-
-        timerElement.textContent =
-            timeLeft;
-
+        timerElement.textContent = timeLeft;
 
         roundLabel.textContent =
-            "ROUND " +
-            Math.min(round, TOTAL_ROUNDS) +
-            " / " +
-            TOTAL_ROUNDS;
-
+            `ROUND ${round} / ${TOTAL_ROUNDS}`;
 
         const progress =
-            ((round - 1) /
-                TOTAL_ROUNDS) *
-            100;
-
+            (round / TOTAL_ROUNDS) * 100;
 
         progressFill.style.width =
-            Math.max(
-                0,
-                Math.min(100, progress)
-            ) + "%";
-
+            `${progress}%`;
     }
 
-
-    // =========================================================
-    // TIMER
-    // =========================================================
-
-    function startTimer() {
-
-        clearInterval(
-            timerInterval
-        );
-
-
-        timeLeft = 30;
-
-        updateHUD();
-
-
-        timerInterval =
-            setInterval(() => {
-
-                if (
-                    answered ||
-                    !gameStarted
-                ) {
-
-                    return;
-
-                }
-
-
-                timeLeft--;
-
-                updateHUD();
-
-
-                if (
-                    timeLeft <= 0
-                ) {
-
-                    clearInterval(
-                        timerInterval
-                    );
-
-
-                    handleTimeOut();
-
-                }
-
-            }, 1000);
-
-    }
-
-
-    // =========================================================
-    // STOP TIMER
-    // =========================================================
+    /* =========================
+       TIMER
+    ========================= */
 
     function stopTimer() {
 
-        clearInterval(
-            timerInterval
-        );
+        if (timerInterval) {
 
+            clearInterval(timerInterval);
+
+            timerInterval = null;
+        }
     }
 
+    function startTimer() {
 
-    // =========================================================
-    // CREATE ROUND
-    // =========================================================
+        stopTimer();
+
+        timeLeft = ROUND_TIME;
+
+        updateHUD();
+
+        timerInterval = setInterval(() => {
+
+            if (answered) {
+                return;
+            }
+
+            timeLeft--;
+
+            updateHUD();
+
+            if (timeLeft <= 0) {
+
+                stopTimer();
+
+                handleTimeOut();
+            }
+
+        }, 1000);
+    }
+
+    /* =========================
+       CREATE ROUND
+    ========================= */
 
     async function createRound() {
 
-        try {
+        stopTimer();
 
-            answered = false;
+        answered = false;
+        hintUsed = false;
+        skipUsed = false;
 
-            hintUsed = false;
+        choicesContainer.innerHTML = "";
 
+        resultBox.innerHTML = "";
+        resultBox.style.display = "none";
+        resultBox.className = "";
 
-            if (round > TOTAL_ROUNDS) {
+        hintBox.innerHTML = "";
+        hintBox.style.display = "none";
 
-                finishGame();
+        hintButton.disabled = false;
+        skipButton.disabled = false;
 
-                return;
+        nextRoundButton.style.display = "none";
 
-            }
+        updateHUD();
 
+        /* Pick target character */
 
-            status(
-                "Preparing a new mystery character..."
+        const mysteryIndex =
+            Math.floor(Math.random() * pages.length);
+
+        currentMystery = pages[mysteryIndex];
+
+        /* SHOW TARGET CHARACTER */
+
+        targetCharacter.textContent =
+            currentMystery.name;
+
+        /* Select four different candidates */
+
+        const availablePages =
+            pages.filter((_, index) =>
+                index !== mysteryIndex
             );
 
+        const candidates =
+            shuffle(availablePages).slice(0, 4);
 
-            result.innerHTML = "";
+        /* Read target page */
 
-            choices.innerHTML = "";
+        const mysteryText =
+            await readPage(currentMystery);
 
-            hintBox.style.display =
-                "none";
+        const mysteryTokens =
+            tokenize(mysteryText);
 
-            hintBox.innerHTML = "";
+        const mysteryVector =
+            createVector(mysteryTokens);
 
-            nextRound.style.display =
-                "none";
+        /* Calculate similarities */
 
+        const candidateData = [];
 
-            hintButton.disabled = false;
+        for (const candidate of candidates) {
 
-            skipButton.disabled = false;
+            const candidateText =
+                await readPage(candidate);
 
+            const candidateTokens =
+                tokenize(candidateText);
 
-            if (
-                pages.length < 5
-            ) {
+            const candidateVector =
+                createVector(candidateTokens);
 
-                throw new Error(
-                    "Not enough Marvel pages were found."
+            const similarity =
+                cosineSimilarity(
+                    mysteryVector,
+                    candidateVector
                 );
 
-            }
+            candidateData.push({
 
+                page: candidate,
 
-            const shuffledPages =
-                shuffle(pages);
+                vector: candidateVector,
 
+                similarity: similarity
 
-            currentMystery =
-                shuffledPages[0];
+            });
+        }
 
+        /* Highest similarity is correct answer */
 
-            status(
-                "Reading mystery character page..."
-            );
+        candidateData.sort(
+            (a, b) =>
+                b.similarity - a.similarity
+        );
 
+        currentCandidates = candidateData;
 
-            const mysteryText =
-                await readPage(
-                    currentMystery
-                );
+        currentCorrect =
+            candidateData[0];
 
+        /* Shuffle displayed choices */
 
-            if (!mysteryText) {
+        const displayedCandidates =
+            shuffle(candidateData);
 
-                throw new Error(
-                    "Could not read the mystery character page."
-                );
+        displayedCandidates.forEach(candidateData => {
 
-            }
+            const button =
+                document.createElement("button");
 
+            button.className =
+                "choice-button";
 
-            currentCandidates =
-                shuffledPages.slice(1, 5);
+            button.textContent =
+                candidateData.page.name;
 
+            button.dataset.name =
+                candidateData.page.name;
 
-            if (
-                currentCandidates.length < 4
-            ) {
+            button.addEventListener(
+                "click",
+                () => {
 
-                throw new Error(
-                    "Could not create four answer choices."
-                );
-
-            }
-
-
-            status(
-                "Reading four candidate pages..."
-            );
-
-
-            const candidateData = [];
-
-
-            for (
-                const candidate
-                of currentCandidates
-            ) {
-
-                const text =
-                    await readPage(
-                        candidate
-                    );
-
-
-                candidateData.push({
-
-                    page: candidate,
-
-                    name: candidate.name,
-
-                    text: text,
-
-                    vector: null,
-
-                    similarity: 0
-
-                });
-
-            }
-
-
-            status(
-                "Calculating textual similarity..."
-            );
-
-
-            const mysteryVector =
-                makeVector(
-                    mysteryText
-                );
-
-
-            candidateData.forEach(
-                candidate => {
-
-                    candidate.vector =
-                        makeVector(
-                            candidate.text
-                        );
-
-
-                    candidate.similarity =
-                        cosineSimilarity(
-                            mysteryVector,
-                            candidate.vector
-                        );
-
-                }
-            );
-
-
-            candidateData.sort(
-                (a, b) =>
-                    b.similarity -
-                    a.similarity
-            );
-
-
-            currentCandidates =
-                candidateData;
-
-
-            currentMysteryVector =
-                mysteryVector;
-
-
-            currentCorrect =
-                candidateData[0];
-
-
-            // -------------------------------------------------
-            // DISPLAY ANSWERS
-            // -------------------------------------------------
-
-            choices.innerHTML = "";
-
-
-            candidateData.forEach(
-                (candidate, index) => {
-
-                    const button =
-                        document.createElement(
-                            "button"
-                        );
-
-
-                    button.type =
-                        "button";
-
-
-                    button.className =
-                        "choice-button";
-
-
-                    button.textContent =
-                        candidate.name;
-
-
-                    button.dataset.index =
-                        index;
-
-
-                    button.addEventListener(
-                        "click",
-                        function () {
-
-                            handleAnswer(
-                                candidate,
-                                currentCorrect,
-                                mysteryVector
-                            );
-
-                        }
-                    );
-
-
-                    choices.appendChild(
+                    handleAnswer(
+                        candidateData,
                         button
                     );
 
                 }
             );
 
+            choicesContainer.appendChild(button);
+        });
 
-            loadingScreen.style.display =
-                "none";
-
-
-            roundLabel.textContent =
-                "ROUND " +
-                round +
-                " / " +
-                TOTAL_ROUNDS;
-
-
-            updateHUD();
-
-
-            startTimer();
-
-
-            console.log(
-                "ROUND READY:",
-                currentMystery.name
-            );
-
-        }
-
-        catch (error) {
-
-            showError(error);
-
-        }
-
+        startTimer();
     }
 
+    /* =========================
+       HANDLE ANSWER
+    ========================= */
 
-    // =========================================================
-    // HANDLE ANSWER
-    // =========================================================
+    function handleAnswer(selected, selectedButton) {
 
-    function handleAnswer(
-        selected,
-        correct,
-        mysteryVector
-    ) {
-
-        if (
-            answered ||
-            !gameStarted
-        ) {
-
+        if (answered) {
             return;
-
         }
-
 
         answered = true;
 
         stopTimer();
 
+        /* Disable all choices */
 
-        const buttons =
-            choices.querySelectorAll(
-                "button"
+        const allButtons =
+            document.querySelectorAll(
+                ".choice-button"
             );
 
-
-        buttons.forEach(
-            button => {
-
-                button.disabled =
-                    true;
-
-
-                if (
-                    button.textContent ===
-                    correct.name
-                ) {
-
-                    button.classList.add(
-                        "correct"
-                    );
-
-                }
-
-
-                if (
-                    button.textContent ===
-                    selected.name &&
-                    selected.name !==
-                    correct.name
-                ) {
-
-                    button.classList.add(
-                        "wrong"
-                    );
-
-                }
-
-            }
-        );
-
+        allButtons.forEach(button => {
+            button.disabled = true;
+        });
 
         const isCorrect =
-            selected.name ===
-            correct.name;
+            selected.page.name ===
+            currentCorrect.page.name;
 
-
-        const sharedWords =
-            getSharedWords(
-                mysteryVector,
-                selected.vector
-            );
-
+        /* =========================
+           CORRECT
+        ========================= */
 
         if (isCorrect) {
+
+            selectedButton.classList.add(
+                "correct"
+            );
 
             correctAnswers++;
 
             streak++;
 
-            bestStreak =
-                Math.max(
-                    bestStreak,
-                    streak
-                );
-
+            if (streak > bestStreak) {
+                bestStreak = streak;
+            }
 
             let points =
-                100;
+                100 +
+                (timeLeft * 3) +
+                ((streak - 1) * 25);
 
-
-            // Speed bonus
-
-            points +=
-                timeLeft * 3;
-
-
-            // Streak bonus
-
-            points +=
-                Math.max(
-                    0,
-                    (streak - 1) * 25
-                );
-
-
-            // Hint penalty
+            /* Hint penalty */
 
             if (hintUsed) {
 
@@ -1078,802 +471,713 @@ document.addEventListener("DOMContentLoaded", async function () {
                         25,
                         points - 40
                     );
-
             }
-
 
             score += points;
 
+            resultBox.className =
+                "result-correct";
 
-            result.innerHTML = `
+            resultBox.innerHTML = `
 
-                <div class="result-success">
-
-                    <h3>
-                        🎉 Excellent Detective Work!
-                    </h3>
-
-                    <p>
-                        <strong>
-                            ${escapeHTML(selected.name)}
-                        </strong>
-
-                        had the highest textual
-                        similarity among the four choices.
-                    </p>
-
-                    <p style="margin-top:8px;">
-                        You earned
-                        <strong>
-                            +${points} points
-                        </strong>
-                        ${streak > 1
-                            ? "🔥 Streak x" + streak
-                            : ""}
-                    </p>
-
+                <div class="result-title">
+                    ✓ CORRECT!
                 </div>
 
+                <div class="similarity">
+                    Similarity:
+                    ${(selected.similarity * 100).toFixed(1)}%
+                </div>
+
+                <div class="result-explanation">
+
+                    <strong>
+                        ${escapeHTML(selected.page.name)}
+                    </strong>
+                    has the highest textual similarity
+                    to
+                    <strong>
+                        ${escapeHTML(currentMystery.name)}
+                    </strong>.
+
+                    <br><br>
+
+                    The game compares the two Wikipedia
+                    pages using a Bag-of-Words representation
+                    and cosine similarity.
+
+                    <br><br>
+
+                    <strong>+${points} points</strong>
+
+                </div>
             `;
 
         }
 
+        /* =========================
+           WRONG
+        ========================= */
+
         else {
+
+            selectedButton.classList.add(
+                "wrong"
+            );
 
             lives--;
 
             streak = 0;
 
+            /* Highlight correct answer */
 
-            result.innerHTML = `
-
-                <div class="result-wrong">
-
-                    <h3>
-                        ❌ Case Not Solved
-                    </h3>
-
-                    <p>
-                        The strongest textual match was
-                        <strong>
-                            ${escapeHTML(correct.name)}
-                        </strong>.
-                    </p>
-
-                    <p style="margin-top:8px;">
-                        You lost one life.
-                    </p>
-
-                </div>
-
-            `;
-
-        }
-
-
-        result.innerHTML += `
-
-            <div class="similarity-result">
-
-                <p>
-                    <strong>
-                        Your choice similarity:
-                    </strong>
-
-                    <span class="score-highlight">
-                        ${selected.similarity.toFixed(3)}
-                    </span>
-                </p>
-
-
-                <p>
-                    <strong>
-                        Best similarity:
-                    </strong>
-
-                    <span class="score-highlight">
-                        ${correct.similarity.toFixed(3)}
-                    </span>
-                </p>
-
-
-                <p>
-                    <strong>
-                        Shared words:
-                    </strong>
-
-                    ${
-                        sharedWords.length > 0
-                        ? escapeHTML(
-                            sharedWords.join(", ")
-                        )
-                        : "No strong shared words found."
-                    }
-                </p>
-
-
-                <details>
-
-                    <summary>
-                        🔬 Inspect the NLP method
-                    </summary>
-
-                    <p>
-                        The game represents each Wikipedia
-                        page as a
-                        <strong>Bag-of-Words</strong>
-                        vector.
-                    </p>
-
-                    <p>
-                        Cosine similarity is then used
-                        to compare the two vectors.
-                    </p>
-
-                    <p>
-                        A higher score means that the pages
-                        have more similar word distributions.
-                    </p>
-
-                    <p>
-                        This method does not understand
-                        word order or deeper semantic meaning.
-                    </p>
-
-                </details>
-
-            </div>
-
-        `;
-
-
-        updateHUD();
-
-
-        if (lives <= 0) {
-
-            setTimeout(
-                finishGame,
-                1800
-            );
-
-            return;
-
-        }
-
-
-        nextRound.style.display =
-            "inline-block";
-
-
-        if (
-            round >= TOTAL_ROUNDS
-        ) {
-
-            nextRound.textContent =
-                "🏆 SEE RESULTS";
-
-        }
-
-    }
-
-
-    // =========================================================
-    // TIME OUT
-    // =========================================================
-
-    function handleTimeOut() {
-
-        if (
-            answered ||
-            !gameStarted
-        ) {
-
-            return;
-
-        }
-
-
-        answered = true;
-
-
-        const buttons =
-            choices.querySelectorAll(
-                "button"
-            );
-
-
-        buttons.forEach(
-            button => {
-
-                button.disabled =
-                    true;
-
+            allButtons.forEach(button => {
 
                 if (
-                    button.textContent ===
-                    currentCorrect.name
+                    button.dataset.name ===
+                    currentCorrect.page.name
                 ) {
 
                     button.classList.add(
                         "correct"
                     );
-
                 }
 
-            }
-        );
+            });
 
+            resultBox.className =
+                "result-wrong";
+
+            resultBox.innerHTML = `
+
+                <div class="result-title">
+                    ✕ WRONG ANSWER
+                </div>
+
+                <div class="similarity">
+
+                    Correct answer:
+                    ${escapeHTML(
+                        currentCorrect.page.name
+                    )}
+
+                    <br>
+
+                    Similarity:
+                    ${(currentCorrect.similarity * 100).toFixed(1)}%
+
+                </div>
+
+                <div class="result-explanation">
+
+                    Your selected character had a lower
+                    textual similarity to
+                    <strong>
+                        ${escapeHTML(currentMystery.name)}
+                    </strong>.
+
+                    <br><br>
+
+                    The correct character was the one
+                    with the highest cosine similarity
+                    between the two Wikipedia pages.
+
+                </div>
+            `;
+        }
+
+        updateHUD();
+
+        resultBox.style.display = "block";
+
+        hintButton.disabled = true;
+        skipButton.disabled = true;
+
+        /* Game over */
+
+        if (lives <= 0) {
+
+            setTimeout(() => {
+
+                finishGame();
+
+            }, 1800);
+
+            return;
+        }
+
+        /* Last round */
+
+        if (round >= TOTAL_ROUNDS) {
+
+            nextRoundButton.textContent =
+                "SEE RESULTS";
+
+        }
+        else {
+
+            nextRoundButton.textContent =
+                "NEXT ROUND →";
+        }
+
+        nextRoundButton.style.display =
+            "block";
+    }
+
+    /* =========================
+       TIME OUT
+    ========================= */
+
+    function handleTimeOut() {
+
+        if (answered) {
+            return;
+        }
+
+        answered = true;
 
         lives--;
 
         streak = 0;
 
+        const allButtons =
+            document.querySelectorAll(
+                ".choice-button"
+            );
 
-        result.innerHTML = `
+        allButtons.forEach(button => {
 
-            <div class="result-wrong">
+            button.disabled = true;
 
-                <h3>
-                    ⏰ Time's Up!
-                </h3>
+            if (
+                button.dataset.name ===
+                currentCorrect.page.name
+            ) {
 
-                <p>
-                    The mystery character was best
-                    matched by
-                    <strong>
-                        ${escapeHTML(
-                            currentCorrect.name
-                        )}
-                    </strong>.
-                </p>
+                button.classList.add(
+                    "correct"
+                );
+            }
 
-                <p style="margin-top:8px;">
-                    You lost one life.
-                </p>
+        });
+
+        resultBox.className =
+            "result-wrong";
+
+        resultBox.innerHTML = `
+
+            <div class="result-title">
+                ⏰ TIME'S UP!
+            </div>
+
+            <div class="similarity">
+
+                Correct answer:
+                ${escapeHTML(
+                    currentCorrect.page.name
+                )}
+
+                <br>
+
+                Similarity:
+                ${(currentCorrect.similarity * 100).toFixed(1)}%
 
             </div>
 
+            <div class="result-explanation">
+
+                You ran out of time.
+
+                <br><br>
+
+                The correct answer was the character
+                with the highest cosine similarity
+                to
+                <strong>
+                    ${escapeHTML(currentMystery.name)}
+                </strong>.
+
+            </div>
         `;
 
+        resultBox.style.display = "block";
+
+        hintButton.disabled = true;
+        skipButton.disabled = true;
 
         updateHUD();
 
-
         if (lives <= 0) {
 
-            setTimeout(
-                finishGame,
-                1800
-            );
+            setTimeout(() => {
 
+                finishGame();
+
+            }, 1800);
+
+            return;
         }
 
+        if (round >= TOTAL_ROUNDS) {
+
+            nextRoundButton.textContent =
+                "SEE RESULTS";
+
+        }
         else {
 
-            nextRound.style.display =
-                "inline-block";
-
+            nextRoundButton.textContent =
+                "NEXT ROUND →";
         }
 
+        nextRoundButton.style.display =
+            "block";
     }
 
-
-    // =========================================================
-    // HINT
-    // =========================================================
+    /* =========================
+       HINT
+    ========================= */
 
     hintButton.addEventListener(
         "click",
-        function () {
+        () => {
 
             if (
                 answered ||
-                hintUsed
+                hintUsed ||
+                !currentCorrect
             ) {
-
                 return;
-
             }
-
 
             hintUsed = true;
 
-
-            const sharedWords =
-                getSharedWords(
-                    currentMysteryVector,
-                    currentCorrect.vector
-                );
-
+            hintButton.disabled = true;
 
             hintBox.style.display =
                 "block";
 
+            hintBox.innerHTML = `
 
-            if (
-                sharedWords.length > 0
-            ) {
+                💡 <strong>HINT</strong>
 
-                hintBox.innerHTML = `
+                <br><br>
 
-                    💡 <strong>Detective Hint:</strong>
+                Look for the character whose
+                Wikipedia page is likely to discuss
+                similar topics, relationships, or
+                Marvel storylines as
+                <strong>
+                    ${escapeHTML(currentMystery.name)}
+                </strong>.
 
-                    The strongest candidate shares words such as:
+                <br><br>
 
-                    <strong>
-                        ${escapeHTML(
-                            sharedWords
-                                .slice(0, 5)
-                                .join(", ")
-                        )}
-                    </strong>
+                ⚠️ Using a hint reduces your points
+                for this round.
 
-                    <br><br>
-
-                    Using this hint reduces your
-                    potential score for this round.
-
-                `;
-
-            }
-
-            else {
-
-                hintBox.innerHTML = `
-
-                    💡 <strong>Detective Hint:</strong>
-
-                    Look carefully at the character
-                    descriptions. The correct answer has
-                    the highest cosine similarity.
-
-                `;
-
-            }
-
-
-            hintButton.disabled =
-                true;
-
+            `;
         }
     );
 
-
-    // =========================================================
-    // SKIP
-    // =========================================================
+    /* =========================
+       SKIP
+    ========================= */
 
     skipButton.addEventListener(
         "click",
-        function () {
+        () => {
 
             if (
                 answered ||
                 skipUsed
             ) {
-
                 return;
-
             }
-
 
             skipUsed = true;
 
-            hintButton.disabled =
-                true;
-
-            skipButton.disabled =
-                true;
-
+            answered = true;
 
             stopTimer();
 
+            skipButton.disabled = true;
+            hintButton.disabled = true;
 
-            result.innerHTML = `
+            const allButtons =
+                document.querySelectorAll(
+                    ".choice-button"
+                );
 
-                <div class="result-wrong">
+            allButtons.forEach(button => {
 
-                    <h3>
-                        ⏭️ Case Skipped
-                    </h3>
+                button.disabled = true;
 
-                    <p>
-                        The strongest textual match was
-                        <strong>
-                            ${escapeHTML(
-                                currentCorrect.name
-                            )}
-                        </strong>.
-                    </p>
+                if (
+                    button.dataset.name ===
+                    currentCorrect.page.name
+                ) {
 
-                </div>
+                    button.classList.add(
+                        "correct"
+                    );
+                }
 
-            `;
-
-
-            answered = true;
+            });
 
             streak = 0;
 
+            resultBox.className = "";
 
-            const buttons =
-                choices.querySelectorAll(
-                    "button"
-                );
+            resultBox.innerHTML = `
 
+                <div class="result-title">
+                    ⏭️ ROUND SKIPPED
+                </div>
 
-            buttons.forEach(
-                button => {
+                <div class="similarity">
 
-                    button.disabled =
-                        true;
+                    Correct answer:
+                    ${escapeHTML(
+                        currentCorrect.page.name
+                    )}
 
+                    <br>
 
-                    if (
-                        button.textContent ===
-                        currentCorrect.name
-                    ) {
+                    Similarity:
+                    ${(currentCorrect.similarity * 100).toFixed(1)}%
 
-                        button.classList.add(
-                            "correct"
-                        );
+                </div>
 
-                    }
+                <div class="result-explanation">
 
-                }
-            );
+                    No life was lost.
 
+                    <br><br>
+
+                    The correct character was the one
+                    with the highest textual similarity
+                    to
+                    <strong>
+                        ${escapeHTML(currentMystery.name)}
+                    </strong>.
+
+                </div>
+            `;
+
+            resultBox.style.display = "block";
 
             updateHUD();
 
+            if (round >= TOTAL_ROUNDS) {
 
-            nextRound.style.display =
-                "inline-block";
+                nextRoundButton.textContent =
+                    "SEE RESULTS";
 
+            }
+            else {
+
+                nextRoundButton.textContent =
+                    "NEXT ROUND →";
+            }
+
+            nextRoundButton.style.display =
+                "block";
         }
     );
 
+    /* =========================
+       NEXT ROUND
+    ========================= */
 
-    // =========================================================
-    // NEXT ROUND
-    // =========================================================
-
-    nextRound.addEventListener(
+    nextRoundButton.addEventListener(
         "click",
-        async function () {
+        () => {
 
-            if (
-                !answered
-            ) {
-
-                return;
-
-            }
-
-
-            if (
-                round >= TOTAL_ROUNDS
-            ) {
+            if (round >= TOTAL_ROUNDS) {
 
                 finishGame();
 
                 return;
-
             }
-
 
             round++;
 
-
-            skipUsed = false;
-
-
-            loadingScreen.style.display =
-                "flex";
-
-
-            status(
-                "Preparing the next mystery..."
-            );
-
-
-            await createRound();
-
+            createRound();
         }
     );
 
-
-    // =========================================================
-    // START GAME
-    // =========================================================
+    /* =========================
+       START GAME
+    ========================= */
 
     startGameButton.addEventListener(
         "click",
-        async function () {
+        () => {
 
             startScreen.style.display =
                 "none";
 
-
-            gameStarted = true;
+            score = 0;
+            lives = STARTING_LIVES;
+            streak = 0;
+            bestStreak = 0;
+            correctAnswers = 0;
 
             round = 1;
 
-            score = 0;
-
-            lives = 3;
-
-            streak = 0;
-
-            bestStreak = 0;
-
-            correctAnswers = 0;
-
-
             updateHUD();
 
-
-            await createRound();
-
+            createRound();
         }
     );
 
-
-    // =========================================================
-    // PLAY AGAIN
-    // =========================================================
-
-    playAgainButton.addEventListener(
-        "click",
-        async function () {
-
-            finalScreen.style.display =
-                "none";
-
-
-            gameStarted = true;
-
-            round = 1;
-
-            score = 0;
-
-            lives = 3;
-
-            streak = 0;
-
-            bestStreak = 0;
-
-            correctAnswers = 0;
-
-
-            updateHUD();
-
-
-            await createRound();
-
-        }
-    );
-
-
-    // =========================================================
-    // FINAL SCREEN
-    // =========================================================
+    /* =========================
+       FINAL SCORE / RANK
+    ========================= */
 
     function finishGame() {
 
         stopTimer();
 
-
-        gameStarted = false;
-
+        answered = true;
 
         const accuracy =
             round > 0
                 ? Math.round(
-                    (correctAnswers /
-                    Math.min(
-                        round,
-                        TOTAL_ROUNDS
-                    )) * 100
+                    (correctAnswers / round) * 100
                 )
                 : 0;
 
-
         let rank = "";
-
 
         if (score >= 1200) {
 
             rank =
-                "🦸 MARVEL MASTER";
+                "MARVEL MASTER";
 
         }
-
         else if (score >= 850) {
 
             rank =
-                "🏆 SUPER DETECTIVE";
+                "SUPER DETECTIVE";
 
         }
-
         else if (score >= 550) {
 
             rank =
-                "🕵️ ELITE AGENT";
+                "ELITE AGENT";
 
         }
-
         else if (score >= 300) {
 
             rank =
-                "🔎 FIELD DETECTIVE";
+                "FIELD DETECTIVE";
 
         }
-
         else {
 
             rank =
-                "🛡️ S.H.I.E.L.D. TRAINEE";
-
+                "S.H.I.E.L.D. TRAINEE";
         }
 
-
-        document.getElementById(
-            "final-score"
-        ).textContent =
-            score;
-
-
-        document.getElementById(
-            "final-rank"
-        ).textContent =
+        finalRank.textContent =
             rank;
 
+        finalScore.textContent =
+            score;
 
-        document.getElementById(
-            "final-correct"
-        ).textContent =
+        finalCorrect.textContent =
             correctAnswers;
 
+        finalRounds.textContent =
+            Math.min(round, TOTAL_ROUNDS);
 
-        document.getElementById(
-            "final-rounds"
-        ).textContent =
-            Math.min(
-                round,
-                TOTAL_ROUNDS
-            );
-
-
-        document.getElementById(
-            "final-streak"
-        ).textContent =
+        finalStreak.textContent =
             bestStreak;
 
-
-        document.getElementById(
-            "final-accuracy"
-        ).textContent =
-            accuracy + "%";
-
+        finalAccuracy.textContent =
+            `${accuracy}%`;
 
         finalScreen.style.display =
             "flex";
-
     }
 
+    /* =========================
+       PLAY AGAIN
+    ========================= */
 
-    // =========================================================
-    // ERROR
-    // =========================================================
+    playAgainButton.addEventListener(
+        "click",
+        () => {
 
-    function showError(error) {
+            finalScreen.style.display =
+                "none";
 
-        console.error(
-            "GAME ERROR:",
-            error
-        );
+            score = 0;
+            lives = STARTING_LIVES;
+            streak = 0;
+            bestStreak = 0;
+            correctAnswers = 0;
 
+            round = 1;
 
-        loadingScreen.style.display =
-            "flex";
+            updateHUD();
 
+            createRound();
+        }
+    );
 
-        loading.innerHTML = `
+    /* =========================
+       LOAD DATASET
+    ========================= */
 
-            <div class="error-message">
+    async function loadDataset() {
 
-                <strong>
+        try {
+
+            loading.textContent =
+                "Loading Marvel Wikipedia dataset...";
+
+            const response =
+                await fetch("../marvel_pages.zip");
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Could not load marvel_pages.zip"
+                );
+            }
+
+            const zipData =
+                await response.arrayBuffer();
+
+            const zip =
+                await JSZip.loadAsync(zipData);
+
+            pages = [];
+
+            zip.forEach((relativePath, file) => {
+
+                if (file.dir) {
+                    return;
+                }
+
+                const lower =
+                    relativePath.toLowerCase();
+
+                /* Only page files */
+
+                const validExtension =
+                    lower.endsWith(".html") ||
+                    lower.endsWith(".htm") ||
+                    lower.endsWith(".txt");
+
+                if (!validExtension) {
+                    return;
+                }
+
+                /* Ignore metadata files */
+
+                if (
+                    lower.includes("readme") ||
+                    lower.includes("license") ||
+                    lower.includes("metadata") ||
+                    lower.includes(".git/")
+                ) {
+                    return;
+                }
+
+                const filename =
+                    relativePath
+                        .split("/")
+                        .pop();
+
+                if (!filename) {
+                    return;
+                }
+
+                const name =
+                    cleanCharacterName(
+                        filename
+                    );
+
+                if (!name) {
+                    return;
+                }
+
+                pages.push({
+
+                    name: name,
+
+                    filename: filename,
+
+                    path: relativePath,
+
+                    file: file
+
+                });
+
+            });
+
+            console.log(
+                `SUCCESS! ${pages.length} pages found.`
+            );
+
+            if (pages.length < 5) {
+
+                throw new Error(
+                    "Not enough Marvel pages were found in the dataset."
+                );
+            }
+
+            loading.textContent =
+                `Dataset ready — ${pages.length} characters found.`;
+
+            setTimeout(() => {
+
+                loadingScreen.style.display =
+                    "none";
+
+                startScreen.style.display =
+                    "flex";
+
+            }, 800);
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            loading.innerHTML = `
+
+                <strong style="color:#ff4d52;">
                     Game error
                 </strong>
 
                 <br><br>
 
-                ${escapeHTML(
-                    error.message
-                )}
+                ${escapeHTML(error.message)}
 
-            </div>
+                <br><br>
 
-        `;
+                Make sure that
+                <strong>
+                    marvel_pages.zip
+                </strong>
+                is in the main project folder,
+                one level above the
+                <strong>week 5</strong> folder.
 
+            `;
+        }
     }
 
+    /* =========================
+       START LOADING
+    ========================= */
 
-    // =========================================================
-    // HTML ESCAPE
-    // =========================================================
-
-    function escapeHTML(value) {
-
-        return String(value || "")
-
-            .replace(
-                /&/g,
-                "&amp;"
-            )
-
-            .replace(
-                /</g,
-                "&lt;"
-            )
-
-            .replace(
-                />/g,
-                "&gt;"
-            )
-
-            .replace(
-                /"/g,
-                "&quot;"
-            )
-
-            .replace(
-                /'/g,
-                "&#039;"
-            );
-
-    }
-
-
-    // =========================================================
-    // INITIAL DATA LOAD
-    // =========================================================
-
-    try {
-
-        status(
-            "Starting Marvel Text Detective..."
-        );
-
-
-        await loadDataset();
-
-
-        /*
-         * Dataset is ready.
-         *
-         * Hide loading screen and show
-         * mission briefing.
-         */
-
-        loadingScreen.style.display =
-            "none";
-
-
-        startScreen.style.display =
-            "flex";
-
-
-        updateHUD();
-
-    }
-
-    catch (error) {
-
-        showError(error);
-
-    }
+    loadDataset();
 
 });

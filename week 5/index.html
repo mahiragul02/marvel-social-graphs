@@ -5,22 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Week 5 | Marvel Text Analysis</title>
+    <title>Week 5 — Marvel Text Analysis</title>
 
+    <!-- JSZip: required for reading marvel_pages.zip -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
     <style>
         * {
             box-sizing: border-box;
+        }
+
+        html {
             scroll-behavior: smooth;
         }
 
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
-            background: #f5f7fb;
-            color: #172033;
-            line-height: 1.7;
+            background: #f5f5f7;
+            color: #222;
+            line-height: 1.65;
         }
 
         /* =========================
@@ -31,35 +35,36 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            background: #111827;
-            padding: 16px 6%;
+            background: #111;
+            color: white;
+            padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
         }
 
-        .logo {
-            color: white;
+        .nav-logo {
             font-size: 20px;
             font-weight: bold;
-            letter-spacing: 1px;
-        }
-
-        .logo span {
-            color: #e63946;
-        }
-
-        nav a {
-            color: #dbe3ef;
+            color: #fff;
             text-decoration: none;
-            margin-left: 24px;
-            font-size: 14px;
-            font-weight: 600;
         }
 
-        nav a:hover {
-            color: #ff4d5a;
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #ddd;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: white;
         }
 
         /* =========================
@@ -68,60 +73,74 @@
 
         .hero {
             background:
-                linear-gradient(
-                    135deg,
-                    #111827 0%,
-                    #172033 55%,
-                    #7f1d1d 100%
-                );
-
+                radial-gradient(circle at top right, #333 0%, transparent 35%),
+                linear-gradient(135deg, #080808, #1c1c1c);
             color: white;
-            padding: 100px 8% 90px;
+            padding: 90px 8% 85px;
         }
 
         .hero-content {
-            max-width: 1100px;
+            max-width: 1050px;
             margin: auto;
         }
 
-        .week-label {
-            color: #ff5964;
-            font-size: 14px;
-            font-weight: bold;
-            letter-spacing: 3px;
+        .eyebrow {
             text-transform: uppercase;
-            margin-bottom: 15px;
+            letter-spacing: 3px;
+            font-size: 13px;
+            color: #aaa;
+            font-weight: bold;
         }
 
         .hero h1 {
-            font-size: clamp(42px, 7vw, 76px);
+            font-size: clamp(42px, 7vw, 78px);
             line-height: 1.05;
-            margin: 0 0 25px;
+            margin: 15px 0 25px;
         }
 
         .hero h1 span {
-            color: #ff5964;
+            color: #e62429;
         }
 
         .hero p {
-            max-width: 780px;
+            max-width: 800px;
+            color: #ddd;
             font-size: 19px;
-            color: #dbe3ef;
         }
 
-        .hero-button {
+        .hero-buttons {
+            margin-top: 35px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
             display: inline-block;
-            margin-top: 25px;
-            background: #e63946;
-            color: white;
-            padding: 13px 24px;
-            border-radius: 7px;
+            padding: 13px 22px;
+            border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
+            transition: 0.2s;
         }
 
-        .hero-button:hover {
-            background: #ff5964;
+        .btn-primary {
+            background: #e62429;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #c91d22;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            border: 1px solid #777;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #333;
         }
 
         /* =========================
@@ -129,132 +148,170 @@
         ========================= */
 
         .container {
-            max-width: 1150px;
+            width: min(1100px, 90%);
             margin: auto;
-            padding: 75px 25px;
         }
 
-        .section-label {
-            color: #e63946;
-            font-size: 13px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 8px;
+        section {
+            padding: 75px 0;
         }
 
-        h2 {
-            font-size: 34px;
-            margin-top: 0;
-            margin-bottom: 18px;
-            color: #111827;
+        .section-title {
+            font-size: 38px;
+            margin-bottom: 12px;
+            line-height: 1.2;
         }
 
-        h3 {
-            color: #172033;
-            margin-top: 0;
+        .section-subtitle {
+            color: #666;
+            max-width: 750px;
+            margin-bottom: 35px;
         }
 
-        .intro-text {
-            max-width: 900px;
-            font-size: 17px;
-            color: #4b5563;
+        .red-line {
+            width: 65px;
+            height: 5px;
+            background: #e62429;
+            margin: 15px 0 30px;
+            border-radius: 5px;
         }
 
         /* =========================
-           STAT CARDS
+           RESEARCH QUESTION
+        ========================= */
+
+        .question-box {
+            background: white;
+            border-left: 6px solid #e62429;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .question-box h2 {
+            margin-top: 0;
+            font-size: 25px;
+        }
+
+        .question-box p {
+            font-size: 21px;
+            font-weight: 500;
+        }
+
+        /* =========================
+           STATS
         ========================= */
 
         .stats {
+            background: #111;
+            color: white;
+        }
+
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
-            margin-top: 40px;
+            gap: 20px;
         }
 
         .stat-card {
-            background: white;
-            border-radius: 12px;
+            background: #1d1d1d;
             padding: 28px 20px;
+            border-radius: 12px;
             text-align: center;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
-            border-top: 4px solid #e63946;
+            border: 1px solid #333;
         }
 
         .stat-number {
             font-size: 34px;
             font-weight: bold;
-            color: #e63946;
-            margin-bottom: 5px;
+            color: #e62429;
         }
 
         .stat-label {
-            color: #6b7280;
+            color: #bbb;
             font-size: 14px;
         }
 
         /* =========================
-           CARDS
+           DATASET
         ========================= */
 
-        .grid {
+        .dataset-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 22px;
-            margin-top: 35px;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
         }
 
-        .card {
+        .info-card {
             background: white;
             border-radius: 12px;
-            padding: 28px;
+            padding: 30px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
         }
 
-        .card-number {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: #fee2e2;
-            color: #b91c1c;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-bottom: 18px;
+        .info-card h3 {
+            margin-top: 0;
+            font-size: 22px;
         }
 
-        .card p {
-            color: #6b7280;
-            font-size: 15px;
+        .info-card ul {
+            padding-left: 20px;
         }
 
         /* =========================
-           PIPELINE
+           METHOD
         ========================= */
 
-        .pipeline {
-            margin-top: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
+        .method-flow {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-top: 35px;
         }
 
-        .pipeline-step {
+        .method-step {
             background: white;
-            padding: 18px 22px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+            border-radius: 12px;
+            padding: 25px 15px;
             text-align: center;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
+            position: relative;
+        }
+
+        .method-step:not(:last-child)::after {
+            content: "→";
+            position: absolute;
+            right: -17px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: #e62429;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .method-number {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            background: #e62429;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-weight: bold;
         }
 
-        .arrow {
-            font-size: 25px;
-            color: #e63946;
-            font-weight: bold;
+        .method-step h3 {
+            font-size: 17px;
+            margin: 8px 0;
+        }
+
+        .method-step p {
+            font-size: 13px;
+            color: #666;
+            margin: 0;
         }
 
         /* =========================
@@ -262,8 +319,8 @@
         ========================= */
 
         .formula-box {
-            margin-top: 30px;
-            background: #111827;
+            margin-top: 35px;
+            background: #171717;
             color: white;
             padding: 30px;
             border-radius: 12px;
@@ -271,88 +328,95 @@
         }
 
         .formula {
-            font-size: 25px;
+            font-size: 24px;
             font-family: Georgia, serif;
-            margin-bottom: 12px;
+            margin: 15px 0;
         }
 
-        .formula-box p {
-            color: #cbd5e1;
-            margin-bottom: 0;
+        .formula-description {
+            color: #bbb;
+            font-size: 14px;
         }
 
         /* =========================
-           FIGURE SECTION
+           RESULTS
         ========================= */
 
-        .figure-section {
-            background: #eef2f7;
+        .results-section {
+            background: white;
         }
 
-        .figure-container {
-            background: white;
-            border-radius: 14px;
-            padding: 30px;
-            margin-top: 35px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
-            overflow-x: auto;
+        .figure-card {
+            background: #f8f8f8;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            margin-bottom: 35px;
+        }
+
+        .figure-card h3 {
+            margin-top: 0;
         }
 
         #similarity-figure {
-            display: block;
+            width: 100%;
             max-width: 100%;
             height: auto;
-            margin: auto;
+            display: block;
+            background: white;
+            border-radius: 8px;
         }
 
         #figure-status {
-            text-align: center;
-            color: #6b7280;
+            margin-top: 15px;
+            color: #666;
             font-size: 14px;
-            margin-top: 18px;
+        }
+
+        .matches-card {
+            background: #111;
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        .matches-card h3 {
+            margin-top: 0;
+        }
+
+        #top-matches {
+            margin: 0;
+            padding-left: 25px;
+        }
+
+        #top-matches li {
+            margin: 10px 0;
+            color: #ddd;
         }
 
         /* =========================
-           MATCHES
+           INTERPRETATION
         ========================= */
 
-        .matches-box {
+        .interpretation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .interpretation-card {
             background: white;
-            border-radius: 14px;
-            padding: 35px;
-            margin-top: 35px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
         }
 
-        #strongest-matches {
-            margin: 20px 0 0;
-            padding: 0;
-            list-style: none;
+        .interpretation-card h3 {
+            margin-top: 0;
         }
 
-        #strongest-matches li {
-            padding: 16px 20px;
-            margin-bottom: 10px;
-            background: #f8fafc;
-            border-left: 4px solid #e63946;
-            border-radius: 6px;
-            font-weight: 600;
-        }
-
-        /* =========================
-           INSIGHT BOX
-        ========================= */
-
-        .insight {
-            background: #fff1f2;
-            border-left: 5px solid #e63946;
-            padding: 25px 30px;
-            border-radius: 8px;
-            margin-top: 30px;
-        }
-
-        .insight strong {
-            color: #991b1b;
+        .interpretation-card.highlight {
+            border-top: 5px solid #e62429;
         }
 
         /* =========================
@@ -360,21 +424,24 @@
         ========================= */
 
         .limitations {
+            background: #ececef;
+        }
+
+        .limitations-list {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 22px;
-            margin-top: 35px;
+            gap: 20px;
         }
 
-        .limitation-card {
+        .limitation {
             background: white;
-            border-radius: 12px;
             padding: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+            border-radius: 10px;
         }
 
-        .limitation-card h3 {
-            color: #b91c1c;
+        .limitation strong {
+            display: block;
+            margin-bottom: 7px;
         }
 
         /* =========================
@@ -383,101 +450,202 @@
 
         .game-section {
             background:
-                linear-gradient(
-                    135deg,
-                    #111827,
-                    #1e293b
-                );
+                radial-gradient(circle at 10% 20%, rgba(230, 36, 41, 0.15), transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.08), transparent 30%),
+                #0b0b0b;
             color: white;
-        }
-
-        .game-section h2 {
-            color: white;
+            padding: 90px 0;
         }
 
         .game-intro {
-            color: #cbd5e1;
-            max-width: 850px;
+            text-align: center;
+            max-width: 750px;
+            margin: 0 auto 45px;
+        }
+
+        .game-intro .eyebrow {
+            color: #e62429;
+        }
+
+        .game-intro h2 {
+            font-size: 46px;
+            margin: 10px 0;
+        }
+
+        .game-intro p {
+            color: #bbb;
         }
 
         .game-wrapper {
-            margin-top: 40px;
-            background: #f8fafc;
-            color: #172033;
-            border-radius: 16px;
-            padding: 35px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
-        }
-
-        /* These styles support the existing game.js */
-
-        .game-top {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-bottom: 25px;
-        }
-
-        .game-stat {
-            background: white;
-            border-radius: 10px;
-            padding: 12px 18px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
-        }
-
-        .game-stat strong {
-            display: block;
-            color: #e63946;
-            font-size: 18px;
-        }
-
-        .target-character {
-            text-align: center;
-            background: #111827;
-            color: white;
+            width: min(850px, 94%);
+            margin: auto;
+            background: #171717;
+            border: 1px solid #333;
+            border-radius: 18px;
             padding: 30px;
-            border-radius: 14px;
-            margin-bottom: 25px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
         }
 
-        .target-label {
-            font-size: 12px;
-            letter-spacing: 2px;
-            color: #ff5964;
-            font-weight: bold;
+        /* GAME START SCREEN */
+
+        #start-screen {
+            text-align: center;
+            padding: 35px 20px;
         }
 
-        #target-character {
-            font-size: 36px;
-            margin: 8px 0;
+        #start-screen h2 {
+            font-size: 34px;
+            margin-bottom: 10px;
         }
 
-        .answers {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 25px;
+        #start-screen p {
+            color: #aaa;
+            max-width: 600px;
+            margin: 0 auto 30px;
         }
 
-        .answer-button {
+        #start-game {
             border: none;
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            font-size: 17px;
+            background: #e62429;
+            color: white;
+            font-size: 18px;
             font-weight: bold;
+            padding: 15px 35px;
+            border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             transition: 0.2s;
         }
 
-        .answer-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.13);
+        #start-game:hover {
+            background: #c91d22;
+            transform: translateY(-2px);
         }
 
-        .game-controls {
+        /* GAME LOADING */
+
+        #loading-screen {
+            text-align: center;
+            padding: 35px;
+        }
+
+        #loading {
+            color: #aaa;
+        }
+
+        /* GAME AREA */
+
+        #game {
+            display: none;
+        }
+
+        .game-top {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .game-stat {
+            background: #222;
+            border-radius: 9px;
+            padding: 12px 8px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        .game-stat-label {
+            display: block;
+            color: #888;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .game-stat-value {
+            display: block;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 3px;
+        }
+
+        #timer {
+            color: #e62429;
+        }
+
+        .progress-container {
+            height: 7px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 35px;
+        }
+
+        #progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #e62429;
+            transition: width 0.3s ease;
+        }
+
+        .target-area {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .target-label {
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 12px;
+        }
+
+        #mystery-character {
+            font-size: 38px;
+            margin: 8px 0;
+            color: white;
+        }
+
+        .target-question {
+            color: #aaa;
+            margin: 0;
+        }
+
+        /* ANSWERS */
+
+        #choices {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .choice-button {
+            width: 100%;
+            min-height: 80px;
+            padding: 18px;
+            border: 1px solid #444;
+            background: #222;
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 17px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .choice-button:hover {
+            border-color: #e62429;
+            background: #2a2a2a;
+            transform: translateY(-2px);
+        }
+
+        .choice-button:disabled {
+            cursor: default;
+            opacity: 0.8;
+        }
+
+        /* POWER UPS */
+
+        .powerups {
             display: flex;
             justify-content: center;
             gap: 12px;
@@ -485,29 +653,94 @@
             flex-wrap: wrap;
         }
 
-        .game-controls button {
-            border: none;
+        .powerup-button {
+            padding: 10px 18px;
+            border: 1px solid #555;
+            background: #222;
+            color: white;
             border-radius: 7px;
-            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .powerup-button:hover {
+            border-color: #e62429;
+        }
+
+        .powerup-button:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        #hint-box {
+            display: none;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: #262626;
+            color: #ddd;
+            border-left: 4px solid #e62429;
+            text-align: center;
+        }
+
+        /* RESULT */
+
+        #result {
+            display: none;
+            text-align: center;
+            margin-top: 25px;
+            padding: 18px;
+            border-radius: 10px;
+            background: #222;
+            font-weight: bold;
+        }
+
+        #next-round {
+            display: none;
+            margin: 20px auto 0;
+            border: none;
+            background: #e62429;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
         }
 
-        .hint-button {
-            background: #fef3c7;
-            color: #92400e;
-        }
+        /* FINAL SCREEN */
 
-        .skip-button {
-            background: #e2e8f0;
-            color: #334155;
-        }
-
-        #result {
-            margin-top: 25px;
-            padding: 20px;
-            border-radius: 10px;
+        #final-screen {
+            display: none;
             text-align: center;
+            padding: 35px 20px;
+        }
+
+        #final-screen h2 {
+            font-size: 42px;
+            margin: 10px 0;
+        }
+
+        #final-score {
+            font-size: 30px;
+            font-weight: bold;
+            color: #e62429;
+            margin: 20px 0;
+        }
+
+        #final-rank {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        #play-again {
+            border: none;
+            background: #e62429;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            padding: 14px 30px;
+            border-radius: 8px;
+            cursor: pointer;
         }
 
         /* =========================
@@ -515,14 +748,22 @@
         ========================= */
 
         .conclusion {
-            text-align: center;
-            max-width: 850px;
-            margin: auto;
+            background: white;
         }
 
-        .conclusion p {
-            color: #6b7280;
-            font-size: 17px;
+        .conclusion-box {
+            max-width: 850px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .conclusion-box h2 {
+            font-size: 38px;
+        }
+
+        .conclusion-box p {
+            color: #555;
+            font-size: 18px;
         }
 
         /* =========================
@@ -530,15 +771,11 @@
         ========================= */
 
         footer {
-            background: #0b1120;
-            color: #94a3b8;
+            background: #111;
+            color: #aaa;
             text-align: center;
-            padding: 30px;
+            padding: 30px 20px;
             font-size: 14px;
-        }
-
-        footer strong {
-            color: white;
         }
 
         /* =========================
@@ -547,171 +784,205 @@
 
         @media (max-width: 850px) {
 
-            nav {
-                flex-direction: column;
-                gap: 12px;
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
             }
 
-            nav a {
-                margin-left: 8px;
-                margin-right: 8px;
-            }
-
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .grid {
+            .method-flow {
                 grid-template-columns: 1fr;
             }
 
-            .limitations {
+            .method-step:not(:last-child)::after {
+                content: "↓";
+                right: auto;
+                left: 50%;
+                top: auto;
+                bottom: -25px;
+                transform: translateX(-50%);
+            }
+
+            .dataset-grid,
+            .interpretation-grid,
+            .limitations-list {
                 grid-template-columns: 1fr;
+            }
+
+            .game-top {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
 
         @media (max-width: 600px) {
 
+            nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .nav-links {
+                justify-content: center;
+                gap: 12px;
+            }
+
             .hero {
-                padding: 70px 6%;
+                padding: 60px 6%;
             }
 
-            .stats {
+            section {
+                padding: 55px 0;
+            }
+
+            .stats-grid {
                 grid-template-columns: 1fr;
             }
 
-            .answers {
+            #choices {
                 grid-template-columns: 1fr;
             }
 
-            .container {
-                padding: 55px 18px;
+            .game-top {
+                grid-template-columns: 1fr 1fr;
             }
 
-            .game-wrapper {
-                padding: 20px;
+            #mystery-character {
+                font-size: 30px;
             }
         }
     </style>
 </head>
 
-
 <body>
 
-    <!-- =====================================================
+    <!-- =========================
          NAVIGATION
-    ====================================================== -->
+    ========================= -->
 
     <nav>
+        <a href="../index.html" class="nav-logo">MARVEL SOCIAL GRAPHS</a>
 
-        <div class="logo">
-            MARVEL<span>•</span>GRAPH
+        <div class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="../week1.html">Week 1</a>
+            <a href="../week2/index.html">Week 2</a>
+            <a href="../week3/index.html">Week 3</a>
+            <a href="#analysis">Analysis</a>
+            <a href="#game">Game</a>
         </div>
-
-        <div>
-            <a href="../index.html">HOME</a>
-            <a href="../week1.html">WEEK 1</a>
-            <a href="../week2/index.html">WEEK 2</a>
-            <a href="../week3/index.html">WEEK 3/4</a>
-            <a href="#game">WEEK 5</a>
-        </div>
-
     </nav>
 
 
-    <!-- =====================================================
+    <!-- =========================
          HERO
-    ====================================================== -->
+    ========================= -->
 
     <header class="hero">
 
         <div class="hero-content">
 
-            <div class="week-label">
-                Week 5 • Text Analysis
-            </div>
+            <div class="eyebrow">Social Graphs · Week 5</div>
 
             <h1>
-                MARVEL<br>
-                <span>TEXT DETECTIVE</span>
+                Marvel <span>Text</span> Analysis
             </h1>
 
             <p>
                 Can we discover relationships between Marvel characters
-                by looking at the words used in their Wikipedia pages?
+                by comparing the words used in their Wikipedia pages?
             </p>
 
-            <a href="#analysis" class="hero-button">
-                EXPLORE THE ANALYSIS ↓
-            </a>
+            <div class="hero-buttons">
+                <a href="#analysis" class="btn btn-primary">
+                    Explore Analysis
+                </a>
+
+                <a href="#game" class="btn btn-secondary">
+                    Play Text Detective
+                </a>
+            </div>
 
         </div>
 
     </header>
 
 
-    <!-- =====================================================
-         INTRODUCTION
-    ====================================================== -->
+    <!-- =========================
+         RESEARCH QUESTION
+    ========================= -->
 
     <section id="analysis">
 
         <div class="container">
 
-            <div class="section-label">
-                01 — Research Question
-            </div>
+            <div class="eyebrow">01 · Research Question</div>
 
-            <h2>
-                Can Wikipedia text reveal hidden similarities?
+            <h2 class="section-title">
+                Do similar characters have similar Wikipedia pages?
             </h2>
 
-            <p class="intro-text">
+            <div class="red-line"></div>
 
-                In the previous weeks, we investigated Marvel characters
-                as a social network, where characters were connected
-                through relationships in the network. In Week 5, we
-                approach the Marvel universe from a different perspective:
-                the <strong>text describing each character</strong>.
+            <div class="question-box">
 
-                <br><br>
+                <h2>Research Question</h2>
 
-                We use Marvel Wikipedia pages as a collection of textual
-                documents and compare their content using Natural Language
-                Processing (NLP). The goal is to determine which characters
-                have the most similar textual descriptions.
+                <p>
+                    Can textual similarity between Marvel characters'
+                    Wikipedia pages reveal meaningful relationships
+                    between characters?
+                </p>
 
+                <p>
+                    Instead of looking only at who is connected to whom
+                    in the social graph, this analysis examines the
+                    <strong>content</strong> of their Wikipedia pages.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         DATASET STATS
+    ========================= -->
+
+    <section class="stats">
+
+        <div class="container">
+
+            <div class="eyebrow">02 · Dataset</div>
+
+            <h2 class="section-title">
+                The Marvel Wikipedia Dataset
+            </h2>
+
+            <p class="section-subtitle">
+                The text analysis uses the same Marvel character
+                dataset introduced in the previous weeks.
             </p>
 
-
-            <div class="stats">
+            <div class="stats-grid">
 
                 <div class="stat-card">
-                    <div class="stat-number">304</div>
-                    <div class="stat-label">
-                        Wikipedia pages loaded
-                    </div>
+                    <div class="stat-number">303</div>
+                    <div class="stat-label">Marvel characters</div>
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-number">BoW</div>
-                    <div class="stat-label">
-                        Text representation
-                    </div>
+                    <div class="stat-number">1,784</div>
+                    <div class="stat-label">Graph edges</div>
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-number">NLP</div>
-                    <div class="stat-label">
-                        Analysis approach
-                    </div>
+                    <div class="stat-number">300+</div>
+                    <div class="stat-label">Wikipedia pages</div>
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-number">Cosine</div>
-                    <div class="stat-label">
-                        Similarity measure
-                    </div>
+                    <div class="stat-number">2026</div>
+                    <div class="stat-label">Dataset snapshot</div>
                 </div>
 
             </div>
@@ -721,82 +992,59 @@
     </section>
 
 
-    <!-- =====================================================
-         DATASET
-    ====================================================== -->
+    <!-- =========================
+         DATASET DETAILS
+    ========================= -->
 
     <section>
 
         <div class="container">
 
-            <div class="section-label">
-                02 — Dataset
-            </div>
+            <div class="eyebrow">03 · Data</div>
 
-            <h2>
-                From Marvel pages to text data
+            <h2 class="section-title">
+                What information are we using?
             </h2>
 
-            <p class="intro-text">
+            <div class="red-line"></div>
 
-                The analysis uses a collection of Marvel character
-                Wikipedia pages. Each page is treated as an individual
-                document. Before calculating similarity, the raw HTML
-                content is cleaned and converted into a representation
-                based on word frequencies.
+            <div class="dataset-grid">
 
-            </p>
+                <div class="info-card">
 
-
-            <div class="grid">
-
-                <div class="card">
-
-                    <div class="card-number">1</div>
-
-                    <h3>
-                        Wikipedia Pages
-                    </h3>
+                    <h3>Marvel Graph</h3>
 
                     <p>
-                        Character pages are collected in a ZIP archive.
-                        The pages provide the textual information used
-                        for the analysis.
+                        The network contains Marvel characters as nodes
+                        and relationships between characters as edges.
                     </p>
+
+                    <ul>
+                        <li>303 characters</li>
+                        <li>1,784 relationships</li>
+                        <li>Average degree ≈ 11.78</li>
+                        <li>19 weakly connected components</li>
+                    </ul>
 
                 </div>
 
 
-                <div class="card">
+                <div class="info-card">
 
-                    <div class="card-number">2</div>
-
-                    <h3>
-                        Text Cleaning
-                    </h3>
+                    <h3>Wikipedia Text</h3>
 
                     <p>
-                        HTML tags, scripts, styles and punctuation are
-                        removed. Words are converted to lowercase and
-                        common stopwords are excluded.
+                        Each character is associated with a Wikipedia
+                        page. The textual content of these pages is
+                        transformed into numerical representations.
                     </p>
 
-                </div>
-
-
-                <div class="card">
-
-                    <div class="card-number">3</div>
-
-                    <h3>
-                        Word Frequencies
-                    </h3>
-
-                    <p>
-                        Each document is represented by a collection
-                        of words and their frequencies. This is our
-                        Bag-of-Words representation.
-                    </p>
+                    <ul>
+                        <li>Character biographies</li>
+                        <li>Story and publication information</li>
+                        <li>Appearances and relationships</li>
+                        <li>Character-specific vocabulary</li>
+                    </ul>
 
                 </div>
 
@@ -807,62 +1055,89 @@
     </section>
 
 
-    <!-- =====================================================
+    <!-- =========================
          METHOD
-    ====================================================== -->
+    ========================= -->
 
-    <section>
+    <section style="background:#ececef;">
 
         <div class="container">
 
-            <div class="section-label">
-                03 — Method
-            </div>
+            <div class="eyebrow">04 · Method</div>
 
-            <h2>
-                How do we measure textual similarity?
+            <h2 class="section-title">
+                From Wikipedia pages to similarity
             </h2>
 
-            <p class="intro-text">
-
-                Two character pages can contain different words and
-                different numbers of words. To compare them, each page
-                is represented as a vector of word frequencies.
-
-                We then calculate the <strong>cosine similarity</strong>
-                between pairs of character vectors.
-
+            <p class="section-subtitle">
+                We convert each Wikipedia page into a numerical
+                representation and compare the resulting vectors.
             </p>
 
+            <div class="method-flow">
 
-            <div class="pipeline">
+                <div class="method-step">
 
-                <div class="pipeline-step">
-                    Wikipedia Text
+                    <div class="method-number">1</div>
+
+                    <h3>Wikipedia</h3>
+
+                    <p>
+                        Collect character pages from the dataset.
+                    </p>
+
                 </div>
 
-                <div class="arrow">→</div>
 
-                <div class="pipeline-step">
-                    Cleaning
+                <div class="method-step">
+
+                    <div class="method-number">2</div>
+
+                    <h3>Cleaning</h3>
+
+                    <p>
+                        Remove HTML, punctuation and stopwords.
+                    </p>
+
                 </div>
 
-                <div class="arrow">→</div>
 
-                <div class="pipeline-step">
-                    Bag of Words
+                <div class="method-step">
+
+                    <div class="method-number">3</div>
+
+                    <h3>Bag of Words</h3>
+
+                    <p>
+                        Count the words appearing in each document.
+                    </p>
+
                 </div>
 
-                <div class="arrow">→</div>
 
-                <div class="pipeline-step">
-                    Word Vectors
+                <div class="method-step">
+
+                    <div class="method-number">4</div>
+
+                    <h3>Vectors</h3>
+
+                    <p>
+                        Represent each page as a numerical vector.
+                    </p>
+
                 </div>
 
-                <div class="arrow">→</div>
 
-                <div class="pipeline-step">
-                    Cosine Similarity
+                <div class="method-step">
+
+                    <div class="method-number">5</div>
+
+                    <h3>Similarity</h3>
+
+                    <p>
+                        Compare pages using cosine similarity.
+                    </p>
+
                 </div>
 
             </div>
@@ -870,16 +1145,20 @@
 
             <div class="formula-box">
 
-                <div class="formula">
-                    similarity(A,B) =
-                    (A · B) / (||A|| × ||B||)
+                <div class="eyebrow">
+                    Cosine Similarity
                 </div>
 
-                <p>
-                    A value closer to 1 indicates greater similarity
-                    between the two text vectors, while a value closer
-                    to 0 indicates less similarity.
-                </p>
+                <div class="formula">
+                    similarity(A,B) =
+                    (A · B) / (||A|| ||B||)
+                </div>
+
+                <div class="formula-description">
+                    A value closer to 1 indicates more similar word
+                    distributions, while a value closer to 0 indicates
+                    little textual overlap.
+                </div>
 
             </div>
 
@@ -888,73 +1167,65 @@
     </section>
 
 
-    <!-- =====================================================
-         RESULTS / FIGURE
-    ====================================================== -->
+    <!-- =========================
+         RESULTS
+    ========================= -->
 
-    <section class="figure-section">
+    <section class="results-section">
 
         <div class="container">
 
-            <div class="section-label">
-                04 — Results
-            </div>
+            <div class="eyebrow">05 · Results</div>
 
-            <h2>
-                Distribution of textual similarity
+            <h2 class="section-title">
+                What does the text reveal?
             </h2>
 
-            <p class="intro-text">
-
-                The figure below shows the distribution of cosine
-                similarity values across character pairs. It allows
-                us to see whether most Marvel character pages are
-                relatively different or whether many pairs share
-                substantial textual similarity.
-
+            <p class="section-subtitle">
+                The JavaScript analysis loads the Marvel Wikipedia
+                pages and calculates pairwise cosine similarity.
             </p>
 
 
-            <div class="figure-container">
+            <!-- Dynamic figure generated by figure.js -->
+
+            <div class="figure-card">
+
+                <h3>
+                    Distribution of Textual Similarity
+                </h3>
+
+                <p>
+                    The histogram shows how cosine similarity is
+                    distributed across pairs of Marvel character pages.
+                </p>
 
                 <canvas id="similarity-figure"></canvas>
 
                 <div id="figure-status">
-                    Loading Marvel text analysis...
+                    Loading text analysis...
                 </div>
 
             </div>
 
 
-            <div class="insight">
+            <!-- Top matches generated by figure.js -->
 
-                <strong>How to read this figure:</strong>
-
-                Each pair of Marvel characters contributes one cosine
-                similarity value. The histogram groups these values
-                into ranges. Character pairs appearing further to the
-                right have more similar textual descriptions.
-
-            </div>
-
-
-            <!-- STRONGEST MATCHES -->
-
-            <div class="matches-box">
+            <div class="matches-card">
 
                 <h3>
-                    Top 5 strongest textual matches
+                    Strongest Character Matches
                 </h3>
 
-                <p>
-                    The following pairs are automatically calculated
-                    from the Marvel Wikipedia dataset.
+                <p style="color:#aaa;">
+                    The five pairs with the highest textual similarity
+                    are shown below.
                 </p>
 
-                <ol id="strongest-matches">
+                <ol id="top-matches">
 
                     <li>
-                        Calculating strongest matches...
+                        Calculating...
                     </li>
 
                 </ol>
@@ -966,89 +1237,77 @@
     </section>
 
 
-    <!-- =====================================================
+    <!-- =========================
          INTERPRETATION
-    ====================================================== -->
+    ========================= -->
 
     <section>
 
         <div class="container">
 
-            <div class="section-label">
-                05 — Interpretation
-            </div>
+            <div class="eyebrow">06 · Interpretation</div>
 
-            <h2>
-                What does textual similarity mean?
+            <h2 class="section-title">
+                How should we interpret the results?
             </h2>
 
-            <p class="intro-text">
+            <div class="red-line"></div>
 
-                A high textual similarity does not necessarily mean
-                that two characters are directly connected in the
-                Marvel social graph. Instead, it indicates that their
-                Wikipedia pages use similar vocabulary.
+            <div class="interpretation-grid">
 
-            </p>
+                <div class="interpretation-card highlight">
 
-
-            <div class="grid">
-
-                <div class="card">
-
-                    <h3>
-                        Shared storylines
-                    </h3>
+                    <h3>Similar vocabulary can indicate similar roles</h3>
 
                     <p>
-                        Characters appearing in similar storylines may
-                        have pages containing many of the same terms,
-                        events and locations.
+                        Characters who appear in similar stories,
+                        teams, locations or publication contexts may
+                        naturally have Wikipedia pages containing
+                        similar vocabulary.
                     </p>
 
                 </div>
 
 
-                <div class="card">
+                <div class="interpretation-card">
 
-                    <h3>
-                        Shared relationships
-                    </h3>
+                    <h3>Text similarity is different from graph similarity</h3>
 
                     <p>
-                        Characters belonging to the same teams or
-                        interacting with the same characters may have
-                        overlapping descriptions.
+                        Two characters can be textually similar without
+                        necessarily having the same number of network
+                        connections. Text analysis therefore provides a
+                        different perspective on the Marvel universe.
                     </p>
 
                 </div>
 
 
-                <div class="card">
+                <div class="interpretation-card">
 
-                    <h3>
-                        Similar concepts
-                    </h3>
+                    <h3>Shared contexts matter</h3>
 
                     <p>
-                        Similar powers, identities, affiliations and
-                        fictional settings can also produce overlapping
-                        vocabulary.
+                        Characters appearing in the same teams,
+                        storylines or locations may develop similar
+                        textual descriptions even when their individual
+                        personalities are very different.
                     </p>
 
                 </div>
 
-            </div>
 
+                <div class="interpretation-card">
 
-            <div class="insight">
+                    <h3>Similarity is not causality</h3>
 
-                <strong>Important distinction:</strong>
+                    <p>
+                        A high cosine similarity does not mean that one
+                        character influences another. It simply means
+                        their pages contain similar patterns of words.
+                    </p>
 
-                Textual similarity and network similarity are not the
-                same thing. A pair of characters may have highly similar
-                Wikipedia descriptions even if their direct network
-                connection is weak or absent.
+                </div>
 
             </div>
 
@@ -1057,80 +1316,69 @@
     </section>
 
 
-    <!-- =====================================================
+    <!-- =========================
          LIMITATIONS
-    ====================================================== -->
+    ========================= -->
 
-    <section>
+    <section class="limitations">
 
         <div class="container">
 
-            <div class="section-label">
-                06 — Limitations
-            </div>
+            <div class="eyebrow">07 · Limitations</div>
 
-            <h2>
-                What should we be careful about?
+            <h2 class="section-title">
+                What are the limitations?
             </h2>
 
-            <div class="limitations">
+            <div class="red-line"></div>
 
-                <div class="limitation-card">
+            <div class="limitations-list">
 
-                    <h3>
-                        Word frequency is not meaning
-                    </h3>
+                <div class="limitation">
 
-                    <p>
-                        Bag-of-Words captures how often words occur,
-                        but it does not understand the deeper meaning
-                        or context of a sentence.
-                    </p>
+                    <strong>Bag of Words ignores word order</strong>
 
-                </div>
-
-
-                <div class="limitation-card">
-
-                    <h3>
-                        Page length matters
-                    </h3>
-
-                    <p>
-                        Longer Wikipedia pages can contain more words
-                        and therefore more opportunities for overlap
-                        with other pages.
-                    </p>
+                    <span>
+                        "Spider-Man defeats Venom" and other arrangements
+                        of the same words can appear equivalent at the
+                        Bag-of-Words level.
+                    </span>
 
                 </div>
 
 
-                <div class="limitation-card">
+                <div class="limitation">
 
-                    <h3>
-                        Wikipedia reflects its editors
-                    </h3>
+                    <strong>Common vocabulary can dominate</strong>
 
-                    <p>
-                        Similarity depends on how the pages were written,
-                        not only on the actual relationships between
-                        Marvel characters.
-                    </p>
+                    <span>
+                        Marvel-related terms can appear across many
+                        pages and contribute to similarity.
+                    </span>
 
                 </div>
 
 
-                <div class="limitation-card">
+                <div class="limitation">
 
-                    <h3>
-                        Simple NLP model
-                    </h3>
+                    <strong>Wikipedia pages vary in length</strong>
 
-                    <p>
-                        The approach uses word frequencies and cosine
-                        similarity rather than semantic embeddings or
-                        transformer-based language models.
-                    </p>
+                    <span>
+                        Some characters have much longer and more detailed
+                        pages than others.
+                    </span>
+
+                </div>
+
+
+                <div class="limitation">
+
+                    <strong>Similarity is not semantic understanding</strong>
+
+                    <span>
+                        The method compares word distributions rather than
+                        understanding the meaning of the text.
+                    </span>
 
                 </div>
 
@@ -1141,135 +1389,274 @@
     </section>
 
 
-    <!-- =====================================================
-         TEXT DETECTIVE GAME
-    ====================================================== -->
+    <!-- =========================================================
+         INTERACTIVE TEXT DETECTIVE
+         IMPORTANT:
+         These IDs MUST match game.js
+    ========================================================== -->
 
     <section id="game" class="game-section">
 
         <div class="container">
 
-            <div class="section-label">
-                07 — Interactive Experiment
+            <div class="game-intro">
+
+                <div class="eyebrow">
+                    08 · Interactive Analysis
+                </div>
+
+                <h2>
+                    Text Detective
+                </h2>
+
+                <p>
+                    Test your understanding of textual similarity.
+                    Identify which Marvel character has the most
+                    similar Wikipedia page to the target character.
+                </p>
+
             </div>
-
-            <h2>
-                🕵️ Marvel Text Detective
-            </h2>
-
-            <p class="game-intro">
-
-                Now put the model to the test.
-
-                Instead of simply looking at the results, try to predict
-                which Marvel character has the most similar Wikipedia
-                page to the target character.
-
-                The game uses the same textual similarity approach
-                described above.
-
-            </p>
 
 
             <div class="game-wrapper">
 
-                <!-- GAME STATUS -->
 
-                <div class="game-top">
+                <!-- =========================
+                     START SCREEN
+                ========================= -->
 
-                    <div class="game-stat">
-                        <strong id="round">1 / 10</strong>
-                        Round
-                    </div>
+                <div id="start-screen">
 
-                    <div class="game-stat">
-                        <strong id="score">0</strong>
-                        Score
-                    </div>
+                    <h2>
+                        Become a Text Detective
+                    </h2>
 
-                    <div class="game-stat">
-                        <strong id="lives">❤️ ❤️ ❤️</strong>
-                        Lives
-                    </div>
+                    <p>
+                        You will play 10 rounds. Each round gives you
+                        four possible Marvel characters. Choose the one
+                        whose Wikipedia page is most textually similar
+                        to the target character.
+                    </p>
 
-                    <div class="game-stat">
-                        <strong id="timer">30</strong>
-                        Seconds
-                    </div>
+                    <p>
+                        You have <strong>3 lives</strong>,
+                        <strong>30 seconds</strong> per round,
+                        and special hint and skip power-ups.
+                    </p>
 
-                    <div class="game-stat">
-                        <strong id="streak">0</strong>
-                        Streak
-                    </div>
+                    <button id="start-game">
+                        Start Game
+                    </button>
 
                 </div>
 
 
-                <!-- TARGET CHARACTER -->
+                <!-- =========================
+                     LOADING SCREEN
+                ========================= -->
 
-                <div class="target-character">
+                <div id="loading-screen">
 
-                    <span class="target-label">
-                        TARGET CHARACTER
-                    </span>
-
-                    <h2 id="target-character">
-                        Loading...
+                    <h2>
+                        Preparing the Text Detective...
                     </h2>
 
-                    <p>
-                        Which character has the most similar
-                        Wikipedia page?
+                    <p id="loading">
+                        Loading Marvel Wikipedia pages...
                     </p>
 
                 </div>
 
 
-                <!-- ANSWERS -->
+                <!-- =========================
+                     GAME
+                ========================= -->
 
-                <div id="answer-buttons" class="answers">
+                <div id="game">
 
-                    <button class="answer-button">
-                        Loading...
-                    </button>
+                    <div class="game-top">
 
-                    <button class="answer-button">
-                        Loading...
-                    </button>
+                        <div class="game-stat">
 
-                    <button class="answer-button">
-                        Loading...
-                    </button>
+                            <span class="game-stat-label">
+                                Round
+                            </span>
 
-                    <button class="answer-button">
-                        Loading...
+                            <span
+                                class="game-stat-value"
+                                id="round-label">
+                                1 / 10
+                            </span>
+
+                        </div>
+
+
+                        <div class="game-stat">
+
+                            <span class="game-stat-label">
+                                Score
+                            </span>
+
+                            <span
+                                class="game-stat-value"
+                                id="score">
+                                0
+                            </span>
+
+                        </div>
+
+
+                        <div class="game-stat">
+
+                            <span class="game-stat-label">
+                                Lives
+                            </span>
+
+                            <span
+                                class="game-stat-value"
+                                id="lives">
+                                ❤️❤️❤️
+                            </span>
+
+                        </div>
+
+
+                        <div class="game-stat">
+
+                            <span class="game-stat-label">
+                                Time
+                            </span>
+
+                            <span
+                                class="game-stat-value"
+                                id="timer">
+                                30
+                            </span>
+
+                        </div>
+
+
+                        <div class="game-stat">
+
+                            <span class="game-stat-label">
+                                Streak
+                            </span>
+
+                            <span
+                                class="game-stat-value"
+                                id="streak">
+                                0
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Progress -->
+
+                    <div class="progress-container">
+
+                        <div id="progress-fill"></div>
+
+                    </div>
+
+
+                    <!-- Target Character -->
+
+                    <div class="target-area">
+
+                        <div class="target-label">
+                            Target Character
+                        </div>
+
+                        <h2 id="mystery-character">
+                            Loading...
+                        </h2>
+
+                        <p class="target-question">
+                            Which character has the most similar
+                            Wikipedia page?
+                        </p>
+
+                    </div>
+
+
+                    <!-- Answer choices
+                         game.js creates the buttons here -->
+
+                    <div id="choices" class="answers">
+                    </div>
+
+
+                    <!-- Hint -->
+
+                    <div id="hint-box">
+                    </div>
+
+
+                    <!-- Power-ups -->
+
+                    <div class="powerups">
+
+                        <button
+                            id="hint-button"
+                            class="powerup-button">
+                            💡 Hint
+                        </button>
+
+                        <button
+                            id="skip-button"
+                            class="powerup-button">
+                            ⏭ Skip
+                        </button>
+
+                    </div>
+
+
+                    <!-- Result -->
+
+                    <div id="result">
+                    </div>
+
+
+                    <!-- Next Round -->
+
+                    <button id="next-round">
+                        Next Round
                     </button>
 
                 </div>
 
 
-                <!-- CONTROLS -->
+                <!-- =========================
+                     FINAL SCREEN
+                ========================= -->
 
-                <div class="game-controls">
+                <div id="final-screen">
 
-                    <button
-                        id="hint-button"
-                        class="hint-button">
-                        💡 Hint
-                    </button>
+                    <h2>
+                        Case Closed!
+                    </h2>
 
-                    <button
-                        id="skip-button"
-                        class="skip-button">
-                        ⏭ Skip
+                    <p>
+                        You have completed the Marvel Text Detective
+                        challenge.
+                    </p>
+
+                    <div id="final-score">
+                        Score: 0
+                    </div>
+
+                    <div id="final-rank">
+                        Marvel Text Detective
+                    </div>
+
+                    <button id="play-again">
+                        Play Again
                     </button>
 
                 </div>
-
-
-                <!-- RESULT -->
-
-                <div id="result"></div>
 
             </div>
 
@@ -1278,41 +1665,41 @@
     </section>
 
 
-    <!-- =====================================================
+    <!-- =========================
          CONCLUSION
-    ====================================================== -->
+    ========================= -->
 
-    <section>
+    <section class="conclusion">
 
         <div class="container">
 
-            <div class="conclusion">
+            <div class="conclusion-box">
 
-                <div class="section-label">
-                    08 — Conclusion
+                <div class="eyebrow">
+                    09 · Conclusion
                 </div>
 
                 <h2>
-                    From social connections to textual connections
+                    From Connections to Content
                 </h2>
 
+                <div class="red-line" style="margin-left:auto;margin-right:auto;">
+                </div>
+
                 <p>
-
-                    Week 5 extends our Marvel network analysis by
-                    considering the textual information associated with
-                    each character. Using Bag-of-Words representations
-                    and cosine similarity, we can quantify how similar
-                    different character descriptions are.
-
+                    Previous weeks examined the Marvel universe as a
+                    network of characters and relationships. This week
+                    adds another perspective by analysing the text used
+                    to describe those characters.
                 </p>
 
                 <p>
-
-                    The Text Detective game turns this analysis into
-                    an interactive experiment, allowing us to test
-                    whether humans can predict the relationships that
-                    the NLP model discovers.
-
+                    Using Bag-of-Words representations and cosine
+                    similarity, we can identify characters whose
+                    Wikipedia pages have similar textual patterns.
+                    The interactive Text Detective turns this analysis
+                    into an exploratory game, allowing us to investigate
+                    textual relationships directly.
                 </p>
 
             </div>
@@ -1322,30 +1709,31 @@
     </section>
 
 
-    <!-- =====================================================
+    <!-- =========================
          FOOTER
-    ====================================================== -->
+    ========================= -->
 
     <footer>
 
-        <strong>Marvel Social Graphs</strong>
+        <p>
+            Marvel Social Graphs · DTU Social Interactions and Graphs
+        </p>
 
-        <br>
-
-        Week 5 — Text Analysis & Interactive Text Detective
-
-        <br><br>
-
-        Social Interactions and Graphs
+        <p>
+            Week 5 · Text Analysis & Interactive Data Story
+        </p>
 
     </footer>
 
 
-    <!-- =====================================================
-         SCRIPTS
-    ====================================================== -->
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
 
+    <!-- Generates the text-analysis figure and strongest matches -->
     <script src="figure.js"></script>
+
+    <!-- Runs the interactive Text Detective game -->
     <script src="game.js"></script>
 
 </body>

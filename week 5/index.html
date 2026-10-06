@@ -1,1 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Marvel Text Detective | Week 5</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <!-- JSZip lets the browser read marvel_pages.zip -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
+    ></script>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+<header class="hero">
+
+    <div class="container hero-content">
+
+        <div class="eyebrow">
+            Social Interactions and Graphs · Week 5
+        </div>
+
+        <h1>
+            Marvel<br>
+            Text Detective
+        </h1>
+
+        <p>
+            Can the language of a Marvel Wikipedia page
+            reveal which character it belongs to?
+        </p>
+
+        <a
+            href="#game"
+            class="hero-button"
+        >
+            Play the game ↓
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     RESEARCH QUESTION
+====================================================== -->
+
+<section>
+
+    <div class="container">
+
+        <div class="question-card">
+
+            <div class="eyebrow">
+                Research question
+            </div>
+
+            <p class="question">
+                Can textual similarity help us identify
+                Marvel characters from their Wikipedia pages?
+            </p>
+
+            <p class="section-intro">
+                Instead of using the Marvel network directly,
+                we treat each Wikipedia page as a small document.
+                We compare the words used on different pages
+                and ask which characters have the most similar
+                textual descriptions.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     HOW IT WORKS
+====================================================== -->
+
+<section>
+
+    <div class="container">
+
+        <h2 class="section-title">
+            How does it work?
+        </h2>
+
+        <p class="section-intro">
+            The game turns the Week 5 text-analysis idea into
+            an interactive Marvel investigation.
+        </p>
+
+        <div class="steps">
+
+            <div class="step">
+
+                <div class="step-number">1</div>
+
+                <strong>
+                    Choose a mystery character
+                </strong>
+
+                <p>
+                    We select one character from the
+                    Marvel Wikipedia dataset.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">2</div>
+
+                <strong>
+                    Compare the pages
+                </strong>
+
+                <p>
+                    The words in the pages are represented
+                    as frequency vectors.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">3</div>
+
+                <strong>
+                    Find the textual twin
+                </strong>
+
+                <p>
+                    Cosine similarity ranks the other
+                    Marvel pages.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">4</div>
+
+                <strong>
+                    Inspect the evidence
+                </strong>
+
+                <p>
+                    We look at shared words and the
+                    underlying Wikipedia text.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     GAME
+====================================================== -->
+
+<section
+    class="game-section"
+    id="game"
+>
+
+    <div class="container">
+
+        <div class="game-card">
+
+            <div id="loading-screen">
+
+                <p id="loading">
+                    Loading the Marvel dataset…
+                </p>
+
+            </div>
+
+
+            <div
+                id="game"
+                class="hidden"
+            >
+
+                <div class="game-top">
+
+                    <span>
+                        Round
+                        <strong id="round-number">1</strong>
+                    </span>
+
+                    <span>
+                        Score:
+                        <strong id="score">0</strong>
+                    </span>
+
+                </div>
+
+
+                <div class="mystery-label">
+                    Mystery character
+                </div>
+
+
+                <div
+                    class="mystery-character"
+                    id="mystery-character"
+                >
+                    Loading…
+                </div>
+
+
+                <div class="game-question">
+                    Which Marvel character has the most
+                    similar Wikipedia page?
+                </div>
+
+
+                <div
+                    class="choices"
+                    id="choices"
+                ></div>
+
+
+                <div
+                    id="result"
+                    class="result hidden"
+                ></div>
+
+
+                <button
+                    id="next-round"
+                    class="next-button hidden"
+                >
+                    Next mystery character →
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     METHOD
+====================================================== -->
+
+<section>
+
+    <div class="container">
+
+        <div class="eyebrow">
+            Behind the game
+        </div>
+
+        <h2 class="section-title">
+            Turning text into a network question
+        </h2>
+
+        <p class="section-intro">
+            Each Wikipedia page is treated as a document.
+            We count words and compare the resulting
+            frequency vectors using cosine similarity.
+        </p>
+
+
+        <div class="method-grid">
+
+            <div class="info-card">
+
+                <h3>
+                    Bag-of-Words
+                </h3>
+
+                <p>
+                    A page is represented by the words it contains
+                    and how frequently those words occur.
+                    Word order is ignored.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>
+                    Cosine similarity
+                </h3>
+
+                <p>
+                    Cosine similarity gives a value between
+                    0 and 1 indicating how similar two word
+                    frequency vectors are.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>
+                    Network check
+                </h3>
+
+                <p>
+                    After finding a textual match, we check
+                    whether the two characters are also directly
+                    connected in the Marvel network.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>
+                    Text check
+                </h3>
+
+                <p>
+                    A similarity score is not enough.
+                    We inspect the actual Wikipedia text to
+                    understand why two pages look similar.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FIGURE
+====================================================== -->
+
+<section>
+
+    <div class="container">
+
+        <div class="eyebrow">
+            One convincing figure
+        </div>
+
+        <h2 class="section-title">
+            What does textual similarity reveal?
+        </h2>
+
+        <p class="section-intro">
+            The strongest textual matches can be compared
+            with the Marvel network to see whether similar
+            language also corresponds to a direct relationship.
+        </p>
+
+
+        <div class="figure-card">
+
+            <div class="figure-placeholder">
+
+                <div>
+
+                    <strong>
+                        Week 5 figure will go here
+                    </strong>
+
+                    <p>
+                        Recommended figure:
+                        textual similarity versus
+                        network connection.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SURPRISE
+====================================================== -->
+
+<section>
+
+    <div class="container">
+
+        <div class="question-card">
+
+            <div class="eyebrow">
+                What surprised us?
+            </div>
+
+            <h2>
+                Textual similarity does not necessarily mean
+                a direct network relationship.
+            </h2>
+
+            <p class="section-intro">
+                Two Marvel characters can have similar Wikipedia
+                pages because they share themes, locations,
+                story arcs, teams, powers, or recurring
+                vocabulary — even when they are not directly
+                connected by an edge in the network.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     LIMITATION
+====================================================== -->
+
+<section>
+
+    <div class="container">
+
+        <div class="info-card limitation">
+
+            <div class="eyebrow">
+                Limitation
+            </div>
+
+            <h2>
+                Words are not the same as meaning.
+            </h2>
+
+            <p>
+                Bag-of-Words ignores word order and deeper
+                semantic meaning. Two pages may use the same
+                words for completely different reasons, while
+                two genuinely related pages may use different
+                vocabulary.
+            </p>
+
+            <p>
+                Therefore, the similarity score is a clue —
+                not proof. That is why we inspect the underlying
+                Wikipedia text before interpreting the result.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <div class="container">
+
+        Marvel Social Graphs · Week 5 · Text Detective
+
+    </div>
+
+</footer>
+
+
+<script src="game.js"></script>
+
+</body>
+
+</html>

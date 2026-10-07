@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const status = document.getElementById("figure-status");
     const canvas = document.getElementById("similarity-figure");
-    const list = document.getElementById("strongest-matches");
+    const list = document.getElementById("top-matches");
 
     try {
 

@@ -1,54 +1,146 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* =========================
-       GAME SETTINGS
-    ========================= */
+    /* =========================================================
+       MARVEL TEXT DETECTIVE
+       WEEK 5
+    ========================================================= */
 
     const TOTAL_ROUNDS = 10;
     const STARTING_LIVES = 3;
     const ROUND_TIME = 30;
 
-    /* =========================
+    /* =========================================================
        HTML ELEMENTS
-    ========================= */
+    ========================================================= */
 
-    const loadingScreen = document.getElementById("loading-screen");
-    const loading = document.getElementById("loading");
+    const loadingScreen =
+        document.getElementById("loading-screen");
 
-    const startScreen = document.getElementById("start-screen");
-    const startGameButton = document.getElementById("start-game");
+    const loading =
+        document.getElementById("loading");
 
-    const finalScreen = document.getElementById("final-screen");
-    const finalRank = document.getElementById("final-rank");
-    const finalScore = document.getElementById("final-score");
-    const finalCorrect = document.getElementById("final-correct");
-    const finalRounds = document.getElementById("final-rounds");
-    const finalStreak = document.getElementById("final-streak");
-    const finalAccuracy = document.getElementById("final-accuracy");
-    const playAgainButton = document.getElementById("play-again");
+    const startScreen =
+        document.getElementById("start-screen");
 
-    const targetCharacter = document.getElementById("target-character");
+    const startGameButton =
+        document.getElementById("start-game");
 
-    const choicesContainer = document.getElementById("choices");
+    const gameScreen =
+        document.getElementById("game-screen");
 
-    const scoreElement = document.getElementById("score");
-    const livesElement = document.getElementById("lives");
-    const streakElement = document.getElementById("streak");
-    const timerElement = document.getElementById("timer");
+    const finalScreen =
+        document.getElementById("final-screen");
 
-    const roundLabel = document.getElementById("round-label");
-    const progressFill = document.getElementById("progress-fill");
+    const finalRank =
+        document.getElementById("final-rank");
 
-    const hintButton = document.getElementById("hint-button");
-    const skipButton = document.getElementById("skip-button");
-    const hintBox = document.getElementById("hint-box");
+    const finalScore =
+        document.getElementById("final-score");
 
-    const resultBox = document.getElementById("result");
-    const nextRoundButton = document.getElementById("next-round");
+    const finalCorrect =
+        document.getElementById("final-correct");
 
-    /* =========================
+    const finalRounds =
+        document.getElementById("final-rounds");
+
+    const finalStreak =
+        document.getElementById("final-streak");
+
+    const finalAccuracy =
+        document.getElementById("final-accuracy");
+
+    const playAgainButton =
+        document.getElementById("play-again");
+
+    const mysteryCharacter =
+        document.getElementById("mystery-character");
+
+    const choicesContainer =
+        document.getElementById("choices");
+
+    const scoreElement =
+        document.getElementById("score");
+
+    const livesElement =
+        document.getElementById("lives");
+
+    const streakElement =
+        document.getElementById("streak");
+
+    const timerElement =
+        document.getElementById("timer");
+
+    const roundLabel =
+        document.getElementById("round-label");
+
+    const progressFill =
+        document.getElementById("progress-fill");
+
+    const hintButton =
+        document.getElementById("hint-button");
+
+    const skipButton =
+        document.getElementById("skip-button");
+
+    const hintBox =
+        document.getElementById("hint-box");
+
+    const resultBox =
+        document.getElementById("result");
+
+    const nextRoundButton =
+        document.getElementById("next-round");
+
+
+    /* =========================================================
+       CHECK HTML
+    ========================================================= */
+
+    const requiredElements = {
+        loadingScreen,
+        loading,
+        startScreen,
+        startGameButton,
+        gameScreen,
+        finalScreen,
+        finalRank,
+        finalScore,
+        finalCorrect,
+        finalRounds,
+        finalStreak,
+        finalAccuracy,
+        playAgainButton,
+        mysteryCharacter,
+        choicesContainer,
+        scoreElement,
+        livesElement,
+        streakElement,
+        timerElement,
+        roundLabel,
+        progressFill,
+        hintButton,
+        skipButton,
+        hintBox,
+        resultBox,
+        nextRoundButton
+    };
+
+    for (const [name, element] of Object.entries(requiredElements)) {
+
+        if (!element) {
+
+            console.error(
+                `Text Detective: Missing HTML element: ${name}`
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
        GAME VARIABLES
-    ========================= */
+    ========================================================= */
 
     let pages = [];
 
@@ -61,6 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let round = 1;
 
     let timeLeft = ROUND_TIME;
+
     let timerInterval = null;
 
     let answered = false;
@@ -69,85 +162,153 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let currentMystery = null;
     let currentCorrect = null;
-    let currentCandidates = [];
 
-    /* =========================
-       UTILITY FUNCTIONS
-    ========================= */
+
+    /* =========================================================
+       SHUFFLE
+    ========================================================= */
 
     function shuffle(array) {
+
         const copied = [...array];
 
-        for (let i = copied.length - 1; i > 0; i--) {
+        for (
+            let i = copied.length - 1;
+            i > 0;
+            i--
+        ) {
 
-            const j = Math.floor(Math.random() * (i + 1));
+            const j =
+                Math.floor(
+                    Math.random() * (i + 1)
+                );
 
-            [copied[i], copied[j]] =
-                [copied[j], copied[i]];
+            [
+                copied[i],
+                copied[j]
+            ] =
+            [
+                copied[j],
+                copied[i]
+            ];
+
         }
 
         return copied;
     }
 
+
+    /* =========================================================
+       ESCAPE HTML
+    ========================================================= */
+
     function escapeHTML(text) {
 
-        const div = document.createElement("div");
+        const div =
+            document.createElement("div");
 
         div.textContent = text;
 
         return div.innerHTML;
     }
 
+
+    /* =========================================================
+       CLEAN CHARACTER NAME
+    ========================================================= */
+
     function cleanCharacterName(filename) {
 
-        let name = filename
-            .replace(/\.(html|htm|txt)$/i, "")
-            .replace(/[_-]+/g, " ")
-            .trim();
+        let name =
+            filename
+                .replace(
+                    /\.(html|htm|txt)$/i,
+                    ""
+                )
+                .replace(
+                    /[_-]+/g,
+                    " "
+                )
+                .trim();
 
-        name = name.replace(/\s+/g, " ");
+        name =
+            name.replace(
+                /\s+/g,
+                " "
+            );
 
         return name;
     }
 
-    /* =========================
+
+    /* =========================================================
        READ PAGE
-    ========================= */
+    ========================================================= */
 
     async function readPage(page) {
 
         try {
 
-            const content = await page.file.async("text");
+            return await page.file.async("text");
 
-            return content;
+        }
+        catch (error) {
 
-        } catch (error) {
-
-            console.error("Could not read page:", page.name);
+            console.error(
+                "Could not read page:",
+                page.name
+            );
 
             return "";
+
         }
+
     }
 
-    /* =========================
-       BAG OF WORDS
-    ========================= */
+
+    /* =========================================================
+       TOKENIZE
+    ========================================================= */
 
     function tokenize(text) {
 
         return text
             .toLowerCase()
-            .replace(/<script[\s\S]*?<\/script>/gi, " ")
-            .replace(/<style[\s\S]*?<\/style>/gi, " ")
-            .replace(/<[^>]+>/g, " ")
-            .replace(/[^a-z0-9\s]/g, " ")
+
+            .replace(
+                /<script[\s\S]*?<\/script>/gi,
+                " "
+            )
+
+            .replace(
+                /<style[\s\S]*?<\/style>/gi,
+                " "
+            )
+
+            .replace(
+                /<[^>]+>/g,
+                " "
+            )
+
+            .replace(
+                /[^a-z0-9\s]/g,
+                " "
+            )
+
             .split(/\s+/)
-            .filter(word =>
-                word.length > 2 &&
-                word.length < 25
+
+            .filter(
+                word =>
+                    word.length > 2 &&
+                    word.length < 25
             );
+
     }
+
+
+    /* =========================================================
+       CREATE WORD VECTOR
+    ========================================================= */
 
     function createVector(tokens) {
 
@@ -156,25 +317,33 @@ document.addEventListener("DOMContentLoaded", () => {
         tokens.forEach(word => {
 
             if (!vector[word]) {
+
                 vector[word] = 0;
+
             }
 
             vector[word]++;
+
         });
 
         return vector;
     }
 
-    /* =========================
+
+    /* =========================================================
        COSINE SIMILARITY
-    ========================= */
+    ========================================================= */
 
-    function cosineSimilarity(vectorA, vectorB) {
+    function cosineSimilarity(
+        vectorA,
+        vectorB
+    ) {
 
-        const words = new Set([
-            ...Object.keys(vectorA),
-            ...Object.keys(vectorB)
-        ]);
+        const words =
+            new Set([
+                ...Object.keys(vectorA),
+                ...Object.keys(vectorB)
+            ]);
 
         let dotProduct = 0;
         let magnitudeA = 0;
@@ -182,39 +351,65 @@ document.addEventListener("DOMContentLoaded", () => {
 
         words.forEach(word => {
 
-            const a = vectorA[word] || 0;
-            const b = vectorB[word] || 0;
+            const a =
+                vectorA[word] || 0;
 
-            dotProduct += a * b;
+            const b =
+                vectorB[word] || 0;
 
-            magnitudeA += a * a;
-            magnitudeB += b * b;
+            dotProduct +=
+                a * b;
+
+            magnitudeA +=
+                a * a;
+
+            magnitudeB +=
+                b * b;
+
         });
 
-        if (magnitudeA === 0 || magnitudeB === 0) {
+
+        if (
+            magnitudeA === 0 ||
+            magnitudeB === 0
+        ) {
+
             return 0;
+
         }
 
-        return dotProduct /
-            (Math.sqrt(magnitudeA) *
-             Math.sqrt(magnitudeB));
+
+        return (
+            dotProduct /
+            (
+                Math.sqrt(magnitudeA) *
+                Math.sqrt(magnitudeB)
+            )
+        );
+
     }
 
-    /* =========================
+
+    /* =========================================================
        UPDATE HUD
-    ========================= */
+    ========================================================= */
 
     function updateHUD() {
 
-        scoreElement.textContent = score;
+        scoreElement.textContent =
+            score;
 
         livesElement.textContent =
             "❤️".repeat(lives) +
-            "🖤".repeat(STARTING_LIVES - lives);
+            "🖤".repeat(
+                STARTING_LIVES - lives
+            );
 
-        streakElement.textContent = streak;
+        streakElement.textContent =
+            streak;
 
-        timerElement.textContent = timeLeft;
+        timerElement.textContent =
+            timeLeft;
 
         roundLabel.textContent =
             `ROUND ${round} / ${TOTAL_ROUNDS}`;
@@ -224,224 +419,355 @@ document.addEventListener("DOMContentLoaded", () => {
 
         progressFill.style.width =
             `${progress}%`;
+
     }
 
-    /* =========================
+
+    /* =========================================================
        TIMER
-    ========================= */
+    ========================================================= */
 
     function stopTimer() {
 
         if (timerInterval) {
 
-            clearInterval(timerInterval);
+            clearInterval(
+                timerInterval
+            );
 
             timerInterval = null;
+
         }
+
     }
+
 
     function startTimer() {
 
         stopTimer();
 
-        timeLeft = ROUND_TIME;
+        timeLeft =
+            ROUND_TIME;
 
         updateHUD();
 
-        timerInterval = setInterval(() => {
+        timerInterval =
+            setInterval(() => {
 
-            if (answered) {
-                return;
-            }
+                if (answered) {
 
-            timeLeft--;
+                    return;
 
-            updateHUD();
+                }
 
-            if (timeLeft <= 0) {
+                timeLeft--;
 
-                stopTimer();
+                updateHUD();
 
-                handleTimeOut();
-            }
+                if (timeLeft <= 0) {
 
-        }, 1000);
+                    stopTimer();
+
+                    handleTimeOut();
+
+                }
+
+            }, 1000);
+
     }
 
-    /* =========================
+
+    /* =========================================================
        CREATE ROUND
-    ========================= */
+    ========================================================= */
 
     async function createRound() {
 
-        stopTimer();
+        try {
 
-        answered = false;
-        hintUsed = false;
-        skipUsed = false;
+            stopTimer();
 
-        choicesContainer.innerHTML = "";
+            answered = false;
 
-        resultBox.innerHTML = "";
-        resultBox.style.display = "none";
-        resultBox.className = "";
+            hintUsed = false;
 
-        hintBox.innerHTML = "";
-        hintBox.style.display = "none";
+            skipUsed = false;
 
-        hintButton.disabled = false;
-        skipButton.disabled = false;
 
-        nextRoundButton.style.display = "none";
+            choicesContainer.innerHTML = "";
 
-        updateHUD();
+            resultBox.innerHTML = "";
 
-        /* Pick target character */
+            resultBox.style.display =
+                "none";
 
-        const mysteryIndex =
-            Math.floor(Math.random() * pages.length);
+            resultBox.className = "";
 
-        currentMystery = pages[mysteryIndex];
 
-        /* SHOW TARGET CHARACTER */
+            hintBox.innerHTML = "";
 
-        targetCharacter.textContent =
-            currentMystery.name;
+            hintBox.style.display =
+                "none";
 
-        /* Select four different candidates */
 
-        const availablePages =
-            pages.filter((_, index) =>
-                index !== mysteryIndex
-            );
+            hintButton.disabled =
+                false;
 
-        const candidates =
-            shuffle(availablePages).slice(0, 4);
+            skipButton.disabled =
+                false;
 
-        /* Read target page */
+            nextRoundButton.style.display =
+                "none";
 
-        const mysteryText =
-            await readPage(currentMystery);
 
-        const mysteryTokens =
-            tokenize(mysteryText);
+            updateHUD();
 
-        const mysteryVector =
-            createVector(mysteryTokens);
 
-        /* Calculate similarities */
+            /* ---------------------------------------------
+               SELECT MYSTERY CHARACTER
+            --------------------------------------------- */
 
-        const candidateData = [];
-
-        for (const candidate of candidates) {
-
-            const candidateText =
-                await readPage(candidate);
-
-            const candidateTokens =
-                tokenize(candidateText);
-
-            const candidateVector =
-                createVector(candidateTokens);
-
-            const similarity =
-                cosineSimilarity(
-                    mysteryVector,
-                    candidateVector
+            const mysteryIndex =
+                Math.floor(
+                    Math.random() *
+                    pages.length
                 );
 
-            candidateData.push({
+            currentMystery =
+                pages[mysteryIndex];
 
-                page: candidate,
 
-                vector: candidateVector,
+            mysteryCharacter.textContent =
+                currentMystery.name;
 
-                similarity: similarity
 
-            });
-        }
+            /* ---------------------------------------------
+               SELECT FOUR CANDIDATES
+            --------------------------------------------- */
 
-        /* Highest similarity is correct answer */
+            const availablePages =
+                pages.filter(
+                    (_, index) =>
+                        index !== mysteryIndex
+                );
 
-        candidateData.sort(
-            (a, b) =>
-                b.similarity - a.similarity
-        );
 
-        currentCandidates = candidateData;
+            const candidates =
+                shuffle(
+                    availablePages
+                ).slice(0, 4);
 
-        currentCorrect =
-            candidateData[0];
 
-        /* Shuffle displayed choices */
+            /* ---------------------------------------------
+               READ MYSTERY PAGE
+            --------------------------------------------- */
 
-        const displayedCandidates =
-            shuffle(candidateData);
+            const mysteryText =
+                await readPage(
+                    currentMystery
+                );
 
-        displayedCandidates.forEach(candidateData => {
 
-            const button =
-                document.createElement("button");
+            const mysteryVector =
+                createVector(
+                    tokenize(
+                        mysteryText
+                    )
+                );
 
-            button.className =
-                "choice-button";
 
-            button.textContent =
-                candidateData.page.name;
+            /* ---------------------------------------------
+               CALCULATE SIMILARITIES
+            --------------------------------------------- */
 
-            button.dataset.name =
-                candidateData.page.name;
+            const candidateData = [];
 
-            button.addEventListener(
-                "click",
-                () => {
 
-                    handleAnswer(
-                        candidateData,
+            for (
+                const candidate of candidates
+            ) {
+
+                const candidateText =
+                    await readPage(
+                        candidate
+                    );
+
+
+                const candidateVector =
+                    createVector(
+                        tokenize(
+                            candidateText
+                        )
+                    );
+
+
+                const similarity =
+                    cosineSimilarity(
+                        mysteryVector,
+                        candidateVector
+                    );
+
+
+                candidateData.push({
+
+                    page: candidate,
+
+                    similarity:
+                        similarity
+
+                });
+
+            }
+
+
+            /* ---------------------------------------------
+               FIND CORRECT ANSWER
+            --------------------------------------------- */
+
+            candidateData.sort(
+                (a, b) =>
+                    b.similarity -
+                    a.similarity
+            );
+
+
+            currentCorrect =
+                candidateData[0];
+
+
+            /* ---------------------------------------------
+               DISPLAY ANSWERS RANDOMLY
+            --------------------------------------------- */
+
+            const displayedCandidates =
+                shuffle(
+                    candidateData
+                );
+
+
+            displayedCandidates.forEach(
+                candidateData => {
+
+                    const button =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    button.className =
+                        "choice-button";
+
+
+                    button.textContent =
+                        candidateData.page.name;
+
+
+                    button.dataset.name =
+                        candidateData.page.name;
+
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+                            handleAnswer(
+                                candidateData,
+                                button
+                            );
+
+                        }
+                    );
+
+
+                    choicesContainer.appendChild(
                         button
                     );
 
                 }
             );
 
-            choicesContainer.appendChild(button);
-        });
 
-        startTimer();
+            startTimer();
+
+        }
+        catch (error) {
+
+            console.error(
+                "ROUND ERROR:",
+                error
+            );
+
+            resultBox.style.display =
+                "block";
+
+            resultBox.className =
+                "result-wrong";
+
+            resultBox.innerHTML = `
+
+                <div class="result-title">
+                    GAME ERROR
+                </div>
+
+                <div class="result-explanation">
+
+                    ${escapeHTML(
+                        error.message
+                    )}
+
+                </div>
+
+            `;
+
+        }
+
     }
 
-    /* =========================
-       HANDLE ANSWER
-    ========================= */
 
-    function handleAnswer(selected, selectedButton) {
+    /* =========================================================
+       HANDLE ANSWER
+    ========================================================= */
+
+    function handleAnswer(
+        selected,
+        selectedButton
+    ) {
 
         if (answered) {
+
             return;
+
         }
+
 
         answered = true;
 
         stopTimer();
 
-        /* Disable all choices */
 
         const allButtons =
             document.querySelectorAll(
                 ".choice-button"
             );
 
-        allButtons.forEach(button => {
-            button.disabled = true;
-        });
+
+        allButtons.forEach(
+            button => {
+
+                button.disabled = true;
+
+            }
+        );
+
 
         const isCorrect =
             selected.page.name ===
             currentCorrect.page.name;
 
-        /* =========================
+
+        /* =====================================================
            CORRECT
-        ========================= */
+        ===================================================== */
 
         if (isCorrect) {
 
@@ -449,20 +775,28 @@ document.addEventListener("DOMContentLoaded", () => {
                 "correct"
             );
 
+
             correctAnswers++;
 
             streak++;
 
-            if (streak > bestStreak) {
-                bestStreak = streak;
+
+            if (
+                streak >
+                bestStreak
+            ) {
+
+                bestStreak =
+                    streak;
+
             }
+
 
             let points =
                 100 +
                 (timeLeft * 3) +
                 ((streak - 1) * 25);
 
-            /* Hint penalty */
 
             if (hintUsed) {
 
@@ -471,12 +805,16 @@ document.addEventListener("DOMContentLoaded", () => {
                         25,
                         points - 40
                     );
+
             }
+
 
             score += points;
 
+
             resultBox.className =
                 "result-correct";
+
 
             resultBox.innerHTML = `
 
@@ -485,39 +823,50 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
 
                 <div class="similarity">
+
                     Similarity:
                     ${(selected.similarity * 100).toFixed(1)}%
+
                 </div>
 
                 <div class="result-explanation">
 
                     <strong>
-                        ${escapeHTML(selected.page.name)}
+                        ${escapeHTML(
+                            selected.page.name
+                        )}
                     </strong>
+
                     has the highest textual similarity
                     to
+
                     <strong>
-                        ${escapeHTML(currentMystery.name)}
+                        ${escapeHTML(
+                            currentMystery.name
+                        )}
                     </strong>.
 
                     <br><br>
 
-                    The game compares the two Wikipedia
-                    pages using a Bag-of-Words representation
+                    The game compares Wikipedia pages
+                    using a Bag-of-Words representation
                     and cosine similarity.
 
                     <br><br>
 
-                    <strong>+${points} points</strong>
+                    <strong>
+                        +${points} points
+                    </strong>
 
                 </div>
+
             `;
 
         }
 
-        /* =========================
+        /* =====================================================
            WRONG
-        ========================= */
+        ===================================================== */
 
         else {
 
@@ -525,28 +874,33 @@ document.addEventListener("DOMContentLoaded", () => {
                 "wrong"
             );
 
+
             lives--;
 
             streak = 0;
 
-            /* Highlight correct answer */
 
-            allButtons.forEach(button => {
+            allButtons.forEach(
+                button => {
 
-                if (
-                    button.dataset.name ===
-                    currentCorrect.page.name
-                ) {
+                    if (
+                        button.dataset.name ===
+                        currentCorrect.page.name
+                    ) {
 
-                    button.classList.add(
-                        "correct"
-                    );
+                        button.classList.add(
+                            "correct"
+                        );
+
+                    }
+
                 }
+            );
 
-            });
 
             resultBox.className =
                 "result-wrong";
+
 
             resultBox.innerHTML = `
 
@@ -557,6 +911,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="similarity">
 
                     Correct answer:
+
                     ${escapeHTML(
                         currentCorrect.page.name
                     )}
@@ -564,6 +919,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <br>
 
                     Similarity:
+
                     ${(currentCorrect.similarity * 100).toFixed(1)}%
 
                 </div>
@@ -572,43 +928,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     Your selected character had a lower
                     textual similarity to
+
                     <strong>
-                        ${escapeHTML(currentMystery.name)}
+                        ${escapeHTML(
+                            currentMystery.name
+                        )}
                     </strong>.
 
-                    <br><br>
-
-                    The correct character was the one
-                    with the highest cosine similarity
-                    between the two Wikipedia pages.
-
                 </div>
+
             `;
+
         }
+
 
         updateHUD();
 
-        resultBox.style.display = "block";
+        resultBox.style.display =
+            "block";
 
-        hintButton.disabled = true;
-        skipButton.disabled = true;
 
-        /* Game over */
+        hintButton.disabled =
+            true;
+
+        skipButton.disabled =
+            true;
+
+
+        /* GAME OVER */
 
         if (lives <= 0) {
 
-            setTimeout(() => {
-
-                finishGame();
-
-            }, 1800);
+            setTimeout(
+                finishGame,
+                1800
+            );
 
             return;
+
         }
 
-        /* Last round */
 
-        if (round >= TOTAL_ROUNDS) {
+        /* LAST ROUND */
+
+        if (
+            round >= TOTAL_ROUNDS
+        ) {
 
             nextRoundButton.textContent =
                 "SEE RESULTS";
@@ -618,21 +983,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
             nextRoundButton.textContent =
                 "NEXT ROUND →";
+
         }
+
 
         nextRoundButton.style.display =
             "block";
+
     }
 
-    /* =========================
+
+    /* =========================================================
        TIME OUT
-    ========================= */
+    ========================================================= */
 
     function handleTimeOut() {
 
         if (answered) {
+
             return;
+
         }
+
 
         answered = true;
 
@@ -640,29 +1012,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
         streak = 0;
 
+
         const allButtons =
             document.querySelectorAll(
                 ".choice-button"
             );
 
-        allButtons.forEach(button => {
 
-            button.disabled = true;
+        allButtons.forEach(
+            button => {
 
-            if (
-                button.dataset.name ===
-                currentCorrect.page.name
-            ) {
+                button.disabled = true;
 
-                button.classList.add(
-                    "correct"
-                );
+
+                if (
+                    button.dataset.name ===
+                    currentCorrect.page.name
+                ) {
+
+                    button.classList.add(
+                        "correct"
+                    );
+
+                }
+
             }
+        );
 
-        });
 
         resultBox.className =
             "result-wrong";
+
 
         resultBox.innerHTML = `
 
@@ -673,6 +1053,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="similarity">
 
                 Correct answer:
+
                 ${escapeHTML(
                     currentCorrect.page.name
                 )}
@@ -680,6 +1061,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <br>
 
                 Similarity:
+
                 ${(currentCorrect.similarity * 100).toFixed(1)}%
 
             </div>
@@ -688,37 +1070,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 You ran out of time.
 
-                <br><br>
-
-                The correct answer was the character
-                with the highest cosine similarity
-                to
-                <strong>
-                    ${escapeHTML(currentMystery.name)}
-                </strong>.
-
             </div>
+
         `;
 
-        resultBox.style.display = "block";
 
-        hintButton.disabled = true;
-        skipButton.disabled = true;
+        resultBox.style.display =
+            "block";
+
+
+        hintButton.disabled =
+            true;
+
+        skipButton.disabled =
+            true;
+
 
         updateHUD();
 
+
         if (lives <= 0) {
 
-            setTimeout(() => {
-
-                finishGame();
-
-            }, 1800);
+            setTimeout(
+                finishGame,
+                1800
+            );
 
             return;
+
         }
 
-        if (round >= TOTAL_ROUNDS) {
+
+        if (
+            round >= TOTAL_ROUNDS
+        ) {
 
             nextRoundButton.textContent =
                 "SEE RESULTS";
@@ -728,15 +1113,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
             nextRoundButton.textContent =
                 "NEXT ROUND →";
+
         }
+
 
         nextRoundButton.style.display =
             "block";
+
     }
 
-    /* =========================
+
+    /* =========================================================
        HINT
-    ========================= */
+    ========================================================= */
 
     hintButton.addEventListener(
         "click",
@@ -747,15 +1136,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 hintUsed ||
                 !currentCorrect
             ) {
+
                 return;
+
             }
+
 
             hintUsed = true;
 
-            hintButton.disabled = true;
+            hintButton.disabled =
+                true;
+
 
             hintBox.style.display =
                 "block";
+
 
             hintBox.innerHTML = `
 
@@ -764,25 +1159,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 <br><br>
 
                 Look for the character whose
-                Wikipedia page is likely to discuss
-                similar topics, relationships, or
-                Marvel storylines as
+                Wikipedia page discusses topics,
+                relationships, or Marvel storylines
+                similar to
+
                 <strong>
-                    ${escapeHTML(currentMystery.name)}
+                    ${escapeHTML(
+                        currentMystery.name
+                    )}
                 </strong>.
 
                 <br><br>
 
-                ⚠️ Using a hint reduces your points
-                for this round.
+                ⚠️ Using a hint reduces your points.
 
             `;
+
         }
     );
 
-    /* =========================
+
+    /* =========================================================
        SKIP
-    ========================= */
+    ========================================================= */
 
     skipButton.addEventListener(
         "click",
@@ -792,8 +1191,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 answered ||
                 skipUsed
             ) {
+
                 return;
+
             }
+
 
             skipUsed = true;
 
@@ -801,33 +1203,47 @@ document.addEventListener("DOMContentLoaded", () => {
 
             stopTimer();
 
-            skipButton.disabled = true;
-            hintButton.disabled = true;
+
+            skipButton.disabled =
+                true;
+
+            hintButton.disabled =
+                true;
+
 
             const allButtons =
                 document.querySelectorAll(
                     ".choice-button"
                 );
 
-            allButtons.forEach(button => {
 
-                button.disabled = true;
+            allButtons.forEach(
+                button => {
 
-                if (
-                    button.dataset.name ===
-                    currentCorrect.page.name
-                ) {
+                    button.disabled = true;
 
-                    button.classList.add(
-                        "correct"
-                    );
+
+                    if (
+                        button.dataset.name ===
+                        currentCorrect.page.name
+                    ) {
+
+                        button.classList.add(
+                            "correct"
+                        );
+
+                    }
+
                 }
+            );
 
-            });
 
             streak = 0;
 
-            resultBox.className = "";
+
+            resultBox.className =
+                "result-wrong";
+
 
             resultBox.innerHTML = `
 
@@ -838,6 +1254,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="similarity">
 
                     Correct answer:
+
                     ${escapeHTML(
                         currentCorrect.page.name
                     )}
@@ -845,6 +1262,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <br>
 
                     Similarity:
+
                     ${(currentCorrect.similarity * 100).toFixed(1)}%
 
                 </div>
@@ -853,23 +1271,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     No life was lost.
 
-                    <br><br>
-
-                    The correct character was the one
-                    with the highest textual similarity
-                    to
-                    <strong>
-                        ${escapeHTML(currentMystery.name)}
-                    </strong>.
-
                 </div>
+
             `;
 
-            resultBox.style.display = "block";
+
+            resultBox.style.display =
+                "block";
+
 
             updateHUD();
 
-            if (round >= TOTAL_ROUNDS) {
+
+            if (
+                round >= TOTAL_ROUNDS
+            ) {
 
                 nextRoundButton.textContent =
                     "SEE RESULTS";
@@ -879,62 +1295,94 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 nextRoundButton.textContent =
                     "NEXT ROUND →";
+
             }
+
 
             nextRoundButton.style.display =
                 "block";
+
         }
     );
 
-    /* =========================
+
+    /* =========================================================
        NEXT ROUND
-    ========================= */
+    ========================================================= */
 
     nextRoundButton.addEventListener(
         "click",
         () => {
 
-            if (round >= TOTAL_ROUNDS) {
+            if (
+                round >= TOTAL_ROUNDS
+            ) {
 
                 finishGame();
 
                 return;
+
             }
+
 
             round++;
 
             createRound();
+
         }
     );
 
-    /* =========================
+
+    /* =========================================================
        START GAME
-    ========================= */
+    ========================================================= */
 
     startGameButton.addEventListener(
         "click",
         () => {
 
+            console.log(
+                "Text Detective started."
+            );
+
+
             startScreen.style.display =
                 "none";
 
+
+            finalScreen.style.display =
+                "none";
+
+
+            gameScreen.style.display =
+                "block";
+
+
             score = 0;
-            lives = STARTING_LIVES;
+
+            lives =
+                STARTING_LIVES;
+
             streak = 0;
+
             bestStreak = 0;
+
             correctAnswers = 0;
 
             round = 1;
 
+
             updateHUD();
 
             createRound();
+
         }
     );
 
-    /* =========================
-       FINAL SCORE / RANK
-    ========================= */
+
+    /* =========================================================
+       FINISH GAME
+    ========================================================= */
 
     function finishGame() {
 
@@ -942,14 +1390,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         answered = true;
 
+
         const accuracy =
             round > 0
                 ? Math.round(
-                    (correctAnswers / round) * 100
+                    (
+                        correctAnswers /
+                        round
+                    ) * 100
                 )
                 : 0;
 
-        let rank = "";
+
+        let rank;
+
 
         if (score >= 1200) {
 
@@ -979,7 +1433,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             rank =
                 "S.H.I.E.L.D. TRAINEE";
+
         }
+
 
         finalRank.textContent =
             rank;
@@ -991,7 +1447,10 @@ document.addEventListener("DOMContentLoaded", () => {
             correctAnswers;
 
         finalRounds.textContent =
-            Math.min(round, TOTAL_ROUNDS);
+            Math.min(
+                round,
+                TOTAL_ROUNDS
+            );
 
         finalStreak.textContent =
             bestStreak;
@@ -999,13 +1458,20 @@ document.addEventListener("DOMContentLoaded", () => {
         finalAccuracy.textContent =
             `${accuracy}%`;
 
+
+        gameScreen.style.display =
+            "none";
+
+
         finalScreen.style.display =
             "flex";
+
     }
 
-    /* =========================
+
+    /* =========================================================
        PLAY AGAIN
-    ========================= */
+    ========================================================= */
 
     playAgainButton.addEventListener(
         "click",
@@ -1014,23 +1480,36 @@ document.addEventListener("DOMContentLoaded", () => {
             finalScreen.style.display =
                 "none";
 
+
+            gameScreen.style.display =
+                "block";
+
+
             score = 0;
-            lives = STARTING_LIVES;
+
+            lives =
+                STARTING_LIVES;
+
             streak = 0;
+
             bestStreak = 0;
+
             correctAnswers = 0;
 
             round = 1;
 
+
             updateHUD();
 
             createRound();
+
         }
     );
 
-    /* =========================
-       LOAD DATASET
-    ========================= */
+
+    /* =========================================================
+       LOAD MARVEL DATASET
+    ========================================================= */
 
     async function loadDataset() {
 
@@ -1039,116 +1518,171 @@ document.addEventListener("DOMContentLoaded", () => {
             loading.textContent =
                 "Loading Marvel Wikipedia dataset...";
 
+
             const response =
-                await fetch("../marvel_pages.zip");
+                await fetch(
+                    "../marvel_pages.zip"
+                );
+
 
             if (!response.ok) {
 
                 throw new Error(
-                    "Could not load marvel_pages.zip"
+                    `Could not load marvel_pages.zip (HTTP ${response.status})`
                 );
+
             }
+
 
             const zipData =
                 await response.arrayBuffer();
 
+
+            if (
+                typeof JSZip ===
+                "undefined"
+            ) {
+
+                throw new Error(
+                    "JSZip is not loaded."
+                );
+
+            }
+
+
             const zip =
-                await JSZip.loadAsync(zipData);
+                await JSZip.loadAsync(
+                    zipData
+                );
+
 
             pages = [];
 
-            zip.forEach((relativePath, file) => {
 
-                if (file.dir) {
-                    return;
+            zip.forEach(
+                (relativePath, file) => {
+
+                    if (file.dir) {
+
+                        return;
+
+                    }
+
+
+                    const lower =
+                        relativePath.toLowerCase();
+
+
+                    const validExtension =
+                        lower.endsWith(".html") ||
+                        lower.endsWith(".htm") ||
+                        lower.endsWith(".txt");
+
+
+                    if (!validExtension) {
+
+                        return;
+
+                    }
+
+
+                    if (
+                        lower.includes("readme") ||
+                        lower.includes("license") ||
+                        lower.includes("metadata") ||
+                        lower.includes(".git/")
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const filename =
+                        relativePath
+                            .split("/")
+                            .pop();
+
+
+                    if (!filename) {
+
+                        return;
+
+                    }
+
+
+                    const name =
+                        cleanCharacterName(
+                            filename
+                        );
+
+
+                    if (!name) {
+
+                        return;
+
+                    }
+
+
+                    pages.push({
+
+                        name:
+                            name,
+
+                        filename:
+                            filename,
+
+                        path:
+                            relativePath,
+
+                        file:
+                            file
+
+                    });
+
                 }
+            );
 
-                const lower =
-                    relativePath.toLowerCase();
-
-                /* Only page files */
-
-                const validExtension =
-                    lower.endsWith(".html") ||
-                    lower.endsWith(".htm") ||
-                    lower.endsWith(".txt");
-
-                if (!validExtension) {
-                    return;
-                }
-
-                /* Ignore metadata files */
-
-                if (
-                    lower.includes("readme") ||
-                    lower.includes("license") ||
-                    lower.includes("metadata") ||
-                    lower.includes(".git/")
-                ) {
-                    return;
-                }
-
-                const filename =
-                    relativePath
-                        .split("/")
-                        .pop();
-
-                if (!filename) {
-                    return;
-                }
-
-                const name =
-                    cleanCharacterName(
-                        filename
-                    );
-
-                if (!name) {
-                    return;
-                }
-
-                pages.push({
-
-                    name: name,
-
-                    filename: filename,
-
-                    path: relativePath,
-
-                    file: file
-
-                });
-
-            });
 
             console.log(
                 `SUCCESS! ${pages.length} pages found.`
             );
+
 
             if (pages.length < 5) {
 
                 throw new Error(
                     "Not enough Marvel pages were found in the dataset."
                 );
+
             }
+
 
             loading.textContent =
                 `Dataset ready — ${pages.length} characters found.`;
 
-            setTimeout(() => {
 
-                loadingScreen.style.display =
-                    "none";
+            setTimeout(
+                () => {
 
-                startScreen.style.display =
-                    "flex";
+                    loadingScreen.style.display =
+                        "none";
 
-            }, 800);
+                    startScreen.style.display =
+                        "flex";
+
+                },
+                800
+            );
 
         }
-
         catch (error) {
 
-            console.error(error);
+            console.error(
+                "TEXT DETECTIVE DATASET ERROR:",
+                error
+            );
+
 
             loading.innerHTML = `
 
@@ -1158,25 +1692,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 <br><br>
 
-                ${escapeHTML(error.message)}
+                ${escapeHTML(
+                    error.message
+                )}
 
                 <br><br>
 
-                Make sure that
+                Make sure
                 <strong>
                     marvel_pages.zip
                 </strong>
                 is in the main project folder,
                 one level above the
-                <strong>week 5</strong> folder.
+                <strong>week 5</strong>
+                folder.
 
             `;
+
         }
+
     }
 
-    /* =========================
-       START LOADING
-    ========================= */
+
+    /* =========================================================
+       INITIAL STATE
+    ========================================================= */
+
+    gameScreen.style.display =
+        "none";
+
+    finalScreen.style.display =
+        "none";
+
+    startScreen.style.display =
+        "none";
+
+    loadingScreen.style.display =
+        "flex";
+
+
+    /* =========================================================
+       START DATA LOADING
+    ========================================================= */
 
     loadDataset();
 

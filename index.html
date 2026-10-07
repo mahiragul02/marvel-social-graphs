@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -350,7 +351,7 @@
 
             display: grid;
 
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
 
             gap: 18px;
         }
@@ -427,117 +428,6 @@
         }
 
         /* =========================
-           TEXT DETECTIVE
-        ========================= */
-
-        .detective {
-            background:
-                radial-gradient(circle at center,
-                    rgba(230, 36, 41, 0.12),
-                    transparent 45%),
-                #0b0b0b;
-        }
-
-        .detective-card {
-            max-width: 1100px;
-
-            margin: auto;
-
-            display: grid;
-
-            grid-template-columns: 1.2fr 0.8fr;
-
-            gap: 30px;
-
-            padding: 45px;
-
-            border: 1px solid #3a2525;
-
-            border-radius: 22px;
-
-            background:
-                linear-gradient(145deg,
-                    #191111,
-                    #0d0d0d);
-        }
-
-        .detective-content h2 {
-            font-size: 42px;
-
-            margin-bottom: 15px;
-        }
-
-        .detective-content h2 span {
-            color: #e62429;
-        }
-
-        .detective-content p {
-            color: #999;
-
-            margin-bottom: 25px;
-
-            max-width: 650px;
-        }
-
-        .features {
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 10px;
-
-            margin-bottom: 25px;
-        }
-
-        .feature {
-            padding: 8px 12px;
-
-            border-radius: 20px;
-
-            background: #161616;
-
-            border: 1px solid #333;
-
-            color: #bbb;
-
-            font-size: 12px;
-        }
-
-        .detective-visual {
-            min-height: 260px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            text-align: center;
-
-            border-radius: 16px;
-
-            border: 1px solid #333;
-
-            background:
-                radial-gradient(circle,
-                    rgba(230, 36, 41, 0.18),
-                    transparent 60%),
-                #0a0a0a;
-        }
-
-        .detective-symbol {
-            font-size: 80px;
-
-            margin-bottom: 10px;
-        }
-
-        .detective-visual h3 {
-            color: #e62429;
-
-            font-size: 20px;
-        }
-
-        /* =========================
            TECHNOLOGY
         ========================= */
 
@@ -587,20 +477,35 @@
             background: #0b0b0b;
         }
 
-        .team-card {
-            max-width: 600px;
+        .team-grid {
+            max-width: 1000px;
 
             margin: auto;
 
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+        .team-card {
             text-align: center;
 
-            padding: 40px;
+            padding: 35px 25px;
 
             background: #111;
 
             border: 1px solid #2d2d2d;
 
             border-radius: 18px;
+
+            transition: 0.25s;
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+            border-color: #e62429;
         }
 
         .team-avatar {
@@ -624,7 +529,7 @@
         }
 
         .team-card h3 {
-            font-size: 25px;
+            font-size: 21px;
 
             margin-bottom: 5px;
         }
@@ -681,15 +586,15 @@
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .detective-card {
-                grid-template-columns: 1fr;
-            }
-
             .about-grid {
                 grid-template-columns: 1fr;
             }
 
             .tech-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -716,14 +621,6 @@
 
             .mission-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .detective-card {
-                padding: 25px;
-            }
-
-            .detective-content h2 {
-                font-size: 32px;
             }
 
             .hero h1 {
@@ -755,12 +652,12 @@
                 Data Stories
             </a>
 
-            <a href="#detective">
-                Text Detective
-            </a>
-
             <a href="#technology">
                 Methods
+            </a>
+
+            <a href="#team">
+                Team
             </a>
 
         </div>
@@ -797,9 +694,8 @@
                     EXPLORE DATA STORIES
                 </a>
 
-                <a href="week%205/index.html"
-                   class="secondary-button">
-                    PLAY TEXT DETECTIVE
+                <a href="#team" class="secondary-button">
+                    MEET THE TEAM
                 </a>
 
             </div>
@@ -842,7 +738,7 @@
         <div class="stat-card">
 
             <span class="stat-number">
-                4+
+                3
             </span>
 
             <span class="stat-label">
@@ -945,15 +841,14 @@
             <div class="about-card">
 
                 <h3>
-                    🔎 The Detective
+                    🔬 The Project
                 </h3>
 
                 <p>
-                    In Week 5, the project moves beyond graph
-                    structure and uses natural language processing
-                    to compare Marvel Wikipedia pages using
-                    Bag-of-Words representations and cosine
-                    similarity.
+                    Across the project, we explore Marvel through
+                    graph construction, network statistics,
+                    degree distributions, shortest paths,
+                    connectivity, and community structure.
                 </p>
 
             </div>
@@ -1067,127 +962,6 @@
 
             </a>
 
-
-            <!-- WEEK 5 -->
-
-            <a href="week%205/index.html"
-               class="mission-card">
-
-                <div class="mission-number">
-                    WEEK 05
-                </div>
-
-                <h3>
-                    Text Detective
-                </h3>
-
-                <p>
-                    Use natural language processing to identify
-                    which Marvel character has the most textually
-                    similar Wikipedia page to a target character.
-                </p>
-
-                <div class="mission-link">
-                    PLAY WEEK 5 →
-                </div>
-
-            </a>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         TEXT DETECTIVE
-    ========================= -->
-
-    <section id="detective" class="detective">
-
-        <div class="section-header">
-
-            <div class="section-tag">
-                WEEK 05
-            </div>
-
-            <h2>
-                Become the <span>Text Detective</span>
-            </h2>
-
-            <p>
-                Can you identify the Marvel character whose
-                Wikipedia page is most similar?
-            </p>
-
-        </div>
-
-
-        <div class="detective-card">
-
-            <div class="detective-content">
-
-                <h2>
-                    Marvel <span>Text Detective</span>
-                </h2>
-
-                <p>
-                    Choose the character whose Wikipedia page is
-                    most textually similar to the displayed target
-                    character.
-                </p>
-
-                <div class="features">
-
-                    <div class="feature">
-                        NLP
-                    </div>
-
-                    <div class="feature">
-                        Bag-of-Words
-                    </div>
-
-                    <div class="feature">
-                        Cosine Similarity
-                    </div>
-
-                    <div class="feature">
-                        10 Rounds
-                    </div>
-
-                    <div class="feature">
-                        Lives
-                    </div>
-
-                    <div class="feature">
-                        Streaks
-                    </div>
-
-                </div>
-
-                <a href="week%205/index.html"
-                   class="primary-button">
-                    START DETECTIVE GAME →
-                </a>
-
-            </div>
-
-
-            <div class="detective-visual">
-
-                <div>
-
-                    <div class="detective-symbol">
-                        🕵️
-                    </div>
-
-                    <h3>
-                        ANALYZE. COMPARE. DETECT.
-                    </h3>
-
-                </div>
-
-            </div>
-
         </div>
 
     </section>
@@ -1250,12 +1024,12 @@
             <div class="tech-card">
 
                 <h3>
-                    🧠 NLP
+                    📊 Data Analysis
                 </h3>
 
                 <p>
-                    Text processing, Bag-of-Words vectors,
-                    and cosine similarity.
+                    Pandas, NumPy, Matplotlib, and statistical
+                    analysis for understanding the Marvel network.
                 </p>
 
             </div>
@@ -1269,39 +1043,82 @@
          TEAM
     ========================= -->
 
-    <section class="team">
+    <section id="team" class="team">
 
         <div class="section-header">
 
             <div class="section-tag">
-                PROJECT
+                OUR TEAM
             </div>
 
             <h2>
-                Marvel Social Graphs
+                Group Members
             </h2>
 
             <p>
-                A data-driven exploration of relationships and
-                textual similarity in the Marvel Universe.
+                Social Interactions & Graphs · DTU
             </p>
 
         </div>
 
 
-        <div class="team-card">
+        <div class="team-grid">
 
-            <div class="team-avatar">
-                MG
+            <!-- MEMBER 1 -->
+
+            <div class="team-card">
+
+                <div class="team-avatar">
+                    MG
+                </div>
+
+                <h3>
+                    Member 1
+                </h3>
+
+                <p>
+                    Group Member
+                </p>
+
             </div>
 
-            <h3>
-                Marvel Social Graphs
-            </h3>
 
-            <p>
-                Social Interactions & Graphs · DTU
-            </p>
+            <!-- MEMBER 2 -->
+
+            <div class="team-card">
+
+                <div class="team-avatar">
+                    M2
+                </div>
+
+                <h3>
+                    Member 2
+                </h3>
+
+                <p>
+                    Group Member
+                </p>
+
+            </div>
+
+
+            <!-- MEMBER 3 -->
+
+            <div class="team-card">
+
+                <div class="team-avatar">
+                    M3
+                </div>
+
+                <h3>
+                    Member 3
+                </h3>
+
+                <p>
+                    Group Member
+                </p>
+
+            </div>
 
         </div>
 
@@ -1324,7 +1141,7 @@
 
         <p style="margin-top:8px;">
             Built for academic exploration of social graphs,
-            network science, and NLP.
+            network science, and data analysis.
         </p>
 
     </footer>
@@ -1333,3 +1150,4 @@
 </body>
 
 </html>
+```

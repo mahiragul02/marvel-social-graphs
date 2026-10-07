@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -344,13 +345,13 @@
         }
 
         .mission-grid {
-            max-width: 1150px;
+            max-width: 1200px;
 
             margin: auto;
 
             display: grid;
 
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
 
             gap: 18px;
         }
@@ -424,6 +425,34 @@
 
         .mission-card:hover .mission-link {
             color: #e62429;
+        }
+
+        /* =========================
+           UPCOMING WEEK CARDS
+        ========================= */
+
+        .mission-card.upcoming {
+            opacity: 0.65;
+
+            border-style: dashed;
+
+            cursor: default;
+        }
+
+        .mission-card.upcoming:hover {
+            transform: none;
+
+            border-color: #303030;
+
+            box-shadow: none;
+        }
+
+        .mission-card.upcoming .mission-number {
+            color: #777;
+        }
+
+        .mission-card.upcoming .mission-link {
+            color: #777;
         }
 
         /* =========================
@@ -504,6 +533,7 @@
 
         .team-card:hover {
             transform: translateY(-5px);
+
             border-color: #e62429;
         }
 
@@ -575,6 +605,13 @@
            RESPONSIVE
         ========================= */
 
+        @media (max-width: 1100px) {
+
+            .mission-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
         @media (max-width: 900px) {
 
             .mission-grid {
@@ -630,6 +667,7 @@
 </head>
 
 <body>
+
 
     <!-- =========================
          NAVIGATION
@@ -722,6 +760,7 @@
 
         </div>
 
+
         <div class="stat-card">
 
             <span class="stat-number">
@@ -734,10 +773,11 @@
 
         </div>
 
+
         <div class="stat-card">
 
             <span class="stat-number">
-                3
+                5
             </span>
 
             <span class="stat-label">
@@ -745,6 +785,7 @@
             </span>
 
         </div>
+
 
         <div class="stat-card">
 
@@ -847,7 +888,8 @@
                     Across the project, we explore Marvel through
                     graph construction, network statistics,
                     degree distributions, shortest paths,
-                    connectivity, and community structure.
+                    connectivity, community structure, and
+                    natural language processing.
                 </p>
 
             </div>
@@ -874,8 +916,8 @@
             </h2>
 
             <p>
-                Follow the project through different graph and
-                data-analysis perspectives.
+                Follow the project through different graph,
+                network, and data-analysis perspectives.
             </p>
 
         </div>
@@ -883,7 +925,10 @@
 
         <div class="mission-grid">
 
-            <!-- WEEK 1 -->
+
+            <!-- =========================
+                 WEEK 1
+            ========================= -->
 
             <a href="week1.html"
                class="mission-card">
@@ -909,7 +954,9 @@
             </a>
 
 
-            <!-- WEEK 2 -->
+            <!-- =========================
+                 WEEK 2
+            ========================= -->
 
             <a href="week2/index.html"
                class="mission-card">
@@ -925,8 +972,8 @@
                 <p>
                     Compare the Marvel network with a
                     Barabási–Albert network and investigate
-                    density, clustering, components, and degree
-                    distributions.
+                    density, clustering, components, and
+                    degree distributions.
                 </p>
 
                 <div class="mission-link">
@@ -936,7 +983,9 @@
             </a>
 
 
-            <!-- WEEK 3 -->
+            <!-- =========================
+                 WEEK 3
+            ========================= -->
 
             <a href="week3/index.html"
                class="mission-card">
@@ -951,8 +1000,8 @@
 
                 <p>
                     Investigate shortest paths, connectivity,
-                    breadth-first search, and the structure of
-                    communities inside the Marvel network.
+                    breadth-first search, and the structure
+                    of communities inside the Marvel network.
                 </p>
 
                 <div class="mission-link">
@@ -960,6 +1009,149 @@
                 </div>
 
             </a>
+
+
+            <!-- =========================
+                 WEEK 4
+                 CURRENTLY LINKS TO WEEK 2
+            ========================= -->
+
+            <a href="week2/index.html"
+               class="mission-card">
+
+                <div class="mission-number">
+                    WEEK 04
+                </div>
+
+                <h3>
+                    Network Analysis
+                </h3>
+
+                <p>
+                    Continue exploring the Marvel network
+                    through graph structure, connectivity,
+                    paths, and community analysis.
+                </p>
+
+                <div class="mission-link">
+                    EXPLORE WEEK 4 →
+                </div>
+
+            </a>
+
+
+            <!-- =========================
+                 WEEK 5
+                 TEXT DETECTIVE
+            ========================= -->
+
+            <a href="week%205/index.html"
+               class="mission-card">
+
+                <div class="mission-number">
+                    WEEK 05
+                </div>
+
+                <h3>
+                    Text Detective
+                </h3>
+
+                <p>
+                    Explore the Marvel Text Detective game
+                    and investigate textual similarity between
+                    Marvel character pages.
+                </p>
+
+                <div class="mission-link">
+                    PLAY WEEK 5 →
+                </div>
+
+            </a>
+
+
+            <!-- =========================
+                 WEEK 6
+                 STATIC FOR NOW
+            ========================= -->
+
+            <div class="mission-card upcoming">
+
+                <div class="mission-number">
+                    WEEK 06
+                </div>
+
+                <h3>
+                    Coming Soon
+                </h3>
+
+                <p>
+                    This section will be updated with the
+                    Week 6 analysis when the corresponding
+                    project work is completed.
+                </p>
+
+                <div class="mission-link">
+                    COMING SOON
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 WEEK 7
+                 STATIC FOR NOW
+            ========================= -->
+
+            <div class="mission-card upcoming">
+
+                <div class="mission-number">
+                    WEEK 07
+                </div>
+
+                <h3>
+                    Coming Soon
+                </h3>
+
+                <p>
+                    This section will be updated with the
+                    Week 7 analysis when the corresponding
+                    project work is completed.
+                </p>
+
+                <div class="mission-link">
+                    COMING SOON
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 WEEK 8
+                 STATIC FOR NOW
+            ========================= -->
+
+            <div class="mission-card upcoming">
+
+                <div class="mission-number">
+                    WEEK 08
+                </div>
+
+                <h3>
+                    Coming Soon
+                </h3>
+
+                <p>
+                    This section will be updated with the
+                    Week 8 analysis when the corresponding
+                    project work is completed.
+                </p>
+
+                <div class="mission-link">
+                    COMING SOON
+                </div>
+
+            </div>
+
 
         </div>
 
@@ -1063,12 +1255,13 @@
 
         <div class="team-grid">
 
+
             <!-- MEMBER 1 -->
 
             <div class="team-card">
 
                 <div class="team-avatar">
-                    M1
+                    MG
                 </div>
 
                 <h3>
@@ -1076,7 +1269,7 @@
                 </h3>
 
                 <p>
-                    Mahira Gul
+                    Group Member
                 </p>
 
             </div>
@@ -1095,7 +1288,7 @@
                 </h3>
 
                 <p>
-                    Soren Moller Jorgensen
+                    Group Member
                 </p>
 
             </div>
@@ -1114,10 +1307,11 @@
                 </h3>
 
                 <p>
-                    Ana Carolina Soares Araujo Barbosa
+                    Group Member
                 </p>
 
             </div>
+
 
         </div>
 
@@ -1149,3 +1343,4 @@
 </body>
 
 </html>
+```

@@ -1,1 +1,4148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Week 6 — Marvel Language Lab</title>
+
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #080808;
+
+            color: #ffffff;
+
+            line-height: 1.6;
+
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        nav {
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 18px 7%;
+
+            background:
+                rgba(8, 8, 8, 0.97);
+
+            border-bottom:
+                1px solid #292929;
+
+        }
+
+
+        .logo {
+
+            color: #e62429;
+
+            font-size: 22px;
+
+            font-weight: 900;
+
+            letter-spacing: 2px;
+
+        }
+
+
+        .nav-links {
+
+            display: flex;
+
+            gap: 28px;
+
+            list-style: none;
+
+        }
+
+
+        .nav-links a {
+
+            color: #cccccc;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+
+        }
+
+
+        .nav-links a:hover {
+
+            color: #e62429;
+
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+
+            min-height: 82vh;
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 80px 7%;
+
+            background:
+
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(230, 36, 41, 0.20),
+                    transparent 35%
+                ),
+
+                linear-gradient(
+                    135deg,
+                    #080808,
+                    #151515
+                );
+
+        }
+
+
+        .hero-content {
+
+            max-width: 950px;
+
+        }
+
+
+        .eyebrow {
+
+            color: #e62429;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            letter-spacing: 4px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .hero h1 {
+
+            font-size:
+                clamp(
+                    50px,
+                    9vw,
+                    105px
+                );
+
+            line-height: 0.9;
+
+            text-transform: uppercase;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .hero h1 span {
+
+            color: #e62429;
+
+        }
+
+
+        .hero p {
+
+            max-width: 760px;
+
+            color: #aaaaaa;
+
+            font-size: 19px;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .hero-question {
+
+            border-left:
+                4px solid #e62429;
+
+            padding:
+                18px 22px;
+
+            margin-bottom: 35px;
+
+            background:
+                rgba(230, 36, 41, 0.05);
+
+            max-width: 780px;
+
+        }
+
+
+        .hero-question small {
+
+            display: block;
+
+            color: #e62429;
+
+            font-weight: bold;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .hero-question strong {
+
+            font-size: 22px;
+
+        }
+
+
+        .buttons {
+
+            display: flex;
+
+            gap: 14px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .btn {
+
+            display: inline-block;
+
+            padding:
+                14px 24px;
+
+            border: none;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            transition: 0.2s;
+
+        }
+
+
+        .btn-primary {
+
+            background: #e62429;
+
+            color: white;
+
+        }
+
+
+        .btn-primary:hover {
+
+            background: #ff3b40;
+
+            transform:
+                translateY(-2px);
+
+        }
+
+
+        .btn-secondary {
+
+            background: transparent;
+
+            border:
+                1px solid #555;
+
+            color: white;
+
+        }
+
+
+        .btn-secondary:hover {
+
+            border-color: #e62429;
+
+            color: #e62429;
+
+        }
+
+
+        /* =====================================================
+           STATS
+        ===================================================== */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            background: #101010;
+
+            border-top:
+                1px solid #292929;
+
+            border-bottom:
+                1px solid #292929;
+
+        }
+
+
+        .stat {
+
+            text-align: center;
+
+            padding: 35px 20px;
+
+            border-right:
+                1px solid #292929;
+
+        }
+
+
+        .stat:last-child {
+
+            border-right: none;
+
+        }
+
+
+        .stat-number {
+
+            display: block;
+
+            color: #e62429;
+
+            font-size: 34px;
+
+            font-weight: 900;
+
+        }
+
+
+        .stat-label {
+
+            color: #888;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+        }
+
+
+        /* =====================================================
+           GENERAL
+        ===================================================== */
+
+        section {
+
+            padding:
+                90px 7%;
+
+        }
+
+
+        .section-inner {
+
+            max-width: 1100px;
+
+            margin: auto;
+
+        }
+
+
+        .section-label {
+
+            color: #e62429;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            letter-spacing: 3px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .section-title {
+
+            font-size: 42px;
+
+            line-height: 1.1;
+
+            margin-bottom: 22px;
+
+        }
+
+
+        .section-text {
+
+            color: #999;
+
+            max-width: 800px;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        /* =====================================================
+           RULES
+        ===================================================== */
+
+        .rules {
+
+            background: #101010;
+
+        }
+
+
+        .rules-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-top: 35px;
+
+        }
+
+
+        .rule-card {
+
+            padding: 28px;
+
+            background: #151515;
+
+            border:
+                1px solid #292929;
+
+        }
+
+
+        .rule-number {
+
+            color: #e62429;
+
+            font-size: 28px;
+
+            font-weight: 900;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .rule-card h3 {
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .rule-card p {
+
+            color: #999;
+
+            font-size: 14px;
+
+        }
+
+
+        /* =====================================================
+           METHODS
+        ===================================================== */
+
+        .methods-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-top: 35px;
+
+        }
+
+
+        .method-card {
+
+            background: #111;
+
+            border:
+                1px solid #292929;
+
+            padding: 28px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+        }
+
+
+        .method-card:hover {
+
+            border-color: #e62429;
+
+            transform:
+                translateY(-3px);
+
+        }
+
+
+        .method-card.active {
+
+            border-color: #e62429;
+
+            background:
+                #1a1111;
+
+        }
+
+
+        .method-icon {
+
+            font-size: 30px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .method-card h3 {
+
+            color: #ffffff;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .method-card p {
+
+            color: #999;
+
+            font-size: 14px;
+
+        }
+
+
+        .method-detail {
+
+            margin-top: 30px;
+
+            background: #101010;
+
+            border:
+                1px solid #292929;
+
+            padding: 30px;
+
+            display: none;
+
+        }
+
+
+        .method-detail.visible {
+
+            display: block;
+
+        }
+
+
+        .method-detail h3 {
+
+            color: #e62429;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        /* =====================================================
+           GAME
+        ===================================================== */
+
+        .game-section {
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #0b0b0b,
+                    #111
+                );
+
+        }
+
+
+        .game-card {
+
+            max-width: 1000px;
+
+            margin:
+                35px auto 0;
+
+            background: #111;
+
+            border:
+                1px solid #303030;
+
+            padding: 40px;
+
+        }
+
+
+        .game-intro {
+
+            text-align: center;
+
+            padding: 25px;
+
+        }
+
+
+        .game-intro h2 {
+
+            font-size: 38px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .game-intro p {
+
+            color: #999;
+
+            max-width: 700px;
+
+            margin:
+                0 auto 25px;
+
+        }
+
+
+        .game-rules {
+
+            display: flex;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .game-rule {
+
+            background: #181818;
+
+            border:
+                1px solid #292929;
+
+            padding:
+                12px 18px;
+
+        }
+
+
+        .game-rule strong {
+
+            color: #e62429;
+
+            font-size: 20px;
+
+            display: block;
+
+        }
+
+
+        .game-rule span {
+
+            color: #888;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .game-screen {
+
+            display: none;
+
+        }
+
+
+        .game-header {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .game-stat {
+
+            background: #181818;
+
+            border:
+                1px solid #292929;
+
+            padding: 13px;
+
+            text-align: center;
+
+        }
+
+
+        .game-stat strong {
+
+            display: block;
+
+            color: #e62429;
+
+            font-size: 22px;
+
+        }
+
+
+        .game-stat span {
+
+            color: #777;
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .timer-track {
+
+            width: 100%;
+
+            height: 8px;
+
+            background: #292929;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .timer-bar {
+
+            width: 100%;
+
+            height: 100%;
+
+            background: #e62429;
+
+            transition:
+                width 1s linear;
+
+        }
+
+
+        .question-box {
+
+            text-align: center;
+
+            padding: 35px 20px;
+
+            border:
+                1px solid #292929;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #181818,
+                    #101010
+                );
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .question-label {
+
+            color: #e62429;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 3px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        #mystery-character {
+
+            font-size:
+                clamp(
+                    30px,
+                    6vw,
+                    50px
+                );
+
+            font-weight: 900;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .game-question {
+
+            text-align: center;
+
+            color: #aaa;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .choices {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 14px;
+
+        }
+
+
+        .choice {
+
+            min-height: 60px;
+
+            background: #181818;
+
+            border:
+                1px solid #383838;
+
+            color: white;
+
+            padding: 15px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+        }
+
+
+        .choice:hover:not(:disabled) {
+
+            border-color: #e62429;
+
+            background: #202020;
+
+        }
+
+
+        .choice.correct {
+
+            background: #173721;
+
+            border-color: #39c56f;
+
+        }
+
+
+        .choice.wrong {
+
+            background: #42191b;
+
+            border-color: #e62429;
+
+        }
+
+
+        .choice:disabled {
+
+            cursor: default;
+
+        }
+
+
+        .game-message {
+
+            text-align: center;
+
+            min-height: 45px;
+
+            padding: 18px 5px;
+
+            font-weight: bold;
+
+        }
+
+
+        .game-buttons {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .small-btn {
+
+            background: transparent;
+
+            border:
+                1px solid #444;
+
+            color: #ccc;
+
+            padding:
+                11px 18px;
+
+            cursor: pointer;
+
+        }
+
+
+        .small-btn:hover {
+
+            border-color: #e62429;
+
+            color: white;
+
+        }
+
+
+        .next-btn {
+
+            display: none;
+
+        }
+
+
+        /* =====================================================
+           INVESTIGATION
+        ===================================================== */
+
+        .investigation {
+
+            display: none;
+
+            margin-top: 25px;
+
+            border-top:
+                1px solid #292929;
+
+            padding-top: 30px;
+
+        }
+
+
+        .investigation.visible {
+
+            display: block;
+
+        }
+
+
+        .investigation h3 {
+
+            font-size: 25px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .evidence-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+
+            margin-top: 20px;
+
+        }
+
+
+        .evidence {
+
+            background: #181818;
+
+            border:
+                1px solid #292929;
+
+            padding: 22px;
+
+        }
+
+
+        .evidence-label {
+
+            color: #e62429;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .evidence-value {
+
+            font-size: 25px;
+
+            font-weight: bold;
+
+        }
+
+
+        .evidence-description {
+
+            color: #888;
+
+            font-size: 13px;
+
+            margin-top: 5px;
+
+        }
+
+
+        /* =====================================================
+           TEXT INSPECTION
+        ===================================================== */
+
+        .text-check {
+
+            margin-top: 25px;
+
+            background: #0d0d0d;
+
+            border:
+                1px solid #292929;
+
+            padding: 25px;
+
+        }
+
+
+        .text-check h4 {
+
+            color: #e62429;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .quote {
+
+            color: #ccc;
+
+            border-left:
+                3px solid #555;
+
+            padding-left: 15px;
+
+            font-style: italic;
+
+            margin: 15px 0;
+
+        }
+
+
+        .check-question {
+
+            color: #aaa;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .check-buttons {
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .check-btn {
+
+            padding:
+                10px 18px;
+
+            border:
+                1px solid #444;
+
+            background: transparent;
+
+            color: white;
+
+            cursor: pointer;
+
+        }
+
+
+        .check-btn:hover {
+
+            border-color: #e62429;
+
+        }
+
+
+        .inspection-result {
+
+            margin-top: 15px;
+
+            color: #aaa;
+
+        }
+
+
+        /* =====================================================
+           SCORE
+        ===================================================== */
+
+        .final-screen {
+
+            display: none;
+
+            text-align: center;
+
+            padding: 50px 15px;
+
+        }
+
+
+        .final-screen h2 {
+
+            font-size: 45px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .final-score {
+
+            color: #e62429;
+
+            font-size: 45px;
+
+            font-weight: 900;
+
+        }
+
+
+        .final-rank {
+
+            color: #aaa;
+
+            margin:
+                5px 0 25px;
+
+        }
+
+
+        /* =====================================================
+           RESEARCH QUESTIONS
+        ===================================================== */
+
+        .questions {
+
+            background: #101010;
+
+        }
+
+
+        .question-list {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+
+            margin-top: 30px;
+
+        }
+
+
+        .research-question {
+
+            background: #151515;
+
+            border:
+                1px solid #292929;
+
+            padding: 22px;
+
+        }
+
+
+        .research-question span {
+
+            display: block;
+
+            color: #e62429;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        /* =====================================================
+           WRITING GUIDE
+        ===================================================== */
+
+        .writing-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+
+            margin-top: 30px;
+
+        }
+
+
+        .writing-card {
+
+            border:
+                1px solid #292929;
+
+            background: #111;
+
+            padding: 24px;
+
+        }
+
+
+        .writing-card .number {
+
+            color: #e62429;
+
+            font-size: 25px;
+
+            font-weight: 900;
+
+        }
+
+
+        .writing-card h3 {
+
+            margin:
+                8px 0;
+
+        }
+
+
+        .writing-card p {
+
+            color: #999;
+
+            font-size: 14px;
+
+        }
+
+
+        /* =====================================================
+           GROUP
+        ===================================================== */
+
+        .group-box {
+
+            background: #111;
+
+            border:
+                1px solid #292929;
+
+            padding: 30px;
+
+            margin-top: 30px;
+
+        }
+
+
+        .members {
+
+            display: flex;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+            margin-top: 18px;
+
+        }
+
+
+        .member {
+
+            padding:
+                10px 16px;
+
+            border:
+                1px solid #444;
+
+            color: #ddd;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+
+            border-top:
+                1px solid #292929;
+
+            padding:
+                35px 7%;
+
+            text-align: center;
+
+            color: #666;
+
+            font-size: 13px;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 850px) {
+
+            .nav-links {
+                display: none;
+            }
+
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .stat:nth-child(2) {
+                border-right: none;
+            }
+
+
+            .rules-grid,
+            .methods-grid,
+            .writing-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .question-list {
+                grid-template-columns: 1fr;
+            }
+
+
+            .game-header {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .choices {
+                grid-template-columns: 1fr;
+            }
+
+
+            .evidence-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .game-card {
+                padding: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVIGATION
+    ===================================================== -->
+
+    <nav>
+
+        <div class="logo">
+            MARVEL•GRAPH
+        </div>
+
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="#week6">
+                    Week 6
+                </a>
+            </li>
+
+            <li>
+                <a href="#methods">
+                    Methods
+                </a>
+            </li>
+
+            <li>
+                <a href="#game">
+                    Language Lab
+                </a>
+            </li>
+
+            <li>
+                <a href="#writing">
+                    Write-up
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+
+
+    <!-- =====================================================
+         HERO
+    ===================================================== -->
+
+    <header
+        id="week6"
+        class="hero">
+
+        <div class="hero-content">
+
+            <div class="eyebrow">
+                WEEK 6 · LANGUAGE & NETWORKS
+            </div>
+
+
+            <h1>
+
+                MARVEL<br>
+
+                <span>
+                    LANGUAGE
+                </span><br>
+
+                LAB
+
+            </h1>
+
+
+            <p>
+
+                This week we move from simply measuring
+                similarity to asking a question we actually
+                care about.
+
+                What happens when the language of Marvel
+                characters tells a different story from
+                their network structure?
+
+            </p>
+
+
+            <div class="hero-question">
+
+                <small>
+                    OUR INVESTIGATION QUESTION
+                </small>
+
+                <strong>
+                    Who is textually close but structurally far away?
+                </strong>
+
+            </div>
+
+
+            <div class="buttons">
+
+                <a
+                    href="#game"
+                    class="btn btn-primary">
+
+                    START INVESTIGATION
+
+                </a>
+
+
+                <a
+                    href="#methods"
+                    class="btn btn-secondary">
+
+                    EXPLORE METHODS
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         STATS
+    ===================================================== -->
+
+    <section class="stats">
+
+        <div class="stat">
+
+            <span class="stat-number">
+                5+
+            </span>
+
+            <span class="stat-label">
+                Language Methods
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <span class="stat-number">
+                1
+            </span>
+
+            <span class="stat-label">
+                Research Question
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <span class="stat-number">
+                1
+            </span>
+
+            <span class="stat-label">
+                Strong Figure
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <span class="stat-number">
+                TEXT
+            </span>
+
+            <span class="stat-label">
+                Always Inspect
+            </span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         STANDING RULES
+    ===================================================== -->
+
+    <section class="rules">
+
+        <div class="section-inner">
+
+            <div class="section-label">
+                WEEK 1 RULES STILL APPLY
+            </div>
+
+
+            <h2 class="section-title">
+                The Standing Rules
+            </h2>
+
+
+            <p class="section-text">
+
+                The standing rules live in Week 1,
+                Exercise 1.8. Week 6 follows the same
+                free-form format.
+
+            </p>
+
+
+            <div class="rules-grid">
+
+
+                <div class="rule-card">
+
+                    <div class="rule-number">
+                        01
+                    </div>
+
+                    <h3>
+                        Make a Post
+                    </h3>
+
+                    <p>
+                        Publish one free-form post on your
+                        group's site.
+                    </p>
+
+                </div>
+
+
+                <div class="rule-card">
+
+                    <div class="rule-number">
+                        02
+                    </div>
+
+                    <h3>
+                        Share It
+                    </h3>
+
+                    <p>
+                        Put the link in this week's Teams
+                        channel by Monday evening.
+                    </p>
+
+                </div>
+
+
+                <div class="rule-card">
+
+                    <div class="rule-number">
+                        03
+                    </div>
+
+                    <h3>
+                        Give Feedback
+                    </h3>
+
+                    <p>
+                        Give friendly criticism to at least
+                        one other group.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         WEEK 6 IDEA
+    ===================================================== -->
+
+    <section>
+
+        <div class="section-inner">
+
+            <div class="section-label">
+                THE CHALLENGE
+            </div>
+
+
+            <h2 class="section-title">
+                Ask One Good Question
+            </h2>
+
+
+            <p class="section-text">
+
+                This week you learned several different
+                representations of language. You could use
+                TF-IDF, term contrasts, topic mixtures,
+                PPMI context vectors or Word2Vec.
+
+                But the goal is not to use everything.
+
+            </p>
+
+
+            <div class="hero-question">
+
+                <small>
+                    CORE PRINCIPLE
+                </small>
+
+                <strong>
+                    One good question and one convincing
+                    figure beats five methods thrown together.
+                </strong>
+
+            </div>
+
+
+            <p class="section-text">
+
+                Whatever you claim, inspect the text underneath
+                it before you believe it.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         METHODS
+    ===================================================== -->
+
+    <section
+        id="methods"
+        class="rules">
+
+        <div class="section-inner">
+
+            <div class="section-label">
+                LANGUAGE METHODS
+            </div>
+
+
+            <h2 class="section-title">
+                Choose Your Representation
+            </h2>
+
+
+            <p class="section-text">
+
+                Click a method to see what question it is
+                useful for.
+
+            </p>
+
+
+            <div class="methods-grid">
+
+
+                <div
+                    class="method-card"
+                    data-method="tfidf">
+
+                    <div class="method-icon">
+                        📄
+                    </div>
+
+                    <h3>
+                        TF-IDF + Cosine
+                    </h3>
+
+                    <p>
+                        Compare documents while reducing
+                        the importance of words that occur
+                        everywhere.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="method-card"
+                    data-method="contrast">
+
+                    <div class="method-icon">
+                        ⚖️
+                    </div>
+
+                    <h3>
+                        Term Contrast
+                    </h3>
+
+                    <p>
+                        Find words that distinguish one
+                        group from another.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="method-card"
+                    data-method="lda">
+
+                    <div class="method-icon">
+                        🧩
+                    </div>
+
+                    <h3>
+                        Topic Mixtures
+                    </h3>
+
+                    <p>
+                        Represent a document as a mixture
+                        of latent topics.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="method-card"
+                    data-method="ppmi">
+
+                    <div class="method-icon">
+                        🔗
+                    </div>
+
+                    <h3>
+                        PPMI
+                    </h3>
+
+                    <p>
+                        Discover words that keep surprisingly
+                        strong contextual company.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="method-card"
+                    data-method="word2vec">
+
+                    <div class="method-icon">
+                        🧠
+                    </div>
+
+                    <h3>
+                        Word2Vec
+                    </h3>
+
+                    <p>
+                        Explore semantic neighborhoods learned
+                        from word contexts.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="method-card"
+                    data-method="custom">
+
+                    <div class="method-icon">
+                        🗺️
+                    </div>
+
+                    <h3>
+                        Your Own Map
+                    </h3>
+
+                    <p>
+                        Build two meaningful axes and defend
+                        the picture they create.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="method-detail"
+                class="method-detail">
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         GAME
+    ===================================================== -->
+
+    <section
+        id="game"
+        class="game-section">
+
+        <div class="section-inner">
+
+            <div class="section-label">
+                INTERACTIVE INVESTIGATION
+            </div>
+
+
+            <h2 class="section-title">
+                Marvel Language Lab
+            </h2>
+
+
+            <p class="section-text">
+
+                Can you spot a character pair whose Wikipedia
+                pages are textually similar but whose network
+                positions are far apart?
+
+            </p>
+
+
+            <div class="game-card">
+
+
+                <!-- START -->
+
+                <div
+                    id="game-start"
+                    class="game-intro">
+
+                    <h2>
+                        Ready, Researcher?
+                    </h2>
+
+
+                    <p>
+
+                        In each round, you will see a mystery
+                        Marvel character. Choose the character
+                        that our text representation predicts
+                        as its closest textual match.
+
+                        Then inspect the evidence.
+
+                    </p>
+
+
+                    <div class="game-rules">
+
+                        <div class="game-rule">
+
+                            <strong>
+                                6
+                            </strong>
+
+                            <span>
+                                Cases
+                            </span>
+
+                        </div>
+
+
+                        <div class="game-rule">
+
+                            <strong>
+                                4
+                            </strong>
+
+                            <span>
+                                Choices
+                            </span>
+
+                        </div>
+
+
+                        <div class="game-rule">
+
+                            <strong>
+                                TEXT
+                            </strong>
+
+                            <span>
+                                Evidence
+                            </span>
+
+                        </div>
+
+
+                        <div class="game-rule">
+
+                            <strong>
+                                GRAPH
+                            </strong>
+
+                            <span>
+                                Distance
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        id="start-investigation"
+                        class="btn btn-primary"
+                        type="button">
+
+                        START INVESTIGATION
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- GAME -->
+
+                <div
+                    id="game-screen"
+                    class="game-screen">
+
+
+                    <div class="game-header">
+
+
+                        <div class="game-stat">
+
+                            <strong
+                                id="case-number">
+                                1 / 6
+                            </strong>
+
+                            <span>
+                                Case
+                            </span>
+
+                        </div>
+
+
+                        <div class="game-stat">
+
+                            <strong
+                                id="game-score">
+                                0
+                            </strong>
+
+                            <span>
+                                Score
+                            </span>
+
+                        </div>
+
+
+                        <div class="game-stat">
+
+                            <strong
+                                id="game-streak">
+                                0
+                            </strong>
+
+                            <span>
+                                Streak
+                            </span>
+
+                        </div>
+
+
+                        <div class="game-stat">
+
+                            <strong
+                                id="game-lives">
+                                ❤️❤️❤️
+                            </strong>
+
+                            <span>
+                                Lives
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="timer-track">
+
+                        <div
+                            id="timer-bar"
+                            class="timer-bar">
+                        </div>
+
+                    </div>
+
+
+                    <div class="question-box">
+
+                        <div class="question-label">
+                            Mystery Character
+                        </div>
+
+
+                        <div id="mystery-character">
+                            Loading...
+                        </div>
+
+                    </div>
+
+
+                    <div class="game-question">
+
+                        Which character is the strongest
+                        textual match?
+
+                    </div>
+
+
+                    <div
+                        id="choices"
+                        class="choices">
+                    </div>
+
+
+                    <div
+                        id="game-message"
+                        class="game-message"
+                        aria-live="polite">
+                    </div>
+
+
+                    <div class="game-buttons">
+
+                        <button
+                            id="hint"
+                            class="small-btn"
+                            type="button">
+
+                            💡 Hint
+
+                        </button>
+
+
+                        <button
+                            id="skip"
+                            class="small-btn"
+                            type="button">
+
+                            Skip
+
+                        </button>
+
+
+                        <button
+                            id="next"
+                            class="small-btn next-btn"
+                            type="button">
+
+                            Next Case →
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- INVESTIGATION -->
+
+                    <div
+                        id="investigation"
+                        class="investigation">
+
+
+                        <h3>
+                            Now investigate the result
+                        </h3>
+
+
+                        <p class="section-text">
+
+                            A high textual similarity is only
+                            the beginning. What happens when we
+                            compare it with the network?
+
+                        </p>
+
+
+                        <div class="evidence-grid">
+
+
+                            <div class="evidence">
+
+                                <div class="evidence-label">
+                                    Textual similarity
+                                </div>
+
+                                <div
+                                    id="text-score"
+                                    class="evidence-value">
+                                    —
+                                </div>
+
+                                <div class="evidence-description">
+                                    TF-IDF / cosine-style score
+                                </div>
+
+                            </div>
+
+
+                            <div class="evidence">
+
+                                <div class="evidence-label">
+                                    Network distance
+                                </div>
+
+                                <div
+                                    id="network-distance"
+                                    class="evidence-value">
+                                    —
+                                </div>
+
+                                <div class="evidence-description">
+                                    Shortest-path distance
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="text-check"
+                            class="text-check">
+
+                            <h4>
+                                🔎 Inspect the text
+                            </h4>
+
+
+                            <p class="check-question">
+                                Does the textual similarity actually
+                                make sense after reading the pages?
+                            </p>
+
+
+                            <div class="quote"
+                                 id="text-evidence">
+                            </div>
+
+
+                            <div class="check-buttons">
+
+                                <button
+                                    class="check-btn"
+                                    data-check="yes"
+                                    type="button">
+
+                                    Yes — meaningful
+
+                                </button>
+
+
+                                <button
+                                    class="check-btn"
+                                    data-check="no"
+                                    type="button">
+
+                                    No — probably noise
+
+                                </button>
+
+                            </div>
+
+
+                            <div
+                                id="inspection-result"
+                                class="inspection-result">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FINAL -->
+
+                <div
+                    id="final-screen"
+                    class="final-screen">
+
+                    <h2>
+                        Investigation Complete
+                    </h2>
+
+
+                    <div
+                        id="final-score"
+                        class="final-score">
+                        0
+                    </div>
+
+
+                    <div
+                        id="final-rank"
+                        class="final-rank">
+                        Marvel Language Researcher
+                    </div>
+
+
+                    <p class="section-text"
+                       style="margin-left:auto;margin-right:auto;">
+
+                        Remember: the interesting result is not
+                        necessarily the highest similarity.
+
+                        The interesting result is the one you can
+                        explain after looking at both the text and
+                        the network.
+
+                    </p>
+
+
+                    <button
+                        id="play-again"
+                        class="btn btn-primary"
+                        type="button">
+
+                        INVESTIGATE AGAIN
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         RESEARCH QUESTIONS
+    ===================================================== -->
+
+    <section class="questions">
+
+        <div class="section-inner">
+
+            <div class="section-label">
+                OPENERS
+            </div>
+
+
+            <h2 class="section-title">
+                Questions Worth Chasing
+            </h2>
+
+
+            <p class="section-text">
+
+                You do not have to use our question.
+                The best Week 6 project may come from
+                something the explorables made you wonder about.
+
+            </p>
+
+
+            <div class="question-list">
+
+
+                <div class="research-question">
+
+                    <span>
+                        Question 01
+                    </span>
+
+                    Can you recognize a network community
+                    from its language?
+
+                </div>
+
+
+                <div class="research-question">
+
+                    <span>
+                        Question 02
+                    </span>
+
+                    Which characters live between topics?
+
+                </div>
+
+
+                <div class="research-question">
+
+                    <span>
+                        Question 03
+                    </span>
+
+                    Which Marvel words keep surprising company?
+
+                </div>
+
+
+                <div class="research-question">
+
+                    <span>
+                        Question 04
+                    </span>
+
+                    How much does the representation change
+                    the answer?
+
+                </div>
+
+
+                <div class="research-question">
+
+                    <span>
+                        Question 05
+                    </span>
+
+                    Names or meaning?
+
+                </div>
+
+
+                <div class="research-question">
+
+                    <span>
+                        Question 06
+                    </span>
+
+                    Can you draw your own map of the
+                    Marvel universe?
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         WRITE-UP
+    ===================================================== -->
+
+    <section
+        id="writing">
+
+        <div class="section-inner">
+
+            <div class="section-label">
+                YOUR FREE-FORM POST
+            </div>
+
+
+            <h2 class="section-title">
+                Write Around the Question
+            </h2>
+
+
+            <p class="section-text">
+
+                Do not write a catalogue of methods.
+
+                Build the post around the question you asked
+                and the evidence that helped you answer it.
+
+            </p>
+
+
+            <div class="writing-grid">
+
+
+                <div class="writing-card">
+
+                    <div class="number">
+                        01
+                    </div>
+
+                    <h3>
+                        What did you ask?
+                    </h3>
+
+                    <p>
+                        Introduce one clear research question.
+                    </p>
+
+                </div>
+
+
+                <div class="writing-card">
+
+                    <div class="number">
+                        02
+                    </div>
+
+                    <h3>
+                        What representation?
+                    </h3>
+
+                    <p>
+                        Explain why your chosen representation
+                        fits the question.
+                    </p>
+
+                </div>
+
+
+                <div class="writing-card">
+
+                    <div class="number">
+                        03
+                    </div>
+
+                    <h3>
+                        Show one figure
+                    </h3>
+
+                    <p>
+                        One strong figure or table is better
+                        than five weak ones.
+                    </p>
+
+                </div>
+
+
+                <div class="writing-card">
+
+                    <div class="number">
+                        04
+                    </div>
+
+                    <h3>
+                        What surprised you?
+                    </h3>
+
+                    <p>
+                        Highlight the result that made you
+                        stop and investigate.
+                    </p>
+
+                </div>
+
+
+                <div class="writing-card">
+
+                    <div class="number">
+                        05
+                    </div>
+
+                    <h3>
+                        Check the text
+                    </h3>
+
+                    <p>
+                        Read the underlying pages and see
+                        whether the model's story holds up.
+                    </p>
+
+                </div>
+
+
+                <div class="writing-card">
+
+                    <div class="number">
+                        06
+                    </div>
+
+                    <h3>
+                        One limitation
+                    </h3>
+
+                    <p>
+                        Explain what your representation,
+                        corpus or analysis may have missed.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         GROUP
+    ===================================================== -->
+
+    <section class="rules">
+
+        <div class="section-inner">
+
+            <div class="section-label">
+                OUR GROUP
+            </div>
+
+
+            <h2 class="section-title">
+                Marvel Social Graphs
+            </h2>
+
+
+            <div class="group-box">
+
+                <p class="section-text"
+                   style="margin-bottom:0;">
+
+                    Week 6 — Language and Text Analysis
+
+                </p>
+
+
+                <div class="members">
+
+                    <!-- CHANGE THESE NAMES -->
+
+                    <div class="member">
+                        Mahira Gul
+                    </div>
+
+                    <div class="member">
+                        Carolina
+                    </div>
+
+                    <div class="member">
+                        Group Member 3
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+    <footer>
+
+        MARVEL•GRAPH
+
+        <br>
+
+        DTU Social Interactions and Graphs · Week 6
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ===================================================== -->
+
+    <script>
+
+        /* =====================================================
+           METHOD EXPLORER
+        ===================================================== */
+
+        const methodDetails = {
+
+            tfidf: {
+
+                title:
+                    "TF-IDF + Cosine Similarity",
+
+                text:
+                    "TF-IDF represents each document using word weights. Cosine similarity then tells us how close two document vectors are. This is a natural choice for asking whether two Marvel character pages are textually similar."
+
+            },
+
+
+            contrast: {
+
+                title:
+                    "Term Contrasts",
+
+                text:
+                    "Term contrast asks which words are unusually associated with one group compared with another. It can help test whether Marvel network communities have distinctive language."
+
+            },
+
+
+            lda: {
+
+                title:
+                    "Topic Mixtures",
+
+                text:
+                    "LDA represents each document as a mixture of topics. Characters with unusually mixed topic proportions may sit between different thematic areas—or the model may simply be confused."
+
+            },
+
+
+            ppmi: {
+
+                title:
+                    "PPMI Context Vectors",
+
+                text:
+                    "PPMI measures how strongly words occur together compared with what would be expected from their individual frequencies. It is useful for investigating surprising contextual relationships."
+
+            },
+
+
+            word2vec: {
+
+                title:
+                    "Word2Vec",
+
+                text:
+                    "Word2Vec learns word representations from context. Words appearing in similar contexts can become semantic neighbors, allowing us to investigate surprising Marvel vocabulary."
+
+            },
+
+
+            custom: {
+
+                title:
+                    "Build Your Own Marvel Map",
+
+                text:
+                    "Instead of accepting a predefined representation, construct two meaningful axes yourself. Then inspect the characters at the extremes and check whether the resulting map tells a defensible story."
+
+            }
+
+        };
+
+
+        const methodCards =
+            document.querySelectorAll(
+                ".method-card"
+            );
+
+
+        const methodDetail =
+            document.getElementById(
+                "method-detail"
+            );
+
+
+        methodCards.forEach(
+            function(card) {
+
+                card.addEventListener(
+                    "click",
+                    function() {
+
+                        methodCards.forEach(
+                            function(other) {
+
+                                other.classList.remove(
+                                    "active"
+                                );
+
+                            }
+                        );
+
+
+                        card.classList.add(
+                            "active"
+                        );
+
+
+                        const method =
+                            methodDetails[
+                                card.dataset.method
+                            ];
+
+
+                        methodDetail.innerHTML =
+
+                            "<h3>" +
+                            method.title +
+                            "</h3>" +
+
+                            "<p>" +
+                            method.text +
+                            "</p>";
+
+
+                        methodDetail.classList.add(
+                            "visible"
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+
+        /* =====================================================
+           GAME DATA
+           
+           These are illustrative research cases.
+           They demonstrate the type of analysis to perform.
+           Replace them later with values calculated from
+           your actual Marvel corpus if desired.
+        ===================================================== */
+
+        const cases = [
+
+            {
+
+                mystery:
+                    "Storm",
+
+                correct:
+                    "Human Torch",
+
+                choices: [
+
+                    "Human Torch",
+                    "Wolverine",
+                    "Doctor Strange",
+                    "Black Panther"
+
+                ],
+
+                similarity:
+                    "0.82",
+
+                distance:
+                    "5",
+
+                evidence:
+                    "Both pages contain recurring superhero terminology and descriptive language. The important question is whether that overlap reflects meaningful story similarity or shared Marvel/Wikipedia language."
+
+            },
+
+
+            {
+
+                mystery:
+                    "Spider-Man",
+
+                correct:
+                    "Deadpool",
+
+                choices: [
+
+                    "Deadpool",
+                    "Black Panther",
+                    "Doctor Strange",
+                    "Storm"
+
+                ],
+
+                similarity:
+                    "0.91",
+
+                distance:
+                    "3",
+
+                evidence:
+                    "The pages share substantial superhero vocabulary and references to related Marvel stories. Here the textual similarity is also reasonably consistent with the characters' broader narrative connections."
+
+            },
+
+
+            {
+
+                mystery:
+                    "Wolverine",
+
+                correct:
+                    "Sabretooth",
+
+                choices: [
+
+                    "Sabretooth",
+                    "Storm",
+                    "Black Panther",
+                    "Doctor Strange"
+
+                ],
+
+                similarity:
+                    "0.88",
+
+                distance:
+                    "2",
+
+                evidence:
+                    "The strong overlap is plausible because the two characters have extensive shared narrative history. This is an example where textual and structural evidence can reinforce one another."
+
+            },
+
+
+            {
+
+                mystery:
+                    "Doctor Strange",
+
+                correct:
+                    "Black Panther",
+
+                choices: [
+
+                    "Black Panther",
+                    "Wolverine",
+                    "Human Torch",
+                    "Storm"
+
+                ],
+
+                similarity:
+                    "0.68",
+
+                distance:
+                    "4",
+
+                evidence:
+                    "The pages may share broad Marvel terminology and descriptions of major story events while occupying different parts of the network."
+
+            },
+
+
+            {
+
+                mystery:
+                    "Black Panther",
+
+                correct:
+                    "Storm",
+
+                choices: [
+
+                    "Storm",
+                    "Spider-Man",
+                    "Wolverine",
+                    "Deadpool"
+
+                ],
+
+                similarity:
+                    "0.71",
+
+                distance:
+                    "4",
+
+                evidence:
+                    "This is the kind of case where a moderately strong text match can hide important differences in network position. Reading the pages helps distinguish shared language from genuine thematic similarity."
+
+            },
+
+
+            {
+
+                mystery:
+                    "Human Torch",
+
+                correct:
+                    "Storm",
+
+                choices: [
+
+                    "Storm",
+                    "Spider-Man",
+                    "Wolverine",
+                    "Doctor Strange"
+
+                ],
+
+                similarity:
+                    "0.82",
+
+                distance:
+                    "5",
+
+                evidence:
+                    "This pair is especially useful for the Week 6 question: high textual similarity does not necessarily mean that the characters are close in the social graph."
+
+            }
+
+        ];
+
+
+
+        /* =====================================================
+           GAME STATE
+        ===================================================== */
+
+        let currentCase = 0;
+
+        let score = 0;
+
+        let streak = 0;
+
+        let lives = 3;
+
+        let time = 30;
+
+        let timer = null;
+
+        let answered = false;
+
+
+
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
+
+        const gameStart =
+            document.getElementById(
+                "game-start"
+            );
+
+
+        const gameScreen =
+            document.getElementById(
+                "game-screen"
+            );
+
+
+        const finalScreen =
+            document.getElementById(
+                "final-screen"
+            );
+
+
+        const startInvestigation =
+            document.getElementById(
+                "start-investigation"
+            );
+
+
+        const mysteryCharacter =
+            document.getElementById(
+                "mystery-character"
+            );
+
+
+        const choicesContainer =
+            document.getElementById(
+                "choices"
+            );
+
+
+        const gameMessage =
+            document.getElementById(
+                "game-message"
+            );
+
+
+        const caseNumber =
+            document.getElementById(
+                "case-number"
+            );
+
+
+        const gameScore =
+            document.getElementById(
+                "game-score"
+            );
+
+
+        const gameStreak =
+            document.getElementById(
+                "game-streak"
+            );
+
+
+        const gameLives =
+            document.getElementById(
+                "game-lives"
+            );
+
+
+        const timerBar =
+            document.getElementById(
+                "timer-bar"
+            );
+
+
+        const nextButton =
+            document.getElementById(
+                "next"
+            );
+
+
+        const hintButton =
+            document.getElementById(
+                "hint"
+            );
+
+
+        const skipButton =
+            document.getElementById(
+                "skip"
+            );
+
+
+        const investigation =
+            document.getElementById(
+                "investigation"
+            );
+
+
+        const textScore =
+            document.getElementById(
+                "text-score"
+            );
+
+
+        const networkDistance =
+            document.getElementById(
+                "network-distance"
+            );
+
+
+        const textEvidence =
+            document.getElementById(
+                "text-evidence"
+            );
+
+
+        const inspectionResult =
+            document.getElementById(
+                "inspection-result"
+            );
+
+
+        const finalScore =
+            document.getElementById(
+                "final-score"
+            );
+
+
+        const finalRank =
+            document.getElementById(
+                "final-rank"
+            );
+
+
+        /* =====================================================
+           UPDATE STATS
+        ===================================================== */
+
+        function updateStats() {
+
+            caseNumber.textContent =
+                Math.min(
+                    currentCase + 1,
+                    cases.length
+                ) +
+                " / " +
+                cases.length;
+
+
+            gameScore.textContent =
+                score;
+
+
+            gameStreak.textContent =
+                streak;
+
+
+            gameLives.textContent =
+                "❤️".repeat(
+                    Math.max(
+                        0,
+                        lives
+                    )
+                ) +
+
+                "🖤".repeat(
+                    Math.max(
+                        0,
+                        3 - lives
+                    )
+                );
+
+        }
+
+
+
+        /* =====================================================
+           START GAME
+        ===================================================== */
+
+        startInvestigation.addEventListener(
+            "click",
+            function() {
+
+                currentCase = 0;
+
+                score = 0;
+
+                streak = 0;
+
+                lives = 3;
+
+
+                gameStart.style.display =
+                    "none";
+
+
+                finalScreen.style.display =
+                    "none";
+
+
+                gameScreen.style.display =
+                    "block";
+
+
+                updateStats();
+
+                loadCase();
+
+            }
+        );
+
+
+
+        /* =====================================================
+           LOAD CASE
+        ===================================================== */
+
+        function loadCase() {
+
+            clearInterval(
+                timer
+            );
+
+
+            if (
+                currentCase >= cases.length ||
+                lives <= 0
+            ) {
+
+                finishGame();
+
+                return;
+
+            }
+
+
+            const data =
+                cases[
+                    currentCase
+                ];
+
+
+            answered = false;
+
+
+            investigation.classList.remove(
+                "visible"
+            );
+
+
+            nextButton.style.display =
+                "none";
+
+
+            hintButton.disabled =
+                false;
+
+
+            skipButton.disabled =
+                false;
+
+
+            gameMessage.textContent =
+                "";
+
+
+            mysteryCharacter.textContent =
+                data.mystery;
+
+
+            choicesContainer.innerHTML =
+                "";
+
+
+            const shuffled =
+                [...data.choices].sort(
+                    function() {
+
+                        return (
+                            Math.random() -
+                            0.5
+                        );
+
+                    }
+                );
+
+
+            shuffled.forEach(
+                function(choice) {
+
+                    const button =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    button.type =
+                        "button";
+
+
+                    button.className =
+                        "choice";
+
+
+                    button.textContent =
+                        choice;
+
+
+                    button.addEventListener(
+                        "click",
+                        function() {
+
+                            answer(
+                                choice,
+                                button
+                            );
+
+                        }
+                    );
+
+
+                    choicesContainer.appendChild(
+                        button
+                    );
+
+                }
+            );
+
+
+            updateStats();
+
+            startTimer();
+
+        }
+
+
+
+        /* =====================================================
+           TIMER
+        ===================================================== */
+
+        function startTimer() {
+
+            clearInterval(
+                timer
+            );
+
+
+            time = 30;
+
+
+            timerBar.style.width =
+                "100%";
+
+
+            timer =
+                setInterval(
+                    function() {
+
+                        time--;
+
+
+                        const percent =
+                            Math.max(
+                                0,
+                                (
+                                    time / 30
+                                ) * 100
+                            );
+
+
+                        timerBar.style.width =
+                            percent + "%";
+
+
+                        if (
+                            time <= 0
+                        ) {
+
+                            clearInterval(
+                                timer
+                            );
+
+
+                            timeUp();
+
+                        }
+
+                    },
+                    1000
+                );
+
+        }
+
+
+
+        /* =====================================================
+           ANSWER
+        ===================================================== */
+
+        function answer(
+            selected,
+            button
+        ) {
+
+            if (
+                answered
+            ) {
+
+                return;
+
+            }
+
+
+            answered = true;
+
+
+            clearInterval(
+                timer
+            );
+
+
+            const data =
+                cases[
+                    currentCase
+                ];
+
+
+            const allButtons =
+                choicesContainer.querySelectorAll(
+                    ".choice"
+                );
+
+
+            allButtons.forEach(
+                function(btn) {
+
+                    btn.disabled =
+                        true;
+
+
+                    if (
+                        btn.textContent ===
+                        data.correct
+                    ) {
+
+                        btn.classList.add(
+                            "correct"
+                        );
+
+                    }
+
+                }
+            );
+
+
+            hintButton.disabled =
+                true;
+
+            skipButton.disabled =
+                true;
+
+
+            if (
+                selected ===
+                data.correct
+            ) {
+
+                button.classList.add(
+                    "correct"
+                );
+
+
+                streak++;
+
+
+                const points =
+                    100 +
+                    streak * 25;
+
+
+                score += points;
+
+
+                gameMessage.innerHTML =
+                    "✓ Correct! +" +
+                    points +
+                    " points";
+
+
+                showInvestigation(
+                    data
+                );
+
+            }
+
+            else {
+
+                button.classList.add(
+                    "wrong"
+                );
+
+
+                lives--;
+
+                streak = 0;
+
+
+                gameMessage.innerHTML =
+                    "✗ Not quite. Correct answer: " +
+                    "<strong>" +
+                    data.correct +
+                    "</strong>";
+
+
+                showInvestigation(
+                    data
+                );
+
+            }
+
+
+            updateStats();
+
+
+            if (
+                currentCase <
+                cases.length - 1 &&
+                lives > 0
+            ) {
+
+                nextButton.style.display =
+                    "inline-block";
+
+            }
+
+            else {
+
+                setTimeout(
+                    finishGame,
+                    2500
+                );
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           TIME UP
+        ===================================================== */
+
+        function timeUp() {
+
+            if (
+                answered
+            ) {
+
+                return;
+
+            }
+
+
+            answered = true;
+
+
+            const data =
+                cases[
+                    currentCase
+                ];
+
+
+            lives--;
+
+            streak = 0;
+
+
+            const allButtons =
+                choicesContainer.querySelectorAll(
+                    ".choice"
+                );
+
+
+            allButtons.forEach(
+                function(btn) {
+
+                    btn.disabled =
+                        true;
+
+
+                    if (
+                        btn.textContent ===
+                        data.correct
+                    ) {
+
+                        btn.classList.add(
+                            "correct"
+                        );
+
+                    }
+
+                }
+            );
+
+
+            gameMessage.innerHTML =
+                "⏰ Time's up. Correct answer: " +
+                "<strong>" +
+                data.correct +
+                "</strong>";
+
+
+            hintButton.disabled =
+                true;
+
+            skipButton.disabled =
+                true;
+
+
+            updateStats();
+
+
+            showInvestigation(
+                data
+            );
+
+
+            if (
+                currentCase <
+                cases.length - 1 &&
+                lives > 0
+            ) {
+
+                nextButton.style.display =
+                    "inline-block";
+
+            }
+
+            else {
+
+                setTimeout(
+                    finishGame,
+                    2500
+                );
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           HINT
+        ===================================================== */
+
+        hintButton.addEventListener(
+            "click",
+            function() {
+
+                if (
+                    answered
+                ) {
+
+                    return;
+
+                }
+
+
+                const data =
+                    cases[
+                        currentCase
+                    ];
+
+
+                const buttons =
+                    Array.from(
+                        choicesContainer
+                            .querySelectorAll(
+                                ".choice"
+                            )
+                    );
+
+
+                const wrong =
+                    buttons.filter(
+                        function(btn) {
+
+                            return (
+                                btn.textContent !==
+                                data.correct &&
+                                !btn.disabled
+                            );
+
+                        }
+                    );
+
+
+                if (
+                    wrong.length
+                ) {
+
+                    wrong[0].disabled =
+                        true;
+
+
+                    wrong[0].style.opacity =
+                        "0.25";
+
+
+                    score =
+                        Math.max(
+                            0,
+                            score - 25
+                        );
+
+
+                    gameMessage.textContent =
+                        "💡 Hint used: one incorrect answer removed. -25 points";
+
+
+                    updateStats();
+
+                }
+
+            }
+        );
+
+
+
+        /* =====================================================
+           SKIP
+        ===================================================== */
+
+        skipButton.addEventListener(
+            "click",
+            function() {
+
+                if (
+                    answered
+                ) {
+
+                    return;
+
+                }
+
+
+                answered = true;
+
+
+                clearInterval(
+                    timer
+                );
+
+
+                const data =
+                    cases[
+                        currentCase
+                    ];
+
+
+                lives--;
+
+                streak = 0;
+
+
+                const buttons =
+                    choicesContainer.querySelectorAll(
+                        ".choice"
+                    );
+
+
+                buttons.forEach(
+                    function(btn) {
+
+                        btn.disabled =
+                            true;
+
+
+                        if (
+                            btn.textContent ===
+                            data.correct
+                        ) {
+
+                            btn.classList.add(
+                                "correct"
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                hintButton.disabled =
+                    true;
+
+                skipButton.disabled =
+                    true;
+
+
+                gameMessage.innerHTML =
+                    "⏭ Case skipped. Correct answer: " +
+                    "<strong>" +
+                    data.correct +
+                    "</strong>";
+
+
+                updateStats();
+
+
+                showInvestigation(
+                    data
+                );
+
+
+                if (
+                    currentCase <
+                    cases.length - 1 &&
+                    lives > 0
+                ) {
+
+                    nextButton.style.display =
+                        "inline-block";
+
+                }
+
+                else {
+
+                    setTimeout(
+                        finishGame,
+                        2500
+                    );
+
+                }
+
+            }
+        );
+
+
+
+        /* =====================================================
+           SHOW INVESTIGATION
+        ===================================================== */
+
+        function showInvestigation(
+            data
+        ) {
+
+            textScore.textContent =
+                data.similarity;
+
+
+            networkDistance.textContent =
+                data.distance;
+
+
+            textEvidence.textContent =
+                data.evidence;
+
+
+            inspectionResult.textContent =
+                "";
+
+
+            investigation.classList.add(
+                "visible"
+            );
+
+        }
+
+
+
+        /* =====================================================
+           INSPECT TEXT BUTTONS
+        ===================================================== */
+
+        document
+            .querySelectorAll(
+                ".check-btn"
+            )
+            .forEach(
+                function(button) {
+
+                    button.addEventListener(
+                        "click",
+                        function() {
+
+                            const answer =
+                                button.dataset.check;
+
+
+                            if (
+                                answer ===
+                                "yes"
+                            ) {
+
+                                inspectionResult.innerHTML =
+                                    "✓ Good. Now explain exactly which words, phrases or themes made the similarity meaningful.";
+
+                            }
+
+                            else {
+
+                                inspectionResult.innerHTML =
+                                    "✓ Good scientific skepticism. A similarity score can be produced by shared names, generic Marvel vocabulary or other artefacts. Inspect the pages before making a claim.";
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
+
+
+        /* =====================================================
+           NEXT CASE
+        ===================================================== */
+
+        nextButton.addEventListener(
+            "click",
+            function() {
+
+                currentCase++;
+
+                loadCase();
+
+            }
+        );
+
+
+
+        /* =====================================================
+           FINISH GAME
+        ===================================================== */
+
+        function finishGame() {
+
+            clearInterval(
+                timer
+            );
+
+
+            gameScreen.style.display =
+                "none";
+
+
+            finalScreen.style.display =
+                "block";
+
+
+            finalScore.textContent =
+                score +
+                " points";
+
+
+            if (
+                score >= 700
+            ) {
+
+                finalRank.textContent =
+                    "🏆 Marvel Language Expert";
+
+            }
+
+            else if (
+                score >= 450
+            ) {
+
+                finalRank.textContent =
+                    "🔬 Strong Researcher";
+
+            }
+
+            else if (
+                score >= 250
+            ) {
+
+                finalRank.textContent =
+                    "🕵️ Curious Investigator";
+
+            }
+
+            else {
+
+                finalRank.textContent =
+                    "📚 Marvel Language Apprentice";
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           PLAY AGAIN
+        ===================================================== */
+
+        document
+            .getElementById(
+                "play-again"
+            )
+            .addEventListener(
+                "click",
+                function() {
+
+                    finalScreen.style.display =
+                        "none";
+
+
+                    gameStart.style.display =
+                        "block";
+
+                }
+            );
+
+
+    </script>
+
+</body>
+
+</html>
 

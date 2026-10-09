@@ -6,29 +6,30 @@
 <title>Week 6 — Marvel Language Lab</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+:root{--pad:max(5%,calc((100% - 1160px)/2))}
 html{scroll-behavior:smooth}
 body{font-family:Arial,Helvetica,sans-serif;background:#080808;color:#fff;line-height:1.6}
-nav{position:sticky;top:0;z-index:9;display:flex;justify-content:space-between;align-items:center;padding:16px 7%;background:rgba(8,8,8,.97);border-bottom:1px solid #292929}
+nav{position:sticky;top:0;z-index:9;display:flex;justify-content:space-between;align-items:center;padding:16px var(--pad);background:rgba(8,8,8,.97);border-bottom:1px solid #292929}
 .logo{color:#e62429;font-weight:900;letter-spacing:2px;font-size:20px}
 nav ul{display:flex;gap:26px;list-style:none}
 nav a{color:#ccc;text-decoration:none;font-size:14px}nav a:hover{color:#e62429}
-section,header{padding:80px 7%}
-.in{max-width:1100px;margin:auto}
+section,header{padding:84px var(--pad)}
+.in{max-width:none;margin:0}
 .hero{min-height:70vh;display:flex;align-items:center;background:radial-gradient(circle at 80% 20%,rgba(230,36,41,.2),transparent 35%),linear-gradient(135deg,#080808,#151515)}
-h1{font-size:clamp(46px,8vw,96px);line-height:.92;text-transform:uppercase;margin-bottom:28px}h1 span{color:#e62429}
+h1{font-size:clamp(44px,7vw,88px);line-height:.92;text-transform:uppercase;margin-bottom:28px}h1 span{color:#e62429}
 h2{font-size:38px;line-height:1.1;margin-bottom:16px}
 .lead{color:#aaa;font-size:19px;max-width:740px;margin-bottom:28px}
 .sub{color:#999;max-width:800px;margin-bottom:28px}
 .q{border-left:4px solid #e62429;padding:16px 22px;background:rgba(230,36,41,.06);max-width:780px;margin-bottom:28px;font-size:22px;font-weight:bold}
 .btn{display:inline-block;padding:13px 24px;border:0;cursor:pointer;text-decoration:none;font-size:14px;font-weight:bold;background:#e62429;color:#fff}.btn:hover{background:#ff3b40}
 .alt{background:transparent;border:1px solid #555;margin-left:10px}.alt:hover{background:transparent;border-color:#e62429;color:#e62429}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);background:#101010;border-block:1px solid #292929;padding:0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);background:#101010;border-block:1px solid #292929;padding:0 var(--pad)}
 .stat{padding:30px 20px;text-align:center;border-right:1px solid #292929}.stat:last-child{border:0}
 .stat b{display:block;color:#e62429;font-size:32px}.stat span{color:#888;font-size:13px}
 .dark{background:#101010}
 .notice{border:1px dashed #e62429;padding:24px;color:#ccc;max-width:760px}
 .notice code{background:#222;padding:2px 6px}
-.card{background:#111;border:1px solid #303030;padding:36px;max-width:1000px;margin:28px auto 0}
+.card{background:#111;border:1px solid #303030;padding:36px;margin:28px 0 0}
 svg{width:100%;height:auto;background:#0d0d0d;border:1px solid #292929}
 .legend{color:#999;font-size:13px;margin-top:10px}.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 12px}
 .wrap{overflow-x:auto;margin-top:28px}
@@ -57,25 +58,27 @@ blockquote{border-left:3px solid #555;padding-left:14px;color:#ccc;font-style:it
 .br{display:flex;align-items:center;gap:10px;margin:4px 0;font-size:13px;color:#ccc}.br span{width:96px}.br div{flex:1;background:#1c1c1c;height:10px}.br b{display:block;height:100%}.br em{width:44px;font-style:normal;color:#888;text-align:right}
 .ctl{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px;color:#aaa;font-size:14px}.ctl input[type=range]{flex:1;min-width:180px;accent-color:#e62429}
 .take{color:#ddd;border-left:3px solid #e62429;padding-left:14px;margin-top:14px}
-#hook{max-width:520px;margin:0 0 28px}#hook p{color:#ccc;margin-bottom:10px}
+.hero .in{width:100%}.hg{display:grid;grid-template-columns:1.15fr 1fr;gap:56px;align-items:center}
+.hookcard{border:1px solid #333;border-top:3px solid #e62429;background:rgba(18,18,18,.9);padding:30px}.hookcard small{display:block;color:#e62429;font-weight:bold;letter-spacing:2px;margin-bottom:14px}
+#hook p{color:#ddd;margin-bottom:18px;font-size:17px}#hook .br{margin:8px 0;font-size:14px}#hook .br span{width:120px;white-space:nowrap}#hook .br div{height:14px}#hook .br em{color:#fff;font-weight:bold}
 .lk{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:22px}.lk h3{margin-bottom:8px}
 .lr{display:flex;justify-content:space-between;gap:10px;padding:7px 4px;border-bottom:1px solid #222;font-size:14px;cursor:pointer}.lr:hover{background:#181818}.lr small{color:#888}.lr.far small{color:#ff7b7f}
-#q{width:100%;max-width:460px;padding:13px;background:#181818;border:1px solid #444;color:#fff;font-size:16px}
-footer{border-top:1px solid #292929;padding:30px 7%;text-align:center;color:#666;font-size:13px}
-@media(max-width:850px){.lk{grid-template-columns:1fr}nav ul{display:none}.stats,.g4{grid-template-columns:1fr 1fr}.choices,.ev,.wg{grid-template-columns:1fr}.card{padding:22px}}
+#q::-webkit-calendar-picker-indicator{display:none!important;opacity:0}#q{appearance:none;-webkit-appearance:none;width:100%;max-width:460px;padding:13px;background:#181818;border:1px solid #444;color:#fff;font-size:16px}
+footer{border-top:1px solid #292929;padding:30px var(--pad);text-align:center;color:#666;font-size:13px}
+@media(max-width:850px){.hg{grid-template-columns:1fr;gap:36px}.lk{grid-template-columns:1fr}nav ul{display:none}.stats,.g4{grid-template-columns:1fr 1fr}.choices,.ev,.wg{grid-template-columns:1fr}.card{padding:22px}}
 </style>
 </head>
 <body>
 <nav><div class="logo">MARVEL•GRAPH</div>
 <ul><li><a href="#week6">Week 6</a></li><li><a href="#findings">Findings</a></li><li><a href="#stories">Story clusters</a></li><li><a href="#lookup">Look up</a></li><li><a href="#game">Language Lab</a></li><li><a href="#writing">Write-up</a></li></ul></nav>
 
-<header id="week6" class="hero"><div class="in">
+<header id="week6" class="hero"><div class="in hg"><div>
 <h1>Marvel<br><span>Language</span><br>Lab</h1>
 <p class="lead">TF-IDF reads 303 Wikipedia pages and says which characters sound alike. The link network says who actually knows whom. This page looks at where the two disagree.</p>
-<div id="hook"></div>
 <div class="q">Who is textually close but structurally far away?</div>
 <a class="btn" href="#findings">SEE THE FIGURE</a><a class="btn alt" href="#game">PLAY THE LAB</a>
-</div></header>
+</div>
+<aside class="hookcard"><small>CASE STUDY · WHY NAMES MISLEAD</small><div id="hook"></div></aside></div></header>
 
 <section class="stats" id="stats"></section>
 

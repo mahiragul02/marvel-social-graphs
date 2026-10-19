@@ -39,6 +39,7 @@ h2{font-size:38px;line-height:1.1;margin-bottom:16px}
 .take{color:#ddd;border-left:3px solid #e62429;padding-left:14px;margin-top:14px;max-width:820px}
 .det{margin-top:18px;border:1px solid #292929;background:#111;padding:20px;min-height:84px;color:#aaa}.det h3{color:#fff;margin-bottom:4px}
 .wrap{overflow-x:auto;margin-top:14px}
+#q{width:100%;max-width:460px;padding:13px;background:#181818;border:1px solid #444;color:#fff;font-size:16px}
 table{border-collapse:collapse;width:100%;font-size:14px}
 th,td{text-align:left;padding:10px 12px;border-bottom:1px solid #292929}th{color:#e62429;font-size:12px}
 tr.hl td{color:#fff;background:rgba(230,36,41,.08)}
@@ -107,10 +108,11 @@ footer{border-top:1px solid #292929;padding:30px var(--pad);text-align:center;co
 <div class="wrap"><table id="movers"></table></div>
 </div></section>
 
-<section id="naming" class="dark"><div class="in">
-<h2>Naming the communities</h2>
-<p class="sub">Louvain only returns numbers. Use the top characters as hints and type a name for each group. Names live only while this page is open.</p>
-<div class="nm" id="names"></div>
+<section id="lookup" class="dark"><div class="in">
+<h2>Find a character</h2>
+<p class="sub">Type a character to see which community Louvain put them in, how central they are inside it, and whether switching on link weights would move them.</p>
+<input id="q" list="chars" placeholder="e.g. Spider-Man" autocomplete="off"><datalist id="chars"></datalist>
+<div id="lk" class="det">Start typing a name.</div>
 </div></section>
 
 <section id="writing"><div class="in">
@@ -127,7 +129,6 @@ const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=nu
 const pct=x=>Math.round(x*100)+"%",fmt=n=>n.toLocaleString("en"),nice=s=>s.replace(/ \(.*\)$/,"");
 const f3=x=>x.toFixed(3),mean=a=>a.reduce((s,x)=>s+x,0)/a.length;
 const sd=a=>{const m=mean(a);return Math.sqrt(mean(a.map(x=>(x-m)**2)))};
-const labels={};
 
 Promise.all([
   fetch("communities.json").then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}),
@@ -137,7 +138,7 @@ Promise.all([
   nodes.forEach(n=>(by[n.community]=by[n.community]||[]).push(n));
   const G=Object.entries(by).map(([id,m])=>({id,size:m.length,members:m.sort((a,b)=>b.degree-a.degree)})).sort((a,b)=>b.size-a.size);
   const total=nodes.length,top3=G.slice(0,3).reduce((s,g)=>s+g.size,0),big=G[0];
-  const name=g=>labels[g.id]||"Community "+g.id;
+  const name=g=>"Community "+g.id;
 
   // ----- directed edges: reciprocity and share of links that stay inside each community -----
   let recip=null;
@@ -172,7 +173,6 @@ Promise.all([
     const lab=el("span",0,name(g)+" · "+nice(g.members[0].name));
     r.append(lab,t,el("em",0,g.size));
     r.onclick=()=>{rows.forEach(x=>x.classList.remove("sel"));r.classList.add("sel");show(g);$("members").scrollIntoView({behavior:"smooth",block:"start"})};
-    r._lab=()=>{lab.textContent=name(g)+" · "+nice(g.members[0].name)};
     rows.push(r);$("bars").append(r);
   });
   $("t1").textContent="The largest community has "+big.size+" characters and the smallest has "+G[G.length-1].size+". The three largest hold "+pct(top3/total)+" of the connected network."+(G.length>20?" Only the 20 largest of "+G.length+" communities are drawn.":"");
@@ -180,15 +180,19 @@ Promise.all([
   [["Greedy modularity",data.greedy],["Louvain (seed 1)",data.louvain]].forEach(([n,d])=>{
     const c=el("div","nc");c.append(el("b",0,n),el("span","big",d.communities+" communities"),el("span",0,"Q = "+f3(d.Q)));$("algo").append(c)});
 
+  function tableFor(g){
+    const w=el("div","wrap"),t=el("table");
+    t.innerHTML="<tr><th>#</th><th>Character</th><th>Degree</th><th>Betweenness</th></tr>";
+    g.members.slice(0,5).forEach((m,i)=>{const tr=el("tr");tr.append(el("td",0,i+1),el("td",0,nice(m.name)),el("td",0,m.degree),el("td",0,m.betweenness.toFixed(4)));t.append(tr)});
+    w.append(t);return w;
+  }
   function show(g){
     const b=$("detail");b.replaceChildren();
     b.append(el("h3",0,name(g)+" — "+g.size+" characters"));
     if(g.inner!=null)b.append(el("p",0,pct(g.inner)+" of the links touching this community stay inside it."));
-    const w=el("div","wrap"),t=el("table");
-    t.innerHTML="<tr><th>#</th><th>Character</th><th>Degree</th><th>Betweenness</th></tr>";
-    g.members.slice(0,5).forEach((m,i)=>{const tr=el("tr");tr.append(el("td",0,i+1),el("td",0,nice(m.name)),el("td",0,m.degree),el("td",0,m.betweenness.toFixed(4)));t.append(tr)});
-    w.append(t);b.append(w);
+    b.append(tableFor(g));
   }
+
 
   // ----- resolution sweep -----
   const sw=data.sweep,maxC=Math.max(...sw.map(s=>s.communities));
@@ -223,14 +227,20 @@ Promise.all([
     wt.movers.slice(0,15).map((m,i)=>"<tr><td>"+(i+1)+"</td><td></td><td>"+m.degree+"</td><td>"+m.mutual+"</td></tr>").join("");
   [...$("movers").rows].slice(1).forEach((r,i)=>r.cells[1].textContent=nice(wt.movers[i].name));
 
-  // ----- naming -----
-  G.forEach(g=>{
-    const c=el("div","nc"),hint=g.members.slice(0,3).map(m=>nice(m.name)).join(", ");
-    const h=el("div");h.innerHTML="<b>Community "+g.id+"</b> ("+g.size+"): ";h.append(document.createTextNode(hint));
-    const inp=el("input");inp.placeholder="e.g. X-Men";
-    inp.oninput=()=>{labels[g.id]=inp.value.trim();rows.forEach(r=>r._lab&&r._lab())};
-    c.append(h,inp);$("names").append(c);
-  });
+  // ----- lookup -----
+  const gid={},lk={};G.forEach(g=>gid[g.id]=g);
+  nodes.slice().sort((a,b)=>a.name.localeCompare(b.name)).forEach(n=>{
+    const o=el("option");o.value=nice(n.name);$("chars").append(o);lk[nice(n.name).toLowerCase()]=n;lk[n.name.toLowerCase()]=n});
+  $("q").oninput=()=>{
+    const v=$("q").value.trim().toLowerCase(),n=lk[v],b=$("lk");
+    if(!n){b.textContent=v?"No connected character with that name.":"Start typing a name.";return}
+    const g=gid[n.community],rank=g.members.indexOf(n)+1,gr=G.indexOf(g)+1;
+    const wm=nodes.filter(m=>m.weighted_community===n.weighted_community),same=wm.filter(m=>m.community===n.community).length/wm.length;
+    b.replaceChildren(el("h3",0,nice(n.name)));
+    b.append(el("p",0,name(g)+" is the "+(gr==1?"largest":"number "+gr+" by size")+" of "+G.length+" communities, with "+g.size+" characters. "+nice(n.name)+" ranks "+rank+" of "+g.size+" by degree inside it ("+n.degree+" links)."+(g.inner!=null?" "+pct(g.inner)+" of the community\u2019s links stay inside it.":"")));
+    b.append(el("p",0,"With mutual links weighted, they land in a group of "+wm.length+" characters, "+pct(same)+" of whom are also in their unweighted community. "+(same>=.8?"The group barely changes.":same>=.5?"The group changes partly.":"The group changes a lot.")));
+    b.append(el("p",0,"Top members of their unweighted community:"),tableFor(g));
+  };
 
   // ----- write-up -----
   [["What did I ask?","How is the Marvel network divided into communities, are those groups robust to the resolution setting, would a random network show the same structure, and do mutual links change the answer?"],
@@ -242,10 +252,10 @@ Promise.all([
    .forEach(([h,p])=>{const d=el("div","wc");d.append(el("h3",0,h),el("p",0,p));$("wg").append(d)});
 }).catch(err=>{
   const m='<div class="notice"><b>Could not load the data.</b><p style="margin-top:8px">Expected <code>communities.json</code> (and optionally <code>edges.csv</code>) in the same folder as this page. If you open this file straight from disk the browser blocks the load, so run <code>python -m http.server</code> in the repo root and open <code>localhost:8000/week4/</code>.</p></div>';
-  ["sizes","members","resolution","baseline","weights","naming","writing"].forEach(k=>$(k).querySelector(".in").insertAdjacentHTML("beforeend",m));
+  ["sizes","members","resolution","baseline","weights","lookup","writing"].forEach(k=>$(k).querySelector(".in").insertAdjacentHTML("beforeend",m));
   console.error(err);
 });
 </script>
 </body>
 </html>
-#main push
+#comment for push change option

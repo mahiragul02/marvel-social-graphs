@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 4 — Marvel Communities</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--pad:max(5%,calc((100% - 1160px)/2))}
+html{scroll-behavior:smooth}
+body{font-family:Arial,Helvetica,sans-serif;background:#080808;color:#fff;line-height:1.6}
+nav{position:sticky;top:0;z-index:9;display:flex;justify-content:space-between;align-items:center;padding:16px var(--pad);background:rgba(8,8,8,.97);border-bottom:1px solid #292929}
+.logo{color:#e62429;font-weight:900;letter-spacing:2px;font-size:20px;text-decoration:none}
+nav ul{display:flex;gap:26px;list-style:none}
+nav a{color:#ccc;text-decoration:none;font-size:14px}nav a:hover{color:#e62429}
+section,header{padding:84px var(--pad)}
+.hero{min-height:60vh;display:flex;align-items:center;background:radial-gradient(circle at 80% 20%,rgba(230,36,41,.2),transparent 35%),linear-gradient(135deg,#080808,#151515)}
+.hero .in{width:100%}.hg{display:grid;grid-template-columns:1.15fr 1fr;gap:56px;align-items:center}
+h1{font-size:clamp(44px,7vw,88px);line-height:.92;text-transform:uppercase;margin-bottom:28px}h1 span{color:#e62429}
+h2{font-size:38px;line-height:1.1;margin-bottom:16px}
+.lead{color:#aaa;font-size:19px;max-width:740px;margin-bottom:28px}
+.sub{color:#999;max-width:800px;margin-bottom:28px}
+.q{border-left:4px solid #e62429;padding:16px 22px;background:rgba(230,36,41,.06);max-width:780px;margin-bottom:28px;font-size:22px;font-weight:bold}
+.btn{display:inline-block;padding:13px 24px;border:0;cursor:pointer;text-decoration:none;font-size:14px;font-weight:bold;background:#e62429;color:#fff}.btn:hover{background:#ff3b40}
+.alt{background:transparent;border:1px solid #555;margin-left:10px}.alt:hover{background:transparent;border-color:#e62429;color:#e62429}
+.hookcard{border:1px solid #333;border-top:3px solid #e62429;background:rgba(18,18,18,.9);padding:30px}.hookcard small{display:block;color:#e62429;font-weight:bold;letter-spacing:2px;margin-bottom:14px}
+#hook p{color:#ddd;margin-bottom:18px;font-size:17px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);background:#101010;border-block:1px solid #292929;padding:0 var(--pad)}
+.stat{padding:30px 20px;text-align:center;border-right:1px solid #292929}.stat:last-child{border:0}
+.stat b{display:block;color:#e62429;font-size:32px}.stat span{color:#888;font-size:13px}
+.dark{background:#101010}
+.notice{border:1px dashed #e62429;padding:24px;color:#ccc;max-width:760px}
+.notice code{background:#222;padding:2px 6px}
+.br{display:flex;align-items:center;gap:10px;margin:4px 0;font-size:13px;color:#ccc}
+.br span{width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.br div{flex:1;background:#1c1c1c;height:12px}.br b{display:block;height:100%;background:#8fa3b8}
+.br em{width:60px;font-style:normal;color:#888;text-align:right}
+.br.pick{cursor:pointer}.br.pick:hover span{color:#e62429}.br.sel b{background:#e62429}.br.sel span{color:#fff}
+.take{color:#ddd;border-left:3px solid #e62429;padding-left:14px;margin-top:14px}
+.det{margin-top:18px;border:1px solid #292929;background:#111;padding:20px;min-height:84px;color:#aaa}.det h3{color:#fff;margin-bottom:4px}
+.wrap{overflow-x:auto;margin-top:14px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid #292929}th{color:#e62429;font-size:12px}
+.nm{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:10px}
+.nc{border:1px solid #292929;background:#111;padding:16px;font-size:14px;color:#aaa}
+.nc b{color:#fff}
+.nc input{display:block;margin-top:8px;width:100%;padding:9px;background:#181818;border:1px solid #444;color:#fff;font-size:14px}
+.wg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}.wc{border:1px solid #292929;background:#111;padding:22px}.wc h3{margin-bottom:8px}.wc p{color:#aaa;font-size:14px}
+footer{border-top:1px solid #292929;padding:30px var(--pad);text-align:center;color:#666;font-size:13px}
+@media(max-width:850px){.hg{grid-template-columns:1fr;gap:36px}nav ul{display:none}.stats{grid-template-columns:1fr 1fr}.wg,.nm{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav><a class="logo" href="../index.html">MARVEL•GRAPH</a>
+<ul><li><a href="../index.html">← All weeks</a></li><li><a href="#week4">Week 4</a></li><li><a href="#sizes">Sizes</a></li><li><a href="#members">Members</a></li><li><a href="#writing">Write-up</a></li></ul></nav>
+
+<header id="week4" class="hero"><div class="in hg"><div>
+<h1>Marvel<br><span>Community</span><br>Map</h1>
+<p class="lead">Louvain splits the Marvel network into groups of characters who link to each other more than to everyone else. This page looks at how big those groups are and who sits inside them.</p>
+<div class="q">Who hangs out with whom?</div>
+<a class="btn" href="#sizes">SEE THE SIZES</a><a class="btn alt" href="#members">WHO IS IN EACH</a>
+</div>
+<aside class="hookcard"><small>CASE STUDY · THE BIGGEST GROUP</small><div id="hook"></div></aside></div></header>
+
+<section class="stats" id="stats"></section>
+
+<section id="sizes"><div class="in">
+<h2>A few big communities, many small ones</h2>
+<p class="sub">Each bar is one Louvain community, sorted by number of characters. Click a bar to list its most-connected characters.</p>
+<div id="bars"></div>
+<p class="take" id="t1"></p>
+</div></section>
+
+<section id="members" class="dark"><div class="in">
+<h2>Who is in each community?</h2>
+<p class="sub">The five characters with the highest degree in the selected community.</p>
+<div id="detail" class="det">Click a bar above.</div>
+</div></section>
+
+<section id="naming"><div class="in">
+<h2>Naming the communities</h2>
+<p class="sub">Louvain only returns numbers. Use the top characters as hints and type a name for each group. Names live only while this page is open.</p>
+<div class="nm" id="names"></div>
+</div></section>
+
+<section id="writing" class="dark"><div class="in">
+<h2>What the data says</h2>
+<p class="sub">The question, the method and what the community sizes show.</p>
+<div class="wg" id="wg"></div>
+</div></section>
+
+<footer>MARVEL•GRAPH<br>DTU Social Interactions and Graphs · Week 4<br><a href="../index.html" style="color:#888">← All weeks</a></footer>
+
+<script>
+const $=id=>document.getElementById(id);
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+const pct=x=>Math.round(x*100)+"%",fmt=n=>n.toLocaleString("en"),nice=s=>s.replace(/ \(.*\)$/,"");
+const labels={};
+
+fetch("../week3/centrality.json").then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(data=>{
+  const nodes=data.nodes,by={};
+  nodes.forEach(n=>(by[n.community]=by[n.community]||[]).push(n));
+  const G=Object.entries(by).map(([id,m])=>({id,size:m.length,members:m.sort((a,b)=>b.degree-a.degree)})).sort((a,b)=>b.size-a.size);
+  const total=nodes.length,top3=G.slice(0,3).reduce((s,g)=>s+g.size,0),big=G[0];
+  const name=g=>labels[g.id]||"Community "+g.id;
+
+  [[fmt(total),"characters in the network"],[G.length,"Louvain communities"],[pct(big.size/total),"of characters in the largest community"],[pct(top3/total),"in the three largest together"]]
+    .forEach(([a,b])=>{const d=el("div","stat");d.append(el("b",0,a),el("span",0,b));$("stats").append(d)});
+
+  $("hook").append(el("p",0,"Community "+big.id+" holds "+big.size+" characters. Its most connected member is "+nice(big.members[0].name)+", with "+big.members[0].degree+" links."));
+  const hb=el("div","br"),ht=el("div"),hf=el("b");hf.style.width=(big.size/total*100)+"%";hf.style.background="#e62429";ht.append(hf);hb.append(el("span",0,"Largest group"),ht,el("em",0,pct(big.size/total)));$("hook").append(hb);
+
+  const max=big.size,shown=G.slice(0,20),rows=[];
+  shown.forEach(g=>{
+    const r=el("div","br pick"),t=el("div"),b=el("b");
+    b.style.width=(g.size/max*100)+"%";t.append(b);
+    const lab=el("span",0,name(g)+" · "+nice(g.members[0].name));
+    r.append(lab,t,el("em",0,g.size));
+    r.onclick=()=>{rows.forEach(x=>x.classList.remove("sel"));r.classList.add("sel");show(g);$("members").scrollIntoView({behavior:"smooth",block:"start"})};
+    r._lab=()=>{lab.textContent=name(g)+" · "+nice(g.members[0].name)};
+    rows.push(r);$("bars").append(r);
+  });
+  $("t1").textContent="The largest community has "+big.size+" characters and the smallest has "+G[G.length-1].size+". The three largest hold "+pct(top3/total)+" of the network."+(G.length>20?" Only the 20 largest of "+G.length+" communities are drawn.":"");
+
+  function show(g){
+    const b=$("detail");b.replaceChildren();
+    b.append(el("h3",0,name(g)+" — "+g.size+" characters"));
+    const w=el("div","wrap"),t=el("table");
+    t.innerHTML="<tr><th>#</th><th>Character</th><th>Degree</th><th>Betweenness</th></tr>";
+    g.members.slice(0,5).forEach((m,i)=>{const tr=el("tr");tr.append(el("td",0,i+1),el("td",0,nice(m.name)),el("td",0,m.degree),el("td",0,m.betweenness.toFixed(4)));t.append(tr)});
+    w.append(t);b.append(w);
+  }
+
+  G.forEach(g=>{
+    const c=el("div","nc"),hint=g.members.slice(0,3).map(m=>nice(m.name)).join(", ");
+    const h=el("div");h.innerHTML="<b>Community "+g.id+"</b> ("+g.size+"): "+hint;
+    const inp=el("input");inp.placeholder="e.g. X-Men";
+    inp.oninput=()=>{labels[g.id]=inp.value.trim();rows.forEach(r=>r._lab())};
+    c.append(h,inp);$("names").append(c);
+  });
+
+  [["What did I ask?","How is the Marvel network divided into communities, and are the groups similar in size?"],
+   ["What did I do?","I took the Louvain community label stored for each of the "+fmt(total)+" characters in the week 3 centrality file, counted the members of each community and listed the five highest-degree members."],
+   ["What the sizes show","There are "+G.length+" communities. The largest has "+big.size+" characters and the three largest hold "+pct(top3/total)+" of the network, so a few groups account for most characters."],
+   ["What I checked in the text","I read each group's top characters to see whether they match a team or storyline. Naming them by hand is the only way to tell whether Louvain found something real."],
+   ["Next question","Are these communities real structure, or would any network with the same degrees produce them? The next step is to compare the modularity of this partition against a randomised network."],
+   ["One limitation","The file holds one Louvain run, and Louvain is stochastic, so another seed could shift some characters. The community numbers carry no meaning beyond grouping."]]
+   .forEach(([h,p])=>{const d=el("div","wc");d.append(el("h3",0,h),el("p",0,p));$("wg").append(d)});
+}).catch(err=>{
+  const m='<div class="notice"><b>Could not load the data.</b><p style="margin-top:8px">Expected <code>week3/centrality.json</code> next to the <code>week4</code> folder. If you open this file straight from disk the browser blocks the load, so run <code>python -m http.server</code> in the repo root and open <code>localhost:8000/week4/</code>.</p></div>';
+  ["sizes","members","naming","writing"].forEach(k=>$(k).querySelector(".in").insertAdjacentHTML("beforeend",m));
+  console.error(err);
+});
+</script>
+</body>
+</html>

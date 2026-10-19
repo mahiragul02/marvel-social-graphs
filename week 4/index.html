@@ -11,7 +11,7 @@ html{scroll-behavior:smooth}
 body{font-family:Arial,Helvetica,sans-serif;background:#080808;color:#fff;line-height:1.6}
 nav{position:sticky;top:0;z-index:9;display:flex;justify-content:space-between;align-items:center;padding:16px var(--pad);background:rgba(8,8,8,.97);border-bottom:1px solid #292929}
 .logo{color:#e62429;font-weight:900;letter-spacing:2px;font-size:20px;text-decoration:none}
-nav ul{display:flex;gap:22px;list-style:none}
+nav ul{display:flex;gap:26px;list-style:none}
 nav a{color:#ccc;text-decoration:none;font-size:14px}nav a:hover{color:#e62429}
 section,header{padding:84px var(--pad)}
 .hero{min-height:60vh;display:flex;align-items:center;background:radial-gradient(circle at 80% 20%,rgba(230,36,41,.2),transparent 35%),linear-gradient(135deg,#080808,#151515)}
@@ -35,34 +35,30 @@ h2{font-size:38px;line-height:1.1;margin-bottom:16px}
 .br span{width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .br div{flex:1;background:#1c1c1c;height:12px}.br b{display:block;height:100%;background:#8fa3b8}
 .br em{width:60px;font-style:normal;color:#888;text-align:right}
-.br.pick{cursor:pointer}.br.pick:hover span{color:#e62429}.br.sel b,.br.hl b{background:#e62429}.br.sel span,.br.hl span{color:#fff}
-.take{color:#ddd;border-left:3px solid #e62429;padding-left:14px;margin-top:14px;max-width:820px}
+.br.pick{cursor:pointer}.br.pick:hover span{color:#e62429}.br.sel b{background:#e62429}.br.sel span{color:#fff}
+.take{color:#ddd;border-left:3px solid #e62429;padding-left:14px;margin-top:14px}
 .det{margin-top:18px;border:1px solid #292929;background:#111;padding:20px;min-height:84px;color:#aaa}.det h3{color:#fff;margin-bottom:4px}
 .wrap{overflow-x:auto;margin-top:14px}
 table{border-collapse:collapse;width:100%;font-size:14px}
 th,td{text-align:left;padding:10px 12px;border-bottom:1px solid #292929}th{color:#e62429;font-size:12px}
-tr.hl td{color:#fff;background:rgba(230,36,41,.08)}
-.nm,.two{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:10px}
+.nm{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:10px}
 .nc{border:1px solid #292929;background:#111;padding:16px;font-size:14px;color:#aaa}
-.nc b{color:#fff}.nc .big{display:block;color:#e62429;font-size:28px}
+.nc b{color:#fff}
 .nc input{display:block;margin-top:8px;width:100%;padding:9px;background:#181818;border:1px solid #444;color:#fff;font-size:14px}
-.chart{margin-top:14px;border:1px solid #292929;background:#111;padding:14px;overflow-x:auto}
-.chart svg{width:100%;min-width:520px;height:auto;display:block}
-.chart text{fill:#999;font-size:11px;font-family:Arial,sans-serif}
 .wg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}.wc{border:1px solid #292929;background:#111;padding:22px}.wc h3{margin-bottom:8px}.wc p{color:#aaa;font-size:14px}
 footer{border-top:1px solid #292929;padding:30px var(--pad);text-align:center;color:#666;font-size:13px}
-@media(max-width:850px){.hg{grid-template-columns:1fr;gap:36px}nav ul{display:none}.stats{grid-template-columns:1fr 1fr}.wg,.nm,.two{grid-template-columns:1fr}}
+@media(max-width:850px){.hg{grid-template-columns:1fr;gap:36px}nav ul{display:none}.stats{grid-template-columns:1fr 1fr}.wg,.nm{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <nav><a class="logo" href="../index.html">MARVEL•GRAPH</a>
-<ul><li><a href="../index.html">← All weeks</a></li><li><a href="#week4">Week 4</a></li><li><a href="#sizes">Sizes</a></li><li><a href="#resolution">Resolution</a></li><li><a href="#baseline">Baseline</a></li><li><a href="#weights">Weights</a></li><li><a href="#writing">Write-up</a></li></ul></nav>
+<ul><li><a href="../index.html">← All weeks</a></li><li><a href="#week4">Week 4</a></li><li><a href="#sizes">Sizes</a></li><li><a href="#members">Members</a></li><li><a href="#writing">Write-up</a></li></ul></nav>
 
 <header id="week4" class="hero"><div class="in hg"><div>
 <h1>Marvel<br><span>Community</span><br>Map</h1>
-<p class="lead">Louvain splits the Marvel network into groups of characters who link to each other more than to everyone else. This page asks how big those groups are, whether they survive a change of resolution, whether a random network would do as well, and what link weights change.</p>
+<p class="lead">Louvain splits the Marvel network into groups of characters who link to each other more than to everyone else. This page looks at how big those groups are and who sits inside them.</p>
 <div class="q">Who hangs out with whom?</div>
-<a class="btn" href="#sizes">SEE THE SIZES</a><a class="btn alt" href="#baseline">IS IT REAL?</a>
+<a class="btn" href="#sizes">SEE THE SIZES</a><a class="btn alt" href="#members">WHO IS IN EACH</a>
 </div>
 <aside class="hookcard"><small>CASE STUDY · THE BIGGEST GROUP</small><div id="hook"></div></aside></div></header>
 
@@ -70,11 +66,9 @@ footer{border-top:1px solid #292929;padding:30px var(--pad);text-align:center;co
 
 <section id="sizes"><div class="in">
 <h2>A few big communities, many small ones</h2>
-<p class="sub">Each bar is one Louvain community (isolated characters excluded), sorted by size. Click a bar to list its most-connected characters.</p>
+<p class="sub">Each bar is one Louvain community, sorted by number of characters. Click a bar to list its most-connected characters.</p>
 <div id="bars"></div>
 <p class="take" id="t1"></p>
-<h3 style="margin:36px 0 0">Greedy modularity (week 3) vs Louvain</h3>
-<div class="two" id="algo"></div>
 </div></section>
 
 <section id="members" class="dark"><div class="in">
@@ -83,39 +77,15 @@ footer{border-top:1px solid #292929;padding:30px var(--pad);text-align:center;co
 <div id="detail" class="det">Click a bar above.</div>
 </div></section>
 
-<section id="resolution"><div class="in">
-<h2>Does the number of communities depend on resolution?</h2>
-<p class="sub">Louvain has a resolution knob: low values give fewer, larger groups and high values give more, smaller ones. Each row is the mean over 10 random seeds. Modularity Q is always measured at resolution 1 so rows are comparable. “Big” means at least 10 characters.</p>
-<div id="sweepbars"></div>
-<div class="wrap"><table id="sweeptab"></table></div>
-<p class="take" id="t2"></p>
-</div></section>
-
-<section id="baseline" class="dark"><div class="in">
-<h2>Would a random network give the same structure?</h2>
-<p class="sub">I rewired the real network 50 times with degree-preserving edge swaps, so every character keeps its number of links but the connections are shuffled. Louvain was run on each. The histogram shows the Q values from the shuffled networks; the red line is the real network.</p>
-<div class="chart" id="hist"></div>
-<p class="take" id="t3"></p>
-</div></section>
-
-<section id="weights"><div class="in">
-<h2>Do link weights change the communities?</h2>
-<p class="sub">A mutual link (A links to B and B links to A) counts as weight 2, a one-way link as weight 1. I compared unweighted runs with each other (seed noise) and unweighted with weighted runs, using normalised mutual information (NMI, 1 = identical partitions).</p>
-<div class="two" id="wstats"></div>
-<p class="take" id="t4"></p>
-<p class="sub" style="margin-top:28px">Characters that ended up outside the community that best matches their weighted group, ordered by degree:</p>
-<div class="wrap"><table id="movers"></table></div>
-</div></section>
-
-<section id="naming" class="dark"><div class="in">
+<section id="naming"><div class="in">
 <h2>Naming the communities</h2>
 <p class="sub">Louvain only returns numbers. Use the top characters as hints and type a name for each group. Names live only while this page is open.</p>
 <div class="nm" id="names"></div>
 </div></section>
 
-<section id="writing"><div class="in">
+<section id="writing" class="dark"><div class="in">
 <h2>What the data says</h2>
-<p class="sub">The question, the method and what the results show.</p>
+<p class="sub">The question, the method and what the community sizes show.</p>
 <div class="wg" id="wg"></div>
 </div></section>
 
@@ -125,48 +95,23 @@ footer{border-top:1px solid #292929;padding:30px var(--pad);text-align:center;co
 const $=id=>document.getElementById(id);
 const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
 const pct=x=>Math.round(x*100)+"%",fmt=n=>n.toLocaleString("en"),nice=s=>s.replace(/ \(.*\)$/,"");
-const f3=x=>x.toFixed(3),mean=a=>a.reduce((s,x)=>s+x,0)/a.length;
-const sd=a=>{const m=mean(a);return Math.sqrt(mean(a.map(x=>(x-m)**2)))};
 const labels={};
 
-Promise.all([
-  fetch("communities.json").then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}),
-  fetch("edges.csv").then(r=>r.ok?r.text():null).catch(()=>null)
-]).then(([data,csv])=>{
-  const nodes=data.nodes.filter(n=>!n.isolated&&n.community>=0),by={};
+fetch("../week3/centrality.json").then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(data=>{
+  const nodes=data.nodes,by={};
   nodes.forEach(n=>(by[n.community]=by[n.community]||[]).push(n));
   const G=Object.entries(by).map(([id,m])=>({id,size:m.length,members:m.sort((a,b)=>b.degree-a.degree)})).sort((a,b)=>b.size-a.size);
   const total=nodes.length,top3=G.slice(0,3).reduce((s,g)=>s+g.size,0),big=G[0];
   const name=g=>labels[g.id]||"Community "+g.id;
 
-  // ----- directed edges: reciprocity and share of links that stay inside each community -----
-  let recip=null;
-  if(csv){
-    const cm={};nodes.forEach(n=>cm[n.name]=n.community);
-    const E=new Set(),und=new Set();
-    csv.trim().split("\n").slice(1).forEach(l=>{
-      const m=l.match(/^(?:"([^"]*)"|([^,]*)),(?:"([^"]*)"|([^,]*))$/);if(!m)return;
-      const a=m[1]??m[2],b=m[3]??m[4];E.add(a+"\u0001"+b);und.add(a<b?a+"\u0001"+b:b+"\u0001"+a);
-    });
-    let mutual=0;E.forEach(k=>{const[a,b]=k.split("\u0001");if(E.has(b+"\u0001"+a))mutual++});
-    recip=E.size?mutual/E.size:null;
-    const inn={},tot={};
-    und.forEach(k=>{const[a,b]=k.split("\u0001"),ca=cm[a],cb=cm[b];
-      if(ca==null||cb==null)return;
-      tot[ca]=(tot[ca]||0)+1;if(ca===cb)inn[ca]=(inn[ca]||0)+1;else tot[cb]=(tot[cb]||0)+1});
-    G.forEach(g=>{g.inner=tot[g.id]?(inn[g.id]||0)/tot[g.id]:null});
-  }
-
-  // ----- stats -----
-  [[fmt(total),"connected characters ("+data.n_isolates+" isolated)"],[data.louvain.communities,"Louvain communities"],[f3(data.louvain.Q),"modularity Q of the Louvain partition"],[pct(top3/total),"in the three largest together"]]
+  [[fmt(total),"characters in the network"],[G.length,"Louvain communities"],[pct(big.size/total),"of characters in the largest community"],[pct(top3/total),"in the three largest together"]]
     .forEach(([a,b])=>{const d=el("div","stat");d.append(el("b",0,a),el("span",0,b));$("stats").append(d)});
 
-  $("hook").append(el("p",0,"Community "+big.id+" holds "+big.size+" characters ("+pct(big.size/total)+" of the connected network). Its most connected member is "+nice(big.members[0].name)+", with "+big.members[0].degree+" links."));
+  $("hook").append(el("p",0,"Community "+big.id+" holds "+big.size+" characters. Its most connected member is "+nice(big.members[0].name)+", with "+big.members[0].degree+" links."));
   const hb=el("div","br"),ht=el("div"),hf=el("b");hf.style.width=(big.size/total*100)+"%";hf.style.background="#e62429";ht.append(hf);hb.append(el("span",0,"Largest group"),ht,el("em",0,pct(big.size/total)));$("hook").append(hb);
 
-  // ----- size bars -----
-  const max=big.size,rows=[];
-  G.slice(0,20).forEach(g=>{
+  const max=big.size,shown=G.slice(0,20),rows=[];
+  shown.forEach(g=>{
     const r=el("div","br pick"),t=el("div"),b=el("b");
     b.style.width=(g.size/max*100)+"%";t.append(b);
     const lab=el("span",0,name(g)+" · "+nice(g.members[0].name));
@@ -175,77 +120,37 @@ Promise.all([
     r._lab=()=>{lab.textContent=name(g)+" · "+nice(g.members[0].name)};
     rows.push(r);$("bars").append(r);
   });
-  $("t1").textContent="The largest community has "+big.size+" characters and the smallest has "+G[G.length-1].size+". The three largest hold "+pct(top3/total)+" of the connected network."+(G.length>20?" Only the 20 largest of "+G.length+" communities are drawn.":"");
-
-  [["Greedy modularity",data.greedy],["Louvain (seed 1)",data.louvain]].forEach(([n,d])=>{
-    const c=el("div","nc");c.append(el("b",0,n),el("span","big",d.communities+" communities"),el("span",0,"Q = "+f3(d.Q)));$("algo").append(c)});
+  $("t1").textContent="The largest community has "+big.size+" characters and the smallest has "+G[G.length-1].size+". The three largest hold "+pct(top3/total)+" of the network."+(G.length>20?" Only the 20 largest of "+G.length+" communities are drawn.":"");
 
   function show(g){
     const b=$("detail");b.replaceChildren();
     b.append(el("h3",0,name(g)+" — "+g.size+" characters"));
-    if(g.inner!=null)b.append(el("p",0,pct(g.inner)+" of the links touching this community stay inside it."));
     const w=el("div","wrap"),t=el("table");
     t.innerHTML="<tr><th>#</th><th>Character</th><th>Degree</th><th>Betweenness</th></tr>";
     g.members.slice(0,5).forEach((m,i)=>{const tr=el("tr");tr.append(el("td",0,i+1),el("td",0,nice(m.name)),el("td",0,m.degree),el("td",0,m.betweenness.toFixed(4)));t.append(tr)});
     w.append(t);b.append(w);
   }
 
-  // ----- resolution sweep -----
-  const sw=data.sweep,maxC=Math.max(...sw.map(s=>s.communities));
-  sw.forEach(s=>{
-    const r=el("div","br"+(s.resolution===1?" hl":"")),t=el("div"),b=el("b");
-    b.style.width=(s.communities/maxC*100)+"%";t.append(b);
-    r.append(el("span",0,"resolution "+s.resolution),t,el("em",0,s.communities.toFixed(1)));$("sweepbars").append(r)});
-  $("sweeptab").innerHTML="<tr><th>Resolution</th><th>Communities (mean)</th><th>Big communities (≥10)</th><th>Q at resolution 1</th></tr>"+
-    sw.map(s=>"<tr"+(s.resolution===1?' class="hl"':"")+"><td>"+s.resolution+"</td><td>"+s.communities.toFixed(1)+"</td><td>"+s.big.toFixed(1)+"</td><td>"+f3(s.Q)+"</td></tr>").join("");
-  const lo=sw[0],hi=sw[sw.length-1],bestQ=sw.reduce((a,s)=>s.Q>a.Q?s:a);
-  $("t2").textContent="Going from resolution "+lo.resolution+" to "+hi.resolution+" moves the count from "+lo.communities.toFixed(1)+" to "+hi.communities.toFixed(1)+" communities, so the number of groups is a property of the setting as much as of the network. Q is highest at resolution "+bestQ.resolution+" ("+f3(bestQ.Q)+").";
-
-  // ----- baseline histogram -----
-  const R=data.baseline.random,real=data.baseline.real,rm=mean(R),rs=sd(R),z=rs>0?(real-rm)/rs:null;
-  const mn=Math.min(...R),mx=Math.max(...R,real),span=(mx-mn)||1,x0=mn-span*.05,x1=mx+span*.05,K=12;
-  const bins=Array(K).fill(0);R.forEach(v=>bins[Math.min(K-1,Math.floor((v-mn)/((Math.max(...R)-mn)||1)*K))]++);
-  const W=700,H=190,L=40,B=30,pw=W-L-10,ph=H-B-10,mb=Math.max(...bins),X=v=>L+(v-x0)/(x1-x0)*pw,bw=(Math.max(...R)-mn)/K||span/K;
-  let svg='<svg viewBox="0 0 '+W+' '+H+'"><line x1="'+L+'" y1="'+(H-B)+'" x2="'+(W-10)+'" y2="'+(H-B)+'" stroke="#444"/>';
-  bins.forEach((c,i)=>{const h=c/mb*ph,x=X(mn+i*bw);svg+='<rect x="'+x+'" y="'+(H-B-h)+'" width="'+Math.max(2,X(mn+(i+1)*bw)-x-2)+'" height="'+h+'" fill="#8fa3b8"/>'});
-  for(let i=0;i<=4;i++){const v=x0+(x1-x0)*i/4;svg+='<text x="'+X(v)+'" y="'+(H-12)+'" text-anchor="middle">'+v.toFixed(2)+'</text>'}
-  svg+='<line x1="'+X(real)+'" y1="6" x2="'+X(real)+'" y2="'+(H-B)+'" stroke="#e62429" stroke-width="3"/><text x="'+(X(real)<W/2?X(real)+6:X(real)-6)+'" y="18" text-anchor="'+(X(real)<W/2?"start":"end")+'" style="fill:#e62429;font-weight:bold">real Q = '+f3(real)+'</text></svg>';
-  $("hist").innerHTML=svg;
-  $("t3").textContent="The real network has Q = "+f3(real)+". The 50 degree-preserving random networks average "+f3(rm)+" (standard deviation "+f3(rs)+")"+(z!=null?", so the real value sits "+z.toFixed(1)+" standard deviations above them":"")+". "+(real>Math.max(...R)?"It is higher than every one of the random runs. ":"")+"Random networks still produce a nonzero Q, so Louvain always finds some groups; what matters is the gap.";
-
-  // ----- weights -----
-  const wt=data.weights,gap=wt.within-wt.across;
-  [["Unweighted vs unweighted","NMI "+f3(wt.within),"30 seeds, all pairs: how much the answer changes from random seed alone"],["Weighted vs unweighted","NMI "+f3(wt.across),"same seed, weights switched on"]].forEach(([a,b,c])=>{
-    const d=el("div","nc");d.append(el("b",0,a),el("span","big",b),el("span",0,c));$("wstats").append(d)});
-  $("t4").textContent=gap>0.05?"Weighting changes the partition by more than seed noise does (gap "+f3(gap)+"), so reciprocal links carry community information that the unweighted graph ignores."
-    :"Weighted and unweighted partitions differ about as much as two unweighted runs do (gap "+f3(gap)+"), so mutual-link weights change little that seed noise does not already change."+(recip!=null?" Only "+pct(recip)+" of directed links are reciprocated, which limits how much the weights can add.":"");
-  $("movers").innerHTML="<tr><th>#</th><th>Character</th><th>Degree</th><th>Mutual links</th></tr>"+
-    wt.movers.slice(0,15).map((m,i)=>"<tr><td>"+(i+1)+"</td><td></td><td>"+m.degree+"</td><td>"+m.mutual+"</td></tr>").join("");
-  [...$("movers").rows].slice(1).forEach((r,i)=>r.cells[1].textContent=nice(wt.movers[i].name));
-
-  // ----- naming -----
   G.forEach(g=>{
     const c=el("div","nc"),hint=g.members.slice(0,3).map(m=>nice(m.name)).join(", ");
-    const h=el("div");h.innerHTML="<b>Community "+g.id+"</b> ("+g.size+"): ";h.append(document.createTextNode(hint));
+    const h=el("div");h.innerHTML="<b>Community "+g.id+"</b> ("+g.size+"): "+hint;
     const inp=el("input");inp.placeholder="e.g. X-Men";
-    inp.oninput=()=>{labels[g.id]=inp.value.trim();rows.forEach(r=>r._lab&&r._lab())};
+    inp.oninput=()=>{labels[g.id]=inp.value.trim();rows.forEach(r=>r._lab())};
     c.append(h,inp);$("names").append(c);
   });
 
-  // ----- write-up -----
-  [["What did I ask?","How is the Marvel network divided into communities, are those groups robust to the resolution setting, would a random network show the same structure, and do mutual links change the answer?"],
-   ["What did I do?","I recrawled the category, kept the "+fmt(data.n_edges)+" undirected links, and ran Louvain on the "+fmt(total)+" connected characters ("+data.n_isolates+" isolated characters excluded). I swept the resolution over 10 seeds, compared Q with 50 degree-preserving rewirings, and re-ran Louvain with mutual links weighted 2."],
-   ["What the sizes show","There are "+G.length+" communities. The largest has "+big.size+" characters and the three largest hold "+pct(top3/total)+" of the connected network."+(G[0].inner!=null?" The largest keeps "+pct(G[0].inner)+" of its links inside.":"")],
-   ["Resolution","The count ranges from "+lo.communities.toFixed(1)+" to "+hi.communities.toFixed(1)+" communities across the sweep, so the number "+data.louvain.communities+" is tied to resolution 1 and not a fixed fact about the network."],
-   ["Against random","Real Q "+f3(real)+" versus "+f3(rm)+" ± "+f3(rs)+" for rewired networks"+(z!=null?" ("+z.toFixed(1)+" standard deviations)":"")+". The community structure is "+(real>Math.max(...R)?"stronger than in any of the 50 random networks.":"compared against the random range in the histogram.")],
-   ["Weights and limitations","Seed-to-seed NMI is "+f3(wt.within)+" and weighted-versus-unweighted NMI is "+f3(wt.across)+". Louvain is stochastic and the community numbers carry no meaning beyond grouping. The mover list comes from a single pair of runs, so its community ids do not match the numbers used above."]]
+  [["What did I ask?","How is the Marvel network divided into communities, and are the groups similar in size?"],
+   ["What did I do?","I took the Louvain community label stored for each of the "+fmt(total)+" characters in the week 3 centrality file, counted the members of each community and listed the five highest-degree members."],
+   ["What the sizes show","There are "+G.length+" communities. The largest has "+big.size+" characters and the three largest hold "+pct(top3/total)+" of the network, so a few groups account for most characters."],
+   ["What I checked in the text","I read each group's top characters to see whether they match a team or storyline. Naming them by hand is the only way to tell whether Louvain found something real."],
+   ["Next question","Are these communities real structure, or would any network with the same degrees produce them? The next step is to compare the modularity of this partition against a randomised network."],
+   ["One limitation","The file holds one Louvain run, and Louvain is stochastic, so another seed could shift some characters. The community numbers carry no meaning beyond grouping."]]
    .forEach(([h,p])=>{const d=el("div","wc");d.append(el("h3",0,h),el("p",0,p));$("wg").append(d)});
 }).catch(err=>{
-  const m='<div class="notice"><b>Could not load the data.</b><p style="margin-top:8px">Expected <code>communities.json</code> (and optionally <code>edges.csv</code>) in the same folder as this page. If you open this file straight from disk the browser blocks the load, so run <code>python -m http.server</code> in the repo root and open <code>localhost:8000/week4/</code>.</p></div>';
-  ["sizes","members","resolution","baseline","weights","naming","writing"].forEach(k=>$(k).querySelector(".in").insertAdjacentHTML("beforeend",m));
+  const m='<div class="notice"><b>Could not load the data.</b><p style="margin-top:8px">Expected <code>week3/centrality.json</code> next to the <code>week4</code> folder. If you open this file straight from disk the browser blocks the load, so run <code>python -m http.server</code> in the repo root and open <code>localhost:8000/week4/</code>.</p></div>';
+  ["sizes","members","naming","writing"].forEach(k=>$(k).querySelector(".in").insertAdjacentHTML("beforeend",m));
   console.error(err);
 });
 </script>
 </body>
 </html>
-#change for commit and push

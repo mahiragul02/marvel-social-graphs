@@ -1,0 +1,174 @@
+wp_id,name,hpi_raw,lex_community,lex_community_label,sem_community,sem_community_label,neighbour_jaccard_lex_sem
+12309,Goran Bregović,25.7586789522768,0,"million, chart, singles",4,"brazilian, latin, cuban",0.0
+166538,Nat King Cole,25.1769561941286,4,"davis, saxophone, saxophonist",3,"blues, roll, clapton",0.0
+45222,Jean-Michel Jarre,25.7960138330288,0,"million, chart, singles",4,"brazilian, latin, cuban",0.0
+569555,Ludovico Einaudi,24.2688951490725,0,"million, chart, singles",4,"brazilian, latin, cuban",0.0
+316130,Fela Kuti,23.0167948125355,0,"million, chart, singles",4,"brazilian, latin, cuban",0.0
+131222,Richie Sambora,22.2795102812902,2,"blues, roll, clapton",2,"metal, purple, guitars",0.0
+3535485,Âşık Veysel,22.2521565573348,0,"million, chart, singles",4,"brazilian, latin, cuban",0.0
+223497,Ian Anderson,22.3818562962357,2,"blues, roll, clapton",1,"video, chart, billboard",0.0
+5390588,Sixto Rodriguez,22.7141545803698,0,"million, chart, singles",4,"brazilian, latin, cuban",0.0
+149809,Serj Tankian,22.4574131407465,0,"million, chart, singles",2,"metal, purple, guitars",0.0
+797886,Michael Cretu,22.3111045535522,0,"million, chart, singles",2,"metal, purple, guitars",0.0
+328281,John McLaughlin,22.9236978056166,4,"davis, saxophone, saxophonist",2,"metal, purple, guitars",0.0
+89337,Carl Michael Bellman,22.8692055049009,0,"million, chart, singles",0,"concerto, violin, beethoven",0.0
+1876457,Luigi Tenco,22.7746007772498,0,"million, chart, singles",4,"brazilian, latin, cuban",0.0
+179572,Liberace,23.4532417678026,0,"million, chart, singles",0,"concerto, violin, beethoven",0.0
+2511313,Roger Hodgson,22.1342434139133,0,"million, chart, singles",2,"metal, purple, guitars",0.0
+3659852,Gustavo Santaolalla,21.9517247660141,0,"million, chart, singles",4,"brazilian, latin, cuban",0.0
+305561,Varg Vikernes,22.0875555521442,0,"million, chart, singles",2,"metal, purple, guitars",0.0
+150093,Ralf Hütter,22.1420976013153,0,"million, chart, singles",2,"metal, purple, guitars",0.0
+723359,J. J. Cale,23.9263215706209,2,"blues, roll, clapton",1,"video, chart, billboard",0.053
+846434,Paolo Conte,23.625641173925,0,"million, chart, singles",4,"brazilian, latin, cuban",0.053
+141833,Pete Seeger,24.2917101368853,0,"million, chart, singles",3,"blues, roll, clapton",0.053
+149709,Willie Nelson,24.1411266399259,0,"million, chart, singles",3,"blues, roll, clapton",0.053
+42068,Freddie Mercury,30.729837288566,0,"million, chart, singles",2,"metal, purple, guitars",0.053
+151603,Dean Martin,25.4469381428673,0,"million, chart, singles",3,"blues, roll, clapton",0.053
+1750863,Thomas Bangalter,25.1767510564425,0,"million, chart, singles",2,"metal, purple, guitars",0.053
+16316,John Dowland,25.009698539067,0,"million, chart, singles",0,"concerto, violin, beethoven",0.053
+25893,Robert Fripp,25.0630133739064,2,"blues, roll, clapton",2,"metal, purple, guitars",0.053
+165567,Lenny Kravitz,23.5706980237391,0,"million, chart, singles",4,"brazilian, latin, cuban",0.053
+19965375,Leonard Cohen,28.093704584515,0,"million, chart, singles",2,"metal, purple, guitars",0.053
+199158,Mark Knopfler,27.3683537780991,2,"blues, roll, clapton",2,"metal, purple, guitars",0.053
+78747,Cat Stevens,26.9602274235749,0,"million, chart, singles",4,"brazilian, latin, cuban",0.053
+165932,Isaac Hayes,22.7962487074231,0,"million, chart, singles",3,"blues, roll, clapton",0.053
+333562,Yanni,23.3459164416457,0,"million, chart, singles",4,"brazilian, latin, cuban",0.053
+5713317,Alan Parsons,23.3829178207851,2,"blues, roll, clapton",2,"metal, purple, guitars",0.053
+1168740,Scott McKenzie,23.0557167912175,2,"blues, roll, clapton",1,"video, chart, billboard",0.053
+209161,José Feliciano,22.6760382060895,0,"million, chart, singles",4,"brazilian, latin, cuban",0.053
+147149,Stéphane Grappelli,23.5799938045528,4,"davis, saxophone, saxophonist",0,"concerto, violin, beethoven",0.053
+149356,Nam June Paik,23.8075570989928,0,"million, chart, singles",4,"brazilian, latin, cuban",0.053
+442309,Jan Garbarek,22.7425242805757,4,"davis, saxophone, saxophonist",4,"brazilian, latin, cuban",0.053
+25147,Peggy Lee,22.6972302429401,4,"davis, saxophone, saxophonist",3,"blues, roll, clapton",0.053
+479161,Alan Menken,22.2632807379897,0,"million, chart, singles",4,"brazilian, latin, cuban",0.053
+2194117,Jacob Gade,22.4261988766786,0,"million, chart, singles",0,"concerto, violin, beethoven",0.053
+557164,Steve Hackett,22.2925476218383,2,"blues, roll, clapton",2,"metal, purple, guitars",0.053
+329758,Arnaut Daniel,24.5593572568589,0,"million, chart, singles",0,"concerto, violin, beethoven",0.053
+327437,Israel Kamakawiwoʻole,24.3839530517361,0,"million, chart, singles",4,"brazilian, latin, cuban",0.053
+20032,Mike Oldfield,24.7783165893867,2,"blues, roll, clapton",2,"metal, purple, guitars",0.053
+147311,Ray Charles,27.6856099082205,0,"million, chart, singles",3,"blues, roll, clapton",0.053
+67243,Per Gessle,22.1588125415399,0,"million, chart, singles",4,"brazilian, latin, cuban",0.053
+378940,Djivan Gasparyan,21.974475313088,0,"million, chart, singles",4,"brazilian, latin, cuban",0.053
+2119998,Oliver Dragojević,21.6549372562741,0,"million, chart, singles",4,"brazilian, latin, cuban",0.053
+2301947,Gato Barbieri,21.8052571363167,4,"davis, saxophone, saxophonist",4,"brazilian, latin, cuban",0.053
+23976973,Tito Puente,21.8428759679954,4,"davis, saxophone, saxophonist",4,"brazilian, latin, cuban",0.053
+314026,Grace Slick,21.9145913520935,2,"blues, roll, clapton",1,"video, chart, billboard",0.053
+183417,John Frusciante,21.8901133932969,0,"million, chart, singles",2,"metal, purple, guitars",0.053
+22439395,Flea,21.9384070531437,3,"metal, purple, heavy",1,"video, chart, billboard",0.053
+608845,Greg Lake,21.9451866583636,2,"blues, roll, clapton",2,"metal, purple, guitars",0.053
+383211,Bert Kaempfert,22.0051930330232,2,"blues, roll, clapton",4,"brazilian, latin, cuban",0.053
+382199,Ray Manzarek,24.3855391674265,2,"blues, roll, clapton",2,"metal, purple, guitars",0.111
+52263,Cliff Richard,24.4920289524369,0,"million, chart, singles",3,"blues, roll, clapton",0.111
+204766,Leslie Cheung,23.0563974741588,0,"million, chart, singles",3,"blues, roll, clapton",0.111
+248413,Sonny Rollins,23.017961597838,4,"davis, saxophone, saxophonist",3,"blues, roll, clapton",0.111
+2079336,Gianna Nannini,22.8936350525424,0,"million, chart, singles",4,"brazilian, latin, cuban",0.111
+33278,Woody Guthrie,22.8284057337172,0,"million, chart, singles",5,"saxophonist, davis, saxophone",0.111
+613472,Johnny Ramone,22.2244414938149,3,"metal, purple, heavy",3,"blues, roll, clapton",0.111
+304559,Bobby McFerrin,22.3253240905993,4,"davis, saxophone, saxophonist",1,"video, chart, billboard",0.111
+209227,Wes Montgomery,22.2269306850116,4,"davis, saxophone, saxophonist",3,"blues, roll, clapton",0.111
+80521,Nick Drake,22.1755098113742,2,"blues, roll, clapton",1,"video, chart, billboard",0.111
+1883383,Michel Polnareff,22.3314687676159,0,"million, chart, singles",4,"brazilian, latin, cuban",0.111
+10544117,Farid al-Atrash,22.6272293644611,0,"million, chart, singles",4,"brazilian, latin, cuban",0.111
+3185233,Enrico Macias,22.4974791506041,0,"million, chart, singles",4,"brazilian, latin, cuban",0.111
+1404485,Lalo Schifrin,23.4181000645399,0,"million, chart, singles",4,"brazilian, latin, cuban",0.111
+9546978,Don Shirley,23.3534065107888,1,"concerto, violin, beethoven",5,"saxophonist, davis, saxophone",0.111
+147321,Fats Domino,23.265653288922,2,"blues, roll, clapton",5,"saxophonist, davis, saxophone",0.111
+30873028,Khaled,22.132324981326,0,"million, chart, singles",4,"brazilian, latin, cuban",0.111
+196591,Gene Krupa,21.7063739108906,4,"davis, saxophone, saxophonist",2,"metal, purple, guitars",0.111
+241167,David Crosby,21.6281431471757,2,"blues, roll, clapton",1,"video, chart, billboard",0.111
+5645494,Reinhold Mack,21.6278524735176,2,"blues, roll, clapton",2,"metal, purple, guitars",0.111
+318520,Jørgen Ingmann,21.9302045770691,0,"million, chart, singles",4,"brazilian, latin, cuban",0.111
+26496842,Eddie Van Halen,21.8910746009978,3,"metal, purple, heavy",3,"blues, roll, clapton",0.111
+382191,John Densmore,21.9752289569825,2,"blues, roll, clapton",2,"metal, purple, guitars",0.111
+176900,"Lee ""Scratch"" Perry",21.9367535549406,2,"blues, roll, clapton",1,"video, chart, billboard",0.111
+168335,Barry Gibb,24.3739782502238,0,"million, chart, singles",3,"blues, roll, clapton",0.111
+762230,Karl Jenkins,23.1363872652118,2,"blues, roll, clapton",2,"metal, purple, guitars",0.111
+47486961,Peter Tosh,23.3781345368257,2,"blues, roll, clapton",1,"video, chart, billboard",0.111
+2386121,Lucio Dalla,23.1192956192252,0,"million, chart, singles",4,"brazilian, latin, cuban",0.111
+396547,Izzy Stradlin,23.1090499353306,3,"metal, purple, heavy",1,"video, chart, billboard",0.111
+458438,Richard Clayderman,24.9875692990619,0,"million, chart, singles",0,"concerto, violin, beethoven",0.111
+3740,Björn Ulvaeus,25.2141852154592,0,"million, chart, singles",4,"brazilian, latin, cuban",0.111
+32685,Victor Borge,25.4236553011636,0,"million, chart, singles",0,"concerto, violin, beethoven",0.111
+18642,Lemmy,25.916557006778,3,"metal, purple, heavy",3,"blues, roll, clapton",0.111
+205508,Quincy Jones,24.5857414486724,0,"million, chart, singles",3,"blues, roll, clapton",0.111
+9039,Django Reinhardt,26.4088619248438,4,"davis, saxophone, saxophonist",3,"blues, roll, clapton",0.111
+14995351,Michael Jackson,29.906572155197,0,"million, chart, singles",3,"blues, roll, clapton",0.111
+5052197,Elton John,27.7215406287654,0,"million, chart, singles",3,"blues, roll, clapton",0.111
+8239846,Bob Marley,30.8207879340071,2,"blues, roll, clapton",1,"video, chart, billboard",0.111
+150391,Donovan,21.8833821038861,2,"blues, roll, clapton",1,"video, chart, billboard",0.111
+1128944,Tico Torres,22.0493894488869,3,"metal, purple, heavy",4,"brazilian, latin, cuban",0.111
+2074411,Franco Battiato,21.6900298654303,0,"million, chart, singles",4,"brazilian, latin, cuban",0.111
+207745,Johnny Clegg,22.0298670335265,0,"million, chart, singles",4,"brazilian, latin, cuban",0.176
+154247,Eddie Vedder,21.9439640073349,3,"metal, purple, heavy",1,"video, chart, billboard",0.176
+363963,Robby Krieger,22.1152247451922,2,"blues, roll, clapton",2,"metal, purple, guitars",0.176
+49107,Willie Dixon,21.7667212006575,2,"blues, roll, clapton",5,"saxophonist, davis, saxophone",0.176
+577465,Tansen,22.049640579689,0,"million, chart, singles",4,"brazilian, latin, cuban",0.176
+1387194,Roger Whittaker,22.5007617480296,0,"million, chart, singles",3,"blues, roll, clapton",0.176
+289997,Pat Metheny,22.0824117413837,4,"davis, saxophone, saxophonist",2,"metal, purple, guitars",0.176
+2822544,Abdel Halim Hafez,23.2747397868441,0,"million, chart, singles",4,"brazilian, latin, cuban",0.176
+1442176,Joe Jackson,23.3990404786798,0,"million, chart, singles",3,"blues, roll, clapton",0.176
+163268,Ginger Baker,22.2997120226259,2,"blues, roll, clapton",5,"saxophonist, davis, saxophone",0.176
+1605722,Kitarō,23.4126584969748,0,"million, chart, singles",4,"brazilian, latin, cuban",0.176
+142242,Paul Stanley,23.4348458066371,3,"metal, purple, heavy",1,"video, chart, billboard",0.176
+29331348,Avicii,22.7091603688355,0,"million, chart, singles",4,"brazilian, latin, cuban",0.176
+27060,Stig Anderson,22.2146049689303,0,"million, chart, singles",4,"brazilian, latin, cuban",0.176
+400293,Tony Levin,22.2280099760954,2,"blues, roll, clapton",2,"metal, purple, guitars",0.176
+4836,Barış Manço,22.6320361802835,0,"million, chart, singles",4,"brazilian, latin, cuban",0.176
+734004,Salif Keita,22.7393503202912,0,"million, chart, singles",4,"brazilian, latin, cuban",0.176
+140308,Alice Cooper,25.0561324989544,3,"metal, purple, heavy",1,"video, chart, billboard",0.176
+4528,Bill Haley,25.1322190562393,0,"million, chart, singles",3,"blues, roll, clapton",0.176
+10950533,John Deacon,26.3162641056384,2,"blues, roll, clapton",2,"metal, purple, guitars",0.176
+4740559,Syd Barrett,25.5128369347814,2,"blues, roll, clapton",2,"metal, purple, guitars",0.176
+280636,Gary Moore,25.0007125781116,3,"metal, purple, heavy",3,"blues, roll, clapton",0.176
+12248,Gheorghe Zamfir,24.9559583115322,0,"million, chart, singles",4,"brazilian, latin, cuban",0.176
+142241,Gene Simmons,23.8955933551809,3,"metal, purple, heavy",1,"video, chart, billboard",0.176
+148341,Carlos Santana,25.6376999067304,4,"davis, saxophone, saxophonist",2,"metal, purple, guitars",0.176
+97778,Slash,23.5090920874659,3,"metal, purple, heavy",1,"video, chart, billboard",0.176
+1248265,Cliff Williams,22.8464785214695,3,"metal, purple, heavy",1,"video, chart, billboard",0.176
+892372,Tiësto,23.0318180320651,0,"million, chart, singles",4,"brazilian, latin, cuban",0.176
+3577129,Narciso Yepes,23.0506974437835,5,"brazilian, cuban, gilberto",0,"concerto, violin, beethoven",0.176
+1354450,Billy Cobham,21.7911219156406,4,"davis, saxophone, saxophonist",2,"metal, purple, guitars",0.176
+193344,Screamin' Jay Hawkins,21.6692442936493,2,"blues, roll, clapton",1,"video, chart, billboard",0.176
+1029247,Mick Mars,22.012410912584,3,"metal, purple, heavy",1,"video, chart, billboard",0.176
+86249,Dee Dee Ramone,21.6042065413082,3,"metal, purple, heavy",1,"video, chart, billboard",0.25
+466391,Bob Klose,21.997499809177,2,"blues, roll, clapton",2,"metal, purple, guitars",0.25
+178802,Jack Bruce,22.077519724374,2,"blues, roll, clapton",2,"metal, purple, guitars",0.25
+603202,Al Di Meola,21.9119582339487,4,"davis, saxophone, saxophonist",2,"metal, purple, guitars",0.25
+940388,Yann Tiersen,21.8832276312242,0,"million, chart, singles",4,"brazilian, latin, cuban",0.25
+17130499,Ram Narayan,23.3733388451074,0,"million, chart, singles",4,"brazilian, latin, cuban",0.25
+920887,Dr. Alban,23.2912947414544,0,"million, chart, singles",4,"brazilian, latin, cuban",0.25
+269502,Paul Rodgers,22.6003284889471,2,"blues, roll, clapton",2,"metal, purple, guitars",0.25
+142244,Peter Criss,22.5301822838461,3,"metal, purple, heavy",1,"video, chart, billboard",0.25
+365149,Andy Summers,22.5102425886425,2,"blues, roll, clapton",2,"metal, purple, guitars",0.25
+669233,Eric Carr,22.4586561351555,3,"metal, purple, heavy",1,"video, chart, billboard",0.25
+148786,Jaco Pastorius,22.8706718958863,4,"davis, saxophone, saxophonist",2,"metal, purple, guitars",0.25
+284392,Isao Tomita,22.2756063063094,0,"million, chart, singles",4,"brazilian, latin, cuban",0.25
+18933360,Björk,23.8852330924307,0,"million, chart, singles",4,"brazilian, latin, cuban",0.25
+202107,André Previn,23.8276942659556,1,"concerto, violin, beethoven",5,"saxophonist, davis, saxophone",0.25
+42069,Brian May,27.4855527226871,2,"blues, roll, clapton",2,"metal, purple, guitars",0.25
+3741,Benny Andersson,25.2943435518356,0,"million, chart, singles",4,"brazilian, latin, cuban",0.25
+517348,Amir Khusrow,24.9227147225805,0,"million, chart, singles",4,"brazilian, latin, cuban",0.25
+1134467,Paul Mauriat,24.6244719222536,0,"million, chart, singles",4,"brazilian, latin, cuban",0.25
+306951,Chick Corea,24.4573213631916,4,"davis, saxophone, saxophonist",2,"metal, purple, guitars",0.25
+1248281,Chris Slade,24.5742712844109,3,"metal, purple, heavy",1,"video, chart, billboard",0.25
+164003,John Mayall,24.0584800261209,2,"blues, roll, clapton",2,"metal, purple, guitars",0.25
+573759,Joe Hisaishi,23.8093105157333,0,"million, chart, singles",4,"brazilian, latin, cuban",0.25
+627701,Duff McKagan,23.4135970808696,3,"metal, purple, heavy",1,"video, chart, billboard",0.25
+445390,Bon Scott,26.8656751710234,3,"metal, purple, heavy",1,"video, chart, billboard",0.25
+173825,Roger Waters,26.066998908719,2,"blues, roll, clapton",2,"metal, purple, guitars",0.25
+182494,Roger Taylor,26.4538670844501,2,"blues, roll, clapton",2,"metal, purple, guitars",0.25
+175946,David Gilmour,26.0388360188097,2,"blues, roll, clapton",2,"metal, purple, guitars",0.25
+899033,Armin van Buuren,22.7584335596533,0,"million, chart, singles",4,"brazilian, latin, cuban",0.25
+353929,Jermaine Jackson,21.8388824369399,0,"million, chart, singles",3,"blues, roll, clapton",0.25
+1028219,Jacques Dutronc,21.9400612015638,0,"million, chart, singles",4,"brazilian, latin, cuban",0.25
+1090677,Phil Rudd,21.8718174594603,3,"metal, purple, heavy",1,"video, chart, billboard",0.333
+196590,Nikki Sixx,22.1613919411189,3,"metal, purple, heavy",1,"video, chart, billboard",0.333
+19332171,Richard Wright,24.7539052037307,2,"blues, roll, clapton",2,"metal, purple, guitars",0.333
+15208,Isaac Albéniz,26.4589702653916,5,"brazilian, cuban, gilberto",0,"concerto, violin, beethoven",0.333
+268284,Nick Mason,24.089577842274,2,"blues, roll, clapton",2,"metal, purple, guitars",0.333
+416796,Buddy Rich,23.2733915932843,4,"davis, saxophone, saxophonist",3,"blues, roll, clapton",0.333
+100156,Ravi Shankar,24.7252040542561,0,"million, chart, singles",4,"brazilian, latin, cuban",0.429
+558139,Malcolm Young,24.3354841067796,3,"metal, purple, heavy",1,"video, chart, billboard",0.429
+1931951,George Young,21.7583721735334,3,"metal, purple, heavy",1,"video, chart, billboard",0.429
+551483,Angus Young,25.1595412776356,3,"metal, purple, heavy",1,"video, chart, billboard",0.538
+5760712,Stevie Young,22.0144053939598,3,"metal, purple, heavy",1,"video, chart, billboard",0.538

@@ -1,0 +1,4 @@
+network_A,network_B,ARI,NMI,ARI_chance_mean,permutation_p,edge_jaccard,mean_neighbour_jaccard
+lexical,semantic,0.474,0.525,-0.0001,0.001,0.196,0.195
+lexical_nonames,semantic,0.433,0.461,-0.0,0.001,0.142,0.125
+lexical,lexical_nonames,0.586,0.599,0.0,0.001,0.463,0.461

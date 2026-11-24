@@ -1,0 +1,21 @@
+K,network,communities,modularity_or_ARI
+5,lexical,10,0.653
+5,lexical_nonames,7,0.554
+5,semantic,10,0.638
+5,ARI lexical vs semantic,,0.419
+5,ARI lexical_nonames vs semantic,,0.38
+10,lexical,6,0.565
+10,lexical_nonames,5,0.49
+10,semantic,6,0.578
+10,ARI lexical vs semantic,,0.515
+10,ARI lexical_nonames vs semantic,,0.496
+15,lexical,5,0.521
+15,lexical_nonames,4,0.45
+15,semantic,6,0.543
+15,ARI lexical vs semantic,,0.508
+15,ARI lexical_nonames vs semantic,,0.449
+20,lexical,5,0.486
+20,lexical_nonames,4,0.415
+20,semantic,5,0.514
+20,ARI lexical vs semantic,,0.432
+20,ARI lexical_nonames vs semantic,,0.403

@@ -1,0 +1,7 @@
+pandas
+numpy
+scipy
+scikit-learn
+networkx>=3.0
+matplotlib
+sentence-transformers   # only needed for the semantic network (RQ1); RQ2 will also need spacy

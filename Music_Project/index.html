@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beyond Similarity: Mapping the Semantic and Biographical Networks of 500 Musicians</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0e1b2e;--navy2:#16283f;--paper:#f3f5f8;--card:#fff;--ink:#16202e;--mute:#5d6b7c;--line:#dde2ea;--acc:#1b6fd1;
+--disp:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;--body:"Source Sans 3","Segoe UI",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root{--paper:#0b131f;--card:#121e2f;--ink:#e8edf4;--mute:#97a5b8;--line:#223249;--acc:#6aa8ff}}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:70px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body)}
+a{color:var(--acc)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+nav{position:sticky;top:0;z-index:10;background:rgba(14,27,46,.94);backdrop-filter:blur(8px)}
+nav .wrap{display:flex;align-items:center;gap:26px;height:54px;overflow-x:auto;white-space:nowrap}
+nav b{font:700 15px var(--disp);color:#fff;margin-right:auto}
+nav a{color:#aebbd0;text-decoration:none;font-size:14.5px}nav a:hover{color:#fff}
+.hero{background:var(--navy);color:#fff;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:36px;align-items:center;padding-top:56px;padding-bottom:64px}
+h1{font:700 clamp(2.1rem,4.6vw,3.5rem)/1.06 var(--disp);letter-spacing:-.025em;margin:0 0 20px}
+.lead{color:#b9c6d9;font-size:1.15rem;max-width:520px;margin:0}
+.rq{margin-top:30px;padding-left:18px;border-left:3px solid #f2a93b;max-width:520px;color:#dfe7f3}
+.rq b{display:block;font:600 15px var(--body);color:#f2a93b;margin-bottom:4px}
+#const{width:100%;height:auto;animation:fade 1.6s ease both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sec{display:grid;grid-template-columns:270px 1fr;gap:56px;padding:64px 0;border-top:1px solid var(--line)}
+.sec:first-of-type{border-top:0}
+.side h2{font:700 1.55rem/1.2 var(--disp);letter-spacing:-.015em;margin:0 0 10px}
+.side p{color:var(--mute);margin:0;font-size:15.5px}
+.side{align-self:start;position:sticky;top:78px}.sec>div{min-width:0}
+.band{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border-top:2px solid var(--ink);border-bottom:1px solid var(--line)}
+.stat{padding:18px 18px 18px 0}.stat+.stat{padding-left:18px;border-left:1px solid var(--line)}
+.stat .n{font:700 2.3rem/1 var(--disp);letter-spacing:-.02em}.stat .l{color:var(--mute);font-size:14.5px;margin-top:6px}
+.finding{margin-top:30px;padding:2px 0 2px 20px;border-left:3px solid var(--acc);max-width:640px}
+.finding b{font-family:var(--disp)}
+.tabs{display:flex;gap:26px;border-bottom:1px solid var(--line);margin-bottom:8px}
+button.tab{font:600 15px var(--body);color:var(--mute);background:none;border:0;border-bottom:3px solid transparent;padding:10px 0;margin-bottom:-1px;cursor:pointer}
+button.tab.on{color:var(--ink);border-bottom-color:var(--acc)}
+.crow{border-left:6px solid var(--c);padding:20px 0 20px 22px;border-bottom:1px solid var(--line)}
+.crow:last-child{border-bottom:0}
+.chead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.chead h3{font:700 1.2rem var(--disp);margin:0;text-transform:capitalize}
+.chead span{color:var(--mute);font-size:14.5px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 12px}
+.chip{border:1px solid color-mix(in srgb,var(--c) 55%,transparent);background:color-mix(in srgb,var(--c) 11%,transparent);border-radius:99px;padding:1px 11px;font-size:14px}
+dl{display:grid;grid-template-columns:130px 1fr;gap:3px 16px;margin:0;font-size:15px}
+dt{color:var(--mute)}dd{margin:0}
+img{max-width:100%;display:block;border:1px solid var(--line);border-radius:3px;background:#fff}
+figcaption{color:var(--mute);font-size:14.5px;margin-top:10px;max-width:640px}
+.tw{overflow-x:auto;border-top:2px solid var(--ink)}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{padding:10px 18px 10px 0;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-weight:600;color:var(--mute);font-size:14px}
+input[type=search]{font:inherit;width:100%;max-width:380px;padding:9px 12px;border:1px solid var(--line);border-radius:3px;background:var(--card);color:var(--ink);margin-bottom:16px}
+.bar{display:grid;grid-template-columns:170px 1fr 50px;align-items:center;gap:12px;margin:9px 0;font-size:15px}
+.bar .trk{background:var(--line);height:8px;border-radius:99px;overflow:hidden}.bar .fill{display:block;height:100%;background:var(--navy2);border-radius:99px}
+@media (prefers-color-scheme:dark){.bar .fill{background:var(--acc)}}
+.bar .val{text-align:right;font-variant-numeric:tabular-nums}
+.bar .lab{color:var(--mute)}
+.pane+.pane{margin-top:34px}.pane h3{font:700 1.05rem var(--disp);margin:0 0 4px}.pane .m{color:var(--mute);font-size:14.5px;margin-bottom:8px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px;counter-reset:s}
+.steps div{counter-increment:s;border-top:2px solid var(--ink);padding-top:12px}
+.steps h3{font:700 1.05rem var(--disp);margin:0 0 6px}.steps h3:before{content:counter(s)". ";color:var(--acc)}
+.steps p{margin:0;font-size:15.5px;color:var(--mute)}
+.miss{color:#b4540a;font-size:15px;padding:12px 16px;border:1px dashed #b4540a;border-radius:3px}
+footer{background:var(--navy);color:#a9b8cd;padding:36px 0;font-size:15px}footer a{color:#fff}
+@media (max-width:860px){.hero .wrap{grid-template-columns:1fr}.sec{grid-template-columns:1fr;gap:22px}.side{position:static}dl{grid-template-columns:1fr}.bar{grid-template-columns:110px 1fr 44px}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><b>Musician networks</b><a href="#results">Results</a><a href="#networks">Networks</a><a href="#communities">Communities</a><a href="#compare">Comparison</a><a href="#disagree">Disagreements</a><a href="#confounds">Era and country</a><a href="#robust">Robustness</a><a href="#method">Method</a></div></nav>
+
+<header class="hero"><div class="wrap">
+<div>
+<h1>Beyond Similarity: Mapping the Semantic and Biographical Networks of 500 Musicians</h1>
+<p class="lead">We read the Wikipedia biographies of historically prominent musicians and link them by the words they use and the meaning they carry, then ask which groups appear.</p>
+<div class="rq"><b>Research question 1</b>To what extent do lexical and semantic representations of musicians’ Wikipedia biographies produce similar network communities, and what biographical themes distinguish those communities?</div>
+</div>
+<svg id="const" viewBox="65 35 510 450" role="img" aria-label="Decorative network of musicians grouped into communities"></svg>
+</div></header>
+
+<main class="wrap">
+<section class="sec" id="results"><div class="side"><h2>Key results</h2><p>Read from the files in the <code>rq1</code> folder.</p></div>
+<div><div class="band" id="stats"></div>
+<div class="finding"><b>Main finding.</b> Replace this sentence with your own interpretation once you have read the tables below.</div></div></section>
+
+<section class="sec" id="networks"><div class="side"><h2>Two ways to link musicians</h2><p>Each dot is a musician, joined to the musicians with the most similar biographies. Colours show the communities found.</p></div>
+<div><figure style="margin:0"><img id="img-net" alt="Lexical and semantic networks side by side" loading="lazy"><figcaption>Left: similarity of the words used. Right: similarity of meaning, from sentence embeddings.</figcaption></figure>
+<div style="height:26px"></div><div class="tw" id="quality"></div></div></section>
+
+<section class="sec" id="communities"><div class="side"><h2>What each community is about</h2><p>The words that set a community apart, its typical birth year and countries, and its members with the highest popularity score (HPI).</p></div>
+<div><div class="tabs" id="tabs"></div><div id="comm"></div></div></section>
+
+<section class="sec" id="compare"><div class="side"><h2>Do the two methods agree?</h2><p>ARI and NMI run from 0 (no better than chance) to 1 (identical communities). The chance column is what random labels would score.</p></div>
+<div><div class="tw" id="comp"></div><div style="height:30px"></div>
+<figure style="margin:0;max-width:620px"><img id="img-cont" alt="Heatmap of lexical versus semantic communities" loading="lazy"><figcaption>Each cell counts musicians in one lexical community (row) and one semantic community (column).</figcaption></figure></div></section>
+
+<section class="sec" id="disagree"><div class="side"><h2>Musicians placed differently</h2><p>Sorted by how little their closest neighbours overlap between the two networks. These cases are the most worth reading.</p></div>
+<div><input type="search" id="q" placeholder="Search a musician or a word" aria-label="Search musicians"><div class="tw" id="dis"></div></div></section>
+
+<section class="sec" id="confounds"><div class="side"><h2>Era and country</h2><p>How closely the communities follow when and where musicians were born (NMI). Higher means the communities mostly mirror that attribute.</p></div>
+<div id="conf"></div></section>
+
+<section class="sec" id="robust"><div class="side"><h2>Does it hold up?</h2><p>The agreement is recomputed with a different number of neighbours per musician (K), and without the shortest biographies.</p></div>
+<div><div class="pane" id="rk"></div><div class="pane" id="rs"></div></div></section>
+
+<section class="sec" id="method"><div class="side"><h2>Method</h2></div>
+<div class="steps">
+<div><h3>Data</h3><p>497 musicians from the Historical Popularity Index top 500, with cleaned English Wikipedia biographies: references, links and discographies removed.</p></div>
+<div><h3>Representations</h3><p>Lexical: TF-IDF word weights, with and without proper nouns. Semantic: sentence embeddings of text chunks, averaged per biography.</p></div>
+<div><h3>Networks</h3><p>Cosine similarity between biographies, then each musician is linked to the K most similar musicians.</p></div>
+<div><h3>Communities</h3><p>Louvain detection repeated over many random seeds. Partitions compared with ARI and NMI against a permutation baseline.</p></div>
+</div></section>
+</main>
+
+<footer><div class="wrap">Group project by <b>Your names here</b>. Biography text from English Wikipedia (CC BY-SA). Code and data in the <a href="https://github.com/YOUR_USERNAME/YOUR_REPO">GitHub repository</a>.</div></footer>
+
+<script>
+const DATA="rq1/";
+const PAL=["#4f8df5","#f26b3a","#1fb89f","#f2a93b","#9b7bff","#e8508a","#8fb339","#7d8aa0"];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+// decorative constellation (seeded, so it looks the same every time)
+(function(){
+  let s=7;const R=()=>(s=(s*16807)%2147483647)/2147483647;
+  const svg=$("const"),C=6,pts=[];let out="";
+  for(let c=0;c<C;c++){
+    const a=c/C*6.283+.4,cx=320+175*Math.cos(a),cy=260+150*Math.sin(a),n=11+Math.floor(R()*7);
+    for(let i=0;i<n;i++){const r=Math.sqrt(R())*68,t=R()*6.283;pts.push({x:cx+r*Math.cos(t),y:cy+r*Math.sin(t),c})}
+  }
+  const E=[];
+  pts.forEach((p,i)=>{
+    pts.map((q,j)=>({j,d:(p.x-q.x)**2+(p.y-q.y)**2})).filter(o=>o.j!==i).sort((a,b)=>a.d-b.d).slice(0,2).forEach(o=>E.push([i,o.j]));
+    if(R()<.07){const j=Math.floor(R()*pts.length);if(pts[j].c!==p.c)E.push([i,j])}
+  });
+  E.forEach(([i,j])=>out+=`<line x1="${pts[i].x.toFixed(1)}" y1="${pts[i].y.toFixed(1)}" x2="${pts[j].x.toFixed(1)}" y2="${pts[j].y.toFixed(1)}" stroke="#fff" stroke-opacity=".16"/>`);
+  pts.forEach(p=>out+=`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${(3+R()*3.2).toFixed(1)}" fill="${PAL[p.c]}"/>`);
+  svg.innerHTML=out;
+})();
+
+function parseCSV(t){
+  const rows=[];let r=[],f="",q=false;
+  for(let i=0;i<t.length;i++){const c=t[i];
+    if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
+    else if(c==='"')q=true;
+    else if(c===","){r.push(f);f=""}
+    else if(c==="\n"){r.push(f);rows.push(r);r=[];f=""}
+    else if(c!=="\r")f+=c;
+  }
+  if(f!==""||r.length){r.push(f);rows.push(r)}
+  const h=rows.shift();
+  return rows.filter(x=>x.length>1).map(x=>Object.fromEntries(h.map((k,i)=>[k||"index",x[i]])));
+}
+async function load(name){try{const r=await fetch(DATA+name);if(!r.ok)throw 0;return parseCSV(await r.text())}catch(e){return null}}
+const missing=(el,name)=>{el.innerHTML=`<div class="miss">Could not load <code>${DATA}${name}</code>. Upload it to the <code>rq1</code> folder of the repository.</div>`};
+const HEAD={name:"Musician",lex_community_label:"Lexical community",sem_community_label:"Semantic community",neighbour_jaccard_lex_sem:"Neighbour overlap",hpi_raw:"HPI",ARI_chance_mean:"ARI by chance",permutation_p:"p-value",network_A:"Network A",network_B:"Network B",edge_jaccard:"Shared links",mean_neighbour_jaccard:"Neighbour overlap",louvain_stability_ari:"Run stability"};
+const head=c=>HEAD[c]||(c.replace(/_/g," ").replace(/^./,x=>x.toUpperCase()));
+function table(rows,cols,limit){
+  cols=cols||Object.keys(rows[0]);
+  return `<table><thead><tr>${cols.map(c=>`<th>${esc(head(c))}</th>`).join("")}</tr></thead><tbody>${
+    rows.slice(0,limit||rows.length).map(r=>`<tr>${cols.map(c=>`<td>${esc(isNaN(r[c])||r[c]===""?r[c]:+(+r[c]).toFixed(3))}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+}
+const bars=(items,max)=>items.map(([l,v])=>`<div class="bar"><span class="lab">${esc(l)}</span><span class="trk"><span class="fill" style="width:${Math.max(0,Math.min(100,v/max*100))}%"></span></span><span class="val">${(+v).toFixed(2)}</span></div>`).join("");
+
+$("img-net").src=DATA+"networks_side_by_side.png";
+$("img-cont").src=DATA+"contingency_lexical_vs_semantic.png";
+["img-net","img-cont"].forEach(id=>$(id).onerror=function(){this.replaceWith(Object.assign(document.createElement("div"),{className:"miss",textContent:"Image not found in the rq1 folder."}))});
+
+(async()=>{
+  const [qual,comp,nodes,dis,conf,rk,rs]=await Promise.all(
+    ["network_quality.csv","comparison_summary.csv","rq1_nodes.csv","rq1_disagreements.csv","communities_vs_era_country.csv","robustness_k.csv","robustness_short_bios.csv"].map(load));
+
+  const S=[];
+  if(nodes)S.push([nodes.length,"musicians in the network"]);
+  if(qual){const lx=qual.find(r=>r.network==="lexical"),sm=qual.find(r=>r.network==="semantic");
+    if(lx)S.push([lx.communities,"lexical communities"]);if(sm)S.push([sm.communities,"semantic communities"])}
+  if(comp&&comp[0])S.push([(+comp[0].ARI).toFixed(2),"ARI, lexical vs semantic"],[(+comp[0].NMI).toFixed(2),"NMI, lexical vs semantic"]);
+  if(nodes&&nodes[0].mismatch_lex_sem!==undefined){const m=nodes.filter(r=>r.mismatch_lex_sem==="True").length;
+    S.push([(100*m/nodes.length).toFixed(0)+"%","placed differently by the two methods"])}
+  if(S.length)$("stats").innerHTML=S.map(([n,l])=>`<div class="stat"><div class="n">${esc(n)}</div><div class="l">${esc(l)}</div></div>`).join("");
+  else missing($("stats"),"comparison_summary.csv");
+
+  qual?$("quality").innerHTML=table(qual):missing($("quality"),"network_quality.csv");
+  comp?$("comp").innerHTML=table(comp):missing($("comp"),"comparison_summary.csv");
+
+  const names={lexical:"Lexical, all words",lexical_nonames:"Lexical, names removed",semantic:"Semantic"};
+  const cdata={};for(const k in names)cdata[k]=await load(`communities_${k}.csv`);
+  function showComm(k){
+    [...$("tabs").children].forEach(b=>b.classList.toggle("on",b.dataset.k===k));
+    const d=cdata[k];if(!d){missing($("comm"),`communities_${k}.csv`);return}
+    $("comm").innerHTML=d.map(c=>`<article class="crow" style="--c:${PAL[+c.community%PAL.length]}">
+      <div class="chead"><h3>${esc(c.label)}</h3><span>${esc(c.size)} musicians</span></div>
+      <div class="chips">${c.top_words.split(", ").slice(0,9).map(w=>`<span class="chip">${esc(w)}</span>`).join("")}</div>
+      <dl><dt>Median birth year</dt><dd>${esc(Math.round(+c.median_birthyear))}</dd><dt>Main countries</dt><dd>${esc(c.top_countries)}</dd><dt>Highest HPI</dt><dd>${esc(c.highest_hpi_members)}</dd></dl></article>`).join("");
+  }
+  $("tabs").innerHTML=Object.entries(names).map(([k,v])=>`<button class="tab" data-k="${k}">${v}</button>`).join("");
+  $("tabs").onclick=e=>{if(e.target.dataset.k)showComm(e.target.dataset.k)};
+  showComm("semantic");
+
+  if(dis){
+    const draw=()=>{const f=$("q").value.toLowerCase();
+      const rows=dis.filter(r=>!f||Object.values(r).join(" ").toLowerCase().includes(f));
+      $("dis").innerHTML=rows.length?table(rows,["name","lex_community_label","sem_community_label","neighbour_jaccard_lex_sem","hpi_raw"],60):'<div class="miss">No musician matches that search.</div>'};
+    $("q").oninput=draw;draw();
+  }else missing($("dis"),"rq1_disagreements.csv");
+
+  if(conf)$("conf").innerHTML=[["NMI_with_era","Birth era"],["NMI_with_country","Birth country"]].map(([c,t])=>
+    `<div class="pane"><h3>${t}</h3>${bars(conf.map(r=>[names[r.network]||r.network,+r[c]]),1)}</div>`).join("");
+  else missing($("conf"),"communities_vs_era_country.csv");
+
+  if(rk){const a=rk.filter(r=>r.network==="ARI lexical vs semantic");
+    $("rk").innerHTML=`<h3>Agreement for different K</h3><div class="m">ARI between lexical and semantic communities</div>${bars(a.map(r=>["K = "+r.K,+r.modularity_or_ARI]),1)}`}
+  else missing($("rk"),"robustness_k.csv");
+  rs&&rs[0]?$("rs").innerHTML=`<h3>Without the shortest biographies</h3><div class="m">${esc(rs[0].n_without_short_bios)} musicians kept</div>${bars([["All musicians",+rs[0].ARI_lex_vs_sem_all],["Short ones removed",+rs[0].ARI_lex_vs_sem_without_short_bios]],1)}`:missing($("rs"),"robustness_short_bios.csv");
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+column,description,origin
+wp_id,Wikipedia page ID. Unique key; use it to merge any file and as network node ID.,source
+wd_id,"Wikidata ID (upper-case Q...). Use it to pull genre, instrument, label from Wikidata.",source
+name,Musician name. Two Marilyn Manson entries are '(band)' and '(singer)'.,source
+wiki_url,English Wikipedia URL.,source
+hpi_raw,Historical Popularity Index. Outcome variable for RQ3. Narrow range (21.6-30.8) because only the top 500 are included.,source
+gender,M or F. One missing (Marilyn Manson band).,"source, 4 values filled by team"
+alive,True if living.,source
+birthyear,Year of birth. One missing (Marilyn Manson band). Medieval dates are approximate.,"source, 3 values corrected/filled"
+deathyear,Year of death. Missing = still alive (not imputed). Tansen has a placeholder (= birthyear).,source
+bplace_country,"Birth country, modern borders.","source, 7 values filled (VERIFY)"
+is_true_group,"True only for Marilyn Manson (band), the one real group.",new
+words,Word count of the full original Wikipedia article.,biography file
+clean_words,"Word count of the cleaned biography (no references, links, discography, headings). Use as the biography-length control.",new
+log_clean_words,log10 of clean_words (length is right-skewed). Use in regressions.,new
+clean_share,clean_words / words.,new
+short_bio,True if clean_words < 500 (33 musicians). For robustness checks.,new
+non_en_page_views,"Non-English Wikipedia page views. A COMPONENT of HPI: sensitivity checks only, not a control.",source
+log_non_en_views,log10 of non_en_page_views.,new
+l,Probably number of Wikipedia language editions. COMPONENT of HPI: sensitivity checks only.,source
+l_,Related language measure. COMPONENT of HPI: sensitivity checks only.,source
+revision_id,Wikipedia revision the text was taken from.,biography file
+last_updated,Timestamp of that revision (snapshots range 2025-03 to 2026-11).,biography file
+backmatter_share,Share of the original article in References/External links/See also etc.,new
+list_section_share,"Share of the original article in list-like sections (discography, works...).",new
+data_flag,"Free-text warning from the data cleaning (manual fills, approximate dates, questionable rows).",new
+article_text_clean,"Biography text for NLP: headings, back-matter and list sections removed. Plain text, NO Wikipedia hyperlinks.",new

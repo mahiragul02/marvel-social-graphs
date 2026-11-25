@@ -6,16 +6,18 @@ Tests whether HPI is associated with musicians' structural position in:
   1) the RQ1 semantic similarity network
   2) the RQ2 all-entities network
 
-Inputs (defaults):
-  musicians_final_dataset.csv
-  rq1_nodes.csv
-  rq2_nodes.csv
-  edges_semantic.csv
-  edges_entity_all.csv
+Expected project layout:
+  Music_Project/
+    code/6_rq3_pipeline.py
+    data/musicians_final_dataset.csv
+    rq1/rq1_nodes.csv
+    rq1/edges_semantic.csv
+    rq2/rq2_nodes.csv
+    rq2/edges_entity_all.csv
 
-Run:
+Run from the project root OR from the code folder:
+  python code/6_rq3_pipeline.py
   python 6_rq3_pipeline.py
-  python 6_rq3_pipeline.py --outdir rq3_outputs
 
 The script recomputes network metrics from the edge lists, merges by wp_id,
 and fits OLS models with HC3 heteroskedasticity-robust standard errors.
@@ -38,20 +40,49 @@ from scipy.stats import spearmanr
 from sklearn.preprocessing import StandardScaler
 import statsmodels.formula.api as smf
 
+# Resolve defaults relative to Music_Project (parent of this script's code folder),
+# rather than relative to whichever directory the terminal happens to use.
+PROJECT_DIR = Path(__file__).resolve().parent.parent
+
 parser = argparse.ArgumentParser()
-parser.add_argument("--input", default="musicians_final_dataset.csv")
-parser.add_argument("--rq1-nodes", default="rq1_nodes.csv")
-parser.add_argument("--rq2-nodes", default="rq2_nodes.csv")
-parser.add_argument("--semantic-edges", default="edges_semantic.csv")
-parser.add_argument("--entity-edges", default="edges_entity_all.csv")
-parser.add_argument("--outdir", default="rq3_outputs")
+parser.add_argument("--input", default=str(PROJECT_DIR / "data" / "musicians_final_dataset.csv"))
+parser.add_argument("--rq1-nodes", default=str(PROJECT_DIR / "rq1" / "rq1_nodes.csv"))
+parser.add_argument("--rq2-nodes", default=str(PROJECT_DIR / "rq2" / "rq2_nodes.csv"))
+parser.add_argument("--semantic-edges", default=str(PROJECT_DIR / "rq1" / "edges_semantic.csv"))
+parser.add_argument("--entity-edges", default=str(PROJECT_DIR / "rq2" / "edges_entity_all.csv"))
+parser.add_argument("--outdir", default=str(PROJECT_DIR / "rq3_outputs"))
 parser.add_argument("--exclude-short", action="store_true",
                     help="Run the main models after excluding short biographies.")
 args = parser.parse_args()
 
+# Relative paths supplied manually are also interpreted from Music_Project.
+def project_path(value):
+    path = Path(value).expanduser()
+    return path if path.is_absolute() else PROJECT_DIR / path
+
+args.input = str(project_path(args.input))
+args.rq1_nodes = str(project_path(args.rq1_nodes))
+args.rq2_nodes = str(project_path(args.rq2_nodes))
+args.semantic_edges = str(project_path(args.semantic_edges))
+args.entity_edges = str(project_path(args.entity_edges))
+args.outdir = str(project_path(args.outdir))
+
 os.makedirs(args.outdir, exist_ok=True)
 OUT = lambda name: os.path.join(args.outdir, name)
 warnings.filterwarnings("ignore", category=RuntimeWarning)
+
+for label, filename in [
+    ("final dataset", args.input),
+    ("RQ1 node table", args.rq1_nodes),
+    ("RQ2 node table", args.rq2_nodes),
+    ("semantic edge list", args.semantic_edges),
+    ("entity edge list", args.entity_edges),
+]:
+    if not os.path.isfile(filename):
+        raise FileNotFoundError(
+            f"Could not find {label}: {filename}\\n"
+            f"Expected the project folders to be inside: {PROJECT_DIR}"
+        )
 
 # ---------------------------------------------------------------------
 # 1. Load and validate inputs

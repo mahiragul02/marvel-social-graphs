@@ -1,0 +1,9 @@
+network,entity_types,entities_used,musicians_without_entities,nodes,edges,density,isolates,components,communities,communities_size_5plus,modularity,louvain_stability_ari
+entity_all,PERSON+ORG+PLACE+WORK+EVENT,9941.0,0.0,497,3396,0.0276,0,1,10,10.0,0.651,0.84
+entity_person,PERSON,4658.0,1.0,497,3363,0.0273,1,2,10,9.0,0.644,0.78
+entity_org,ORG,2496.0,8.0,497,3092,0.0251,8,9,20,10.0,0.566,0.72
+entity_place,PLACE,1617.0,0.0,497,3410,0.0277,0,1,10,10.0,0.534,0.68
+entity_work_event,WORK+EVENT,1170.0,57.0,497,2589,0.021,57,58,67,10.0,0.566,0.63
+lexical (RQ1),,,,497,4090,0.0332,0,1,6,,0.565,
+lexical_nonames (RQ1),,,,497,4479,0.0363,0,1,5,,0.491,
+semantic (RQ1),,,,497,3838,0.0311,0,1,6,,0.578,

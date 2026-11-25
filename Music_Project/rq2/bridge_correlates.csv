@@ -1,0 +1,5 @@
+variable,spearman_rho_with_bridge_score,p
+log_clean_words,0.266,0.0
+hpi_raw,0.131,0.0033
+birthyear,0.215,0.0
+n_entities_used,0.226,0.0
